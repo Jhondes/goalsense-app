@@ -4,7 +4,7 @@
 import { useGenerator } from "@/hooks/useGenerator";
 import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
-import { SportSoccerIcon } from "@heroicons/react/24/solid";
+import { FireIcon } from "@heroicons/react/24/solid";
 
 export default function GeneratorForm() {
   const { filters, setFilters, results, generate, loading } =
@@ -18,9 +18,10 @@ export default function GeneratorForm() {
       <div className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.4)]
   transition space-y-4">
 
-        <h2 className="text-lg font-semibold">
-          
-        </h2>
+        <h2 className="text-lg font-semibold flex items-center gap-2 text-green-400">
+  <FireIcon className="w-5 h-5" />
+  GoalSense Generator
+</h2>
 
         <Filters filters={filters} setFilters={setFilters} />
 {/* Picks slider */}
