@@ -3,14 +3,21 @@
 import { useState } from "react";
 import { generatePredictions } from "@/lib/generatorLogic";
 
+type Result = {
+  home: string;
+  away: string;
+  prediction: string;
+  odds: string;
+};
+
 export function useGenerator() {
   const [filters, setFilters] = useState({
     type: "Over 1.5",
-    count: 3,        // ✅ use count (NOT picks)
-    unlocked: false, // ✅ for premium markets
+    count: 3,
+    unlocked: false,
   });
 
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState(false);
 
   const generate = async () => {
@@ -19,8 +26,7 @@ export function useGenerator() {
 
       const data = await generatePredictions(filters);
 
-      // delay so loader is visible
-      await new Promise(res => setTimeout(res, 1200));
+      await new Promise((res) => setTimeout(res, 1200));
 
       setResults(data);
 
