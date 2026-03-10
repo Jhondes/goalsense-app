@@ -1,5 +1,5 @@
 export function generatePredictions(filters: any) {
-  const picks = filters.count || 1; // <-- use slider value
+  const picksCount = filters.count || 1;
 
   const teams = [
     "Arsenal",
@@ -12,10 +12,10 @@ export function generatePredictions(filters: any) {
     "Dortmund",
   ];
 
-  const results = [];
+  const picks: any[] = [];
 
-  for (let i = 0; i < picks; i++) {
-    results.push({
+  for (let i = 0; i < picksCount; i++) {
+    picks.push({
       home: teams[Math.floor(Math.random() * teams.length)],
       away: teams[Math.floor(Math.random() * teams.length)],
       prediction: filters.type || "Over 2.5",
@@ -23,5 +23,13 @@ export function generatePredictions(filters: any) {
     });
   }
 
-  return results;
+  // calculate accumulator odds
+  const totalOdds = picks
+    .reduce((acc, match) => acc * parseFloat(match.odds), 1)
+    .toFixed(2);
+
+  return {
+    picks,
+    totalOdds,
+  };
 }
