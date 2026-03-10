@@ -4,7 +4,7 @@
 import { useGenerator } from "@/hooks/useGenerator";
 import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
-import { SportSoccerIcon } from "@heroicons/react/24/solid";
+import { FireIcon } from "@heroicons/react/24/solid";
 
 export default function GeneratorForm() {
   const { filters, setFilters, results, totalOdds, generate, loading } = useGenerator();
