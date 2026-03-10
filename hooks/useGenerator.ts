@@ -3,21 +3,16 @@
 import { useState } from "react";
 import { generatePredictions } from "@/lib/generatorLogic";
 
-type Result = {
-  home: string;
-  away: string;
-  prediction: string;
-  odds: string;
-};
-
 export function useGenerator() {
+
   const [filters, setFilters] = useState({
     type: "Over 1.5",
     count: 3,
     unlocked: false,
   });
 
-  const [results, setResults] = useState<Result[]>([]);
+  const [results, setResults] = useState<any[]>([]);
+  const [totalOdds, setTotalOdds] = useState("0.00");
   const [loading, setLoading] = useState(false);
 
   const generate = async () => {
@@ -26,9 +21,11 @@ export function useGenerator() {
 
       const data = await generatePredictions(filters);
 
-      await new Promise((res) => setTimeout(res, 1200));
+      // delay so loader is visible
+      await new Promise(res => setTimeout(res, 1200));
 
-      setResults(data);
+      setResults(data.picks);
+      setTotalOdds(data.totalOdds);
 
     } catch (err) {
       console.error("Generator error:", err);
@@ -37,5 +34,5 @@ export function useGenerator() {
     }
   };
 
-  return { filters, setFilters, results, generate, loading };
+  return { filters, setFilters, results, totalOdds, generate, loading };
 }
