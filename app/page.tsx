@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import GeneratorForm from "@/components/GeneratorForm";
 import HowItWorks from "@/components/HowItWorks";
-import ActivityTicker from "@/components/ActivityTicker";
+/*import ActivityTicker from "@/components/ActivityTicker";*/
 import BackgroundBalls from "@/components/BackgroundBalls";
 import Footer from "@/components/Footer";
 
@@ -55,7 +55,7 @@ export default async function Home() {
         </main>
       </div>
 
-      <ActivityTicker />
+      /*Activity Ticker here later*/
 <Footer />
     </>
   );
