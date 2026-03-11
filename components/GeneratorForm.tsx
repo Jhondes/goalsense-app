@@ -4,13 +4,14 @@ import { useGenerator } from "@/hooks/useGenerator";
 import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
+import FloatingSlip from "./FloatingSlip";
 
 export default function GeneratorForm() {
 const { filters, setFilters, results, totalOdds, generate, loading } =
 useGenerator();
 
 return ( <div className="space-y-8">
-{/* Generator Panel */} <div
+{/* Generator Panel */} <div id="generator"
      className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.4)]
      transition space-y-4"
    > <Filters filters={filters} setFilters={setFilters} />
@@ -88,6 +89,11 @@ return ( <div className="space-y-8">
     totalOdds={totalOdds}
     loading={loading}
   />
+
+  <FloatingSlip
+  results={results}
+  totalOdds={totalOdds}
+/>
 </div>
 
 
