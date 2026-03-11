@@ -43,7 +43,7 @@ export default async function Home() {
           </section>
 
           {/* GENERATOR SECTION */}
-          <section id="generator" className="relative z-20">
+          <section id="generator" className="relative z-20 scroll-mt-32">
             <GeneratorForm />
           </section>
 
