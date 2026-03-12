@@ -103,6 +103,12 @@ return ( <div className="space-y-8">
     )}
   </div>
 
+  {results.length > 0 && (
+  <div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
+    💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+  </div>
+)}
+
   {/* Results */}
   <ResultsTable
   results={results}
