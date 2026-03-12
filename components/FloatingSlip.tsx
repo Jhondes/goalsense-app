@@ -14,7 +14,7 @@ ${slipText}
 
 Total Odds: ${totalOdds}
 
-Generated with GoalSense`;
+Generated with GoalSense.live`;
 
   const copySlip = () => {
     navigator.clipboard.writeText(text);
