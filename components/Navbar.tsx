@@ -12,7 +12,7 @@ export default function Navbar() {
       "
     >
       {/* Logo */}
-      <Link href="/https://goalsense.live/#generator" className="flex items-center gap-3">
+      <Link href="/#generator" className="flex items-center gap-3">
         <Image
           src="/logo.png"
           alt="GoalSense Logo"
