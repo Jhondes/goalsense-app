@@ -98,7 +98,7 @@ return ( <div className="space-y-8">
           transition
         "
       >
-        🔄 Regenerate Slip
+        🔄 Regenerate (keeps locked picks)
       </button>
     )}
   </div>
