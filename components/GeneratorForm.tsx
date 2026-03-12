@@ -5,10 +5,30 @@ import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
 import FloatingSlip from "./FloatingSlip";
+import { useState } from "react";
 
 export default function GeneratorForm() {
 const { filters, setFilters, results, totalOdds, generate, loading } =
 useGenerator();
+
+const [lockedPicks, setLockedPicks] = useState<any[]>([]);
+
+const toggleLock = (match: any) => {
+
+  const exists = lockedPicks.find(
+    (p) => p.home === match.home && p.away === match.away
+  );
+
+  if (exists) {
+    setLockedPicks(
+      lockedPicks.filter(
+        (p) => p.home !== match.home || p.away !== match.away
+      )
+    );
+  } else {
+    setLockedPicks([...lockedPicks, match]);
+  }
+};
 
 return ( <div className="space-y-8">
 {/* Generator Panel */} <div id="generator"
@@ -45,7 +65,7 @@ return ( <div className="space-y-8">
 
     {/* Generate Button */}
     <button
-      onClick={generate}
+      onClick={() => generate(lockedPicks)}
       className="
         w-full p-3 rounded-lg font-semibold
         bg-green-600 hover:bg-green-500
@@ -69,7 +89,7 @@ return ( <div className="space-y-8">
     {/* Regenerate Button */}
     {results.length > 0 && (
       <button
-        onClick={generate}
+        onClick={() => generate(lockedPicks)}
         className="
           w-full p-2 rounded-lg
           border border-green-500
@@ -85,10 +105,12 @@ return ( <div className="space-y-8">
 
   {/* Results */}
   <ResultsTable
-    results={results}
-    totalOdds={totalOdds}
-    loading={loading}
-  />
+  results={results}
+  totalOdds={totalOdds}
+  loading={loading}
+  lockedPicks={lockedPicks}
+  toggleLock={toggleLock}
+/>
 
   <FloatingSlip
   results={results}

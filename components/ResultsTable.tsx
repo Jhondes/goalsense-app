@@ -1,7 +1,13 @@
 import MatchCard from "./MatchCard";
 import LoadingSkeleton from "./LoadingSkeleton";
 
-export default function ResultsTable({ results, totalOdds, loading }: any) {
+export default function ResultsTable({
+  results,
+  totalOdds,
+  loading,
+  lockedPicks,
+  toggleLock
+}: any) {
 
   if (loading) {
     return (
@@ -19,8 +25,15 @@ export default function ResultsTable({ results, totalOdds, loading }: any) {
     <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3">
 
       {results.map((r: any, i: number) => (
-        <MatchCard key={i} match={r} />
-      ))}
+  <MatchCard
+    key={i}
+    match={r}
+    locked={lockedPicks.some(
+      (p: any) => p.home === r.home && p.away === r.away
+    )}
+    toggleLock={toggleLock}
+  />
+))}
 
       {/* Premium Accumulator Card */}
       <div
