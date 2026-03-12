@@ -15,17 +15,34 @@ export function useGenerator() {
   const [totalOdds, setTotalOdds] = useState("0.00");
   const [loading, setLoading] = useState(false);
 
-  const generate = async () => {
+  const generate = async (lockedPicks: any[] = []) => {
     try {
       setLoading(true);
 
       const data = await generatePredictions(filters);
 
-      // delay so loader is visible
       await new Promise(res => setTimeout(res, 1200));
 
-      setResults(data.picks);
-      setTotalOdds(data.totalOdds);
+// remove duplicates from generated picks
+      const filtered = data.picks.filter(
+        (r: any) =>
+          !lockedPicks.some(
+            (p) => p.home === r.home && p.away === r.away
+          )
+      );
+
+// remove duplicates from generated picks
+      const combined = [...lockedPicks, ...filtered].slice(0, filters.count);
+
+      setResults(combined);
+
+// recalculate odds
+      const odds = combined.reduce(
+        (acc, pick) => acc * Number(pick.odds),
+        1
+      );
+
+      setTotalOdds(odds.toFixed(2));
 
     } catch (err) {
       console.error("Generator error:", err);
