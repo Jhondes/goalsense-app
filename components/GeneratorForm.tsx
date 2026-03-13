@@ -7,6 +7,7 @@ import { FireIcon } from "@heroicons/react/24/solid";
 import FloatingSlip from "./FloatingSlip";
 import { useState } from "react";
 
+
 export default function GeneratorForm() {
 const { filters, setFilters, results, totalOdds, generate, loading } =
 useGenerator();
@@ -85,6 +86,20 @@ return ( <div className="space-y-8">
         </>
       )}
     </button>
+
+    {/* Lucky Slip */}
+<button
+  onClick={() => alert("Lucky Slip mode coming soon")}
+  className="
+    w-full p-2 rounded-lg
+    border border-yellow-500
+    text-yellow-400
+    hover:bg-yellow-500 hover:text-black
+    transition
+  "
+>
+  🎰 Lucky Slip (Premium) 🔒
+</button>
 
     {/* Regenerate Button */}
     {results.length > 0 && (
