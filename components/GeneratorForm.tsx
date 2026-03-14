@@ -18,6 +18,7 @@ const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const [showAdvanced, setShowAdvanced] = useState(false);
 const [targetOdds, setTargetOdds] = useState<number | null>(null);
 const [mixedMarkets, setMixedMarkets] = useState(false);
+const [luckySlip, setLuckySlip] = useState(false);
 
 /* LOCK PICK FUNCTION */
 const toggleLock = (match: any) => {
@@ -37,18 +38,7 @@ const toggleLock = (match: any) => {
   }
 };
 
-/* LUCKY SLIP FUNCTION */
-const generateLucky = async () => {
 
-  try {
-    await new Promise(res => setTimeout(res, 1200));
-
-    generate(lockedPicks);
-
-  } catch (err) {
-    console.error("Lucky slip error", err);
-  }
-};
 
 return (
 <div className="space-y-8">
@@ -139,14 +129,32 @@ className="text-sm text-gray-400 hover:text-green-400 transition"
 </p>
 
 <p className="text-xs text-gray-400 mb-2">
-Generate a random accumulator across different markets
+Generate a completely random accumulator
 </p>
 
 <button
-onClick={generateLucky}
-className="w-full p-2 rounded-md border border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-black transition"
+onClick={() => {
+
+  const newValue = !luckySlip;
+
+  setLuckySlip(newValue);
+
+  if (newValue) {
+    setMixedMarkets(false);
+    setTargetOdds(null);
+  }
+
+}}
+className={`
+w-full p-2 rounded-md border transition
+${luckySlip
+  ? "border-yellow-500 text-yellow-400 bg-yellow-500/10"
+  : "border-gray-600 text-gray-400 hover:border-yellow-400 hover:text-yellow-400"
+}
+`}
 >
-Generate Lucky Slip
+{luckySlip ? "Enabled" : "Enable Lucky Slip"}
+
 </button>
 
 </div>
@@ -164,15 +172,23 @@ Allow generator to combine multiple betting markets
 </p>
 
 <button
+disabled={luckySlip}
 onClick={() => setMixedMarkets(!mixedMarkets)}
 className={`
 w-full p-2 rounded-md border transition
-${mixedMarkets
+${luckySlip
+  ? "border-gray-700 text-gray-600 cursor-not-allowed"
+  : mixedMarkets
   ? "border-purple-500 text-purple-400 bg-purple-500/10"
-  : "border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400"}
+  : "border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400"
+}
 `}
 >
-{mixedMarkets ? "Enabled" : "Enable Mixed Markets"}
+{luckySlip
+  ? "Disabled (Lucky Slip active)"
+  : mixedMarkets
+  ? "Enabled"
+  : "Enable Mixed Markets"}
 </button>
 
 </div>
@@ -194,12 +210,16 @@ Generate a slip targeting a specific total odds
 {[5,10,20].map((odd)=>(
 <button
 key={odd}
+disabled={luckySlip}
 onClick={() => setTargetOdds(targetOdds === odd ? null : odd)}
 className={`
 px-3 py-1 rounded-md border transition
-${targetOdds === odd
-? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)]"
-: "border-gray-600 text-gray-400 hover:border-green-400 hover:text-green-400"}
+${luckySlip
+  ? "border-gray-700 text-gray-600 cursor-not-allowed"
+  : targetOdds === odd
+  ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+  : "border-gray-600 text-gray-400 hover:border-green-400 hover:text-green-400"
+}
 `}
 >
 {odd}
