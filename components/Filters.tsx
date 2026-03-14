@@ -102,7 +102,7 @@ useEffect(() => {
   { name: "Team 1.5", premium: true },
   { name: "Team 2.5", premium: true },
   { name: "BTTS", premium: true },
-  { name: "Mixed", premium: true },
+  
 ];
 
 // 👇 ADD IT RIGHT HERE
