@@ -19,6 +19,7 @@ const [showAdvanced, setShowAdvanced] = useState(false);
 const [targetOdds, setTargetOdds] = useState<number | null>(null);
 const [mixedMarkets, setMixedMarkets] = useState(false);
 const [luckySlip, setLuckySlip] = useState(false);
+const [showPremiumModal, setShowPremiumModal] = useState(false);
 
 /* LOCK PICK FUNCTION */
 const toggleLock = (match: any) => {
@@ -38,7 +39,8 @@ const toggleLock = (match: any) => {
   }
 };
 
-
+const usingAdvancedOptions =
+  luckySlip || mixedMarkets || targetOdds !== null;
 
 return (
 <div className="space-y-8">
@@ -77,7 +79,16 @@ className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transit
 
 {/* Generate Button */}
 <button
-onClick={() => generate(lockedPicks)}
+onClick={() => {
+
+  if (usingAdvancedOptions) {
+    setShowPremiumModal(true);
+    return;
+  }
+
+  generate(lockedPicks);
+
+}}
 className="w-full p-3 rounded-lg font-semibold bg-green-600 hover:bg-green-500 transition hover:shadow-[0_0_25px_#22c55e] active:scale-95"
 >
 
@@ -258,6 +269,57 @@ toggleLock={toggleLock}
 results={results}
 totalOdds={totalOdds}
 />
+
+{showPremiumModal && (
+
+<div
+className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+onClick={() => setShowPremiumModal(false)}
+>
+
+<div
+className="bg-gray-900 border border-yellow-500 rounded-xl p-6 w-[90%] max-w-md text-center animate-[fadeIn_.25s_ease]"
+onClick={(e) => e.stopPropagation()}
+>
+
+<h2 className="text-xl font-semibold text-yellow-400 mb-2">
+⭐ Premium Feature
+</h2>
+
+<p className="text-gray-300 text-sm mb-4">
+Advanced generator options like <b>Lucky Slip</b>, <b>Mixed Markets</b>, and 
+<b>Target Odds</b> are available only for premium members.
+</p>
+
+<p className="text-gray-400 text-xs mb-5">
+Upgrade your membership to unlock smarter and more powerful bet generation.
+</p>
+
+<div className="flex gap-3 justify-center">
+
+<button
+onClick={() => setShowPremiumModal(false)}
+className="px-4 py-2 rounded-md border border-gray-600 text-gray-400 hover:text-white"
+>
+Close
+</button>
+
+<button
+onClick={() => {
+  window.location.href = "/pricing";
+}}
+className="px-4 py-2 rounded-md bg-yellow-500 text-black font-semibold hover:bg-yellow-400"
+>
+Upgrade
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+)}
 
 </div>
 );
