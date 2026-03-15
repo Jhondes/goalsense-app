@@ -122,7 +122,15 @@ className="w-full p-2 rounded-lg border border-green-500 text-green-400 hover:bg
 onClick={() => setShowAdvanced(!showAdvanced)}
 className="text-sm text-gray-400 hover:text-green-400 transition"
 >
-{showAdvanced ? "Hide Advanced Options ▲" : "✨ Advanced Options ▼"}
+{showAdvanced ? (
+  <span>
+    Hide Advanced Options <span className="text-yellow-400">👑</span> ▲
+  </span>
+) : (
+  <span>
+    ✨ Advanced Options <span className="text-yellow-400">👑</span> ▼
+  </span>
+)}
 </button>
 
 {/* ADVANCED OPTIONS PANEL */}
