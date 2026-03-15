@@ -109,8 +109,23 @@ Generate Predictions
 {/* Regenerate Button */}
 {results.length > 0 && (
 <button
-onClick={() => generate(lockedPicks)}
-className="w-full p-2 rounded-lg border border-green-500 text-green-400 hover:bg-green-500 hover:text-white transition"
+onClick={() => {
+
+  if (usingAdvancedOptions) {
+    setShowPremiumModal(true);
+    return;
+  }
+
+  generate(lockedPicks);
+
+}}
+className="
+  w-full p-2 rounded-lg
+  border border-green-500
+  text-green-400
+  hover:bg-green-500 hover:text-white
+  transition
+"
 >
 🔄 Regenerate (keeps locked picks)
 </button>
