@@ -28,15 +28,23 @@ const toggleLock = (match: any) => {
     (p) => p.home === match.home && p.away === match.away
   );
 
+  /* UNLOCK */
   if (exists) {
     setLockedPicks(
       lockedPicks.filter(
         (p) => p.home !== match.home || p.away !== match.away
       )
     );
-  } else {
-    setLockedPicks([...lockedPicks, match]);
+    return;
   }
+
+  /* LIMIT LOCKS */
+  if (lockedPicks.length >= filters.count) {
+    return;
+  }
+
+  /* LOCK PICK */
+  setLockedPicks([...lockedPicks, match]);
 };
 
 const usingAdvancedOptions =
@@ -69,9 +77,17 @@ type="range"
 min={1}
 max={20}
 value={filters.count}
-onChange={(e) =>
-setFilters({ ...filters, count: Number(e.target.value) })
-}
+onChange={(e) => {
+
+  const newCount = Number(e.target.value);
+
+  setFilters({ ...filters, count: newCount });
+
+  if (lockedPicks.length > newCount) {
+    setLockedPicks(lockedPicks.slice(0, newCount));
+  }
+
+}}
 className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transition"
 />
 
@@ -110,6 +126,7 @@ Generate Predictions
 {/* Regenerate Button */}
 {results.length > 0 && (
 <button
+disabled={loading}
 onClick={() => {
 
   if (usingAdvancedOptions) {
@@ -126,6 +143,7 @@ className="
   text-green-400
   hover:bg-green-500 hover:text-white
   transition
+  disabled:opacity-50 disabled:cursor-not-allowed
 "
 >
 🔄 Regenerate (keeps locked picks)
