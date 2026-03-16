@@ -239,15 +239,26 @@ ${luckySlip
 Generate a slip targeting a specific total odds
 </p>
 
+{/* STATUS TEXT (ADD HERE) */}
+
+<p className={`text-xs mb-2 ${targetOdds ? "text-green-400" : "text-gray-500"}`}>
+{targetOdds ? `Targeting ${targetOdds} odds` : "No target odds selected"}
+</p>
+
 <div className="flex gap-2">
 
 {[5,10,20].map((odd)=>(
 <button
 key={odd}
 disabled={luckySlip}
-onClick={() => setTargetOdds(targetOdds === odd ? null : odd)}
+onClick={() => {
+
+  const newValue = targetOdds === odd ? null : odd;
+  setTargetOdds(newValue);
+
+}}
 className={`
-px-3 py-1 rounded-md border transition
+px-3 py-1 rounded-md border transition cursor-pointer
 ${luckySlip
   ? "border-gray-700 text-gray-600 cursor-not-allowed"
   : targetOdds === odd
