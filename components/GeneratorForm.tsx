@@ -79,6 +79,7 @@ className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transit
 
 {/* Generate Button */}
 <button
+disabled={loading}
 onClick={() => {
 
   if (usingAdvancedOptions) {
@@ -89,7 +90,7 @@ onClick={() => {
   generate(lockedPicks);
 
 }}
-className="w-full p-3 rounded-lg font-semibold bg-green-600 hover:bg-green-500 transition hover:shadow-[0_0_25px_#22c55e] active:scale-95"
+className="w-full p-3 rounded-lg font-semibold bg-green-600 hover:bg-green-500 transition hover:shadow-[0_0_25px_#22c55e] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
 >
 
 {loading ? (
@@ -159,7 +160,7 @@ className="text-sm text-gray-400 hover:text-green-400 transition"
 <div className="rounded-lg border border-yellow-500/40 p-3 bg-yellow-500/5">
 
 <p className="text-sm text-yellow-400 font-semibold">
-🎰 Lucky Slip
+🎰 Lucky Slip <span className="text-yellow-400">🔒</span>
 </p>
 
 <p className="text-xs text-gray-400 mb-2">
@@ -198,7 +199,7 @@ ${luckySlip
 <div className="rounded-lg border border-purple-500/40 p-3 bg-purple-500/5">
 
 <p className="text-sm text-purple-400 font-semibold">
-🎲 Mixed Markets
+🎲 Mixed Markets <span className="text-yellow-400">🔒</span>
 </p>
 
 <p className="text-xs text-gray-400 mb-2">
@@ -232,7 +233,7 @@ ${luckySlip
 <div className="rounded-lg border border-green-500/40 p-3 bg-green-500/5">
 
 <p className="text-sm text-green-400 font-semibold">
-🎯 Target Odds
+🎯 Target Odds <span className="text-yellow-400">🔒</span>
 </p>
 
 <p className="text-xs text-gray-400 mb-2">
@@ -285,6 +286,12 @@ ${
 {results.length > 0 && (
 <div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
 💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+</div>
+)}
+
+{results.length === 0 && !loading && (
+<div className="text-center text-gray-400 text-sm py-6 border border-gray-700 rounded-lg bg-gray-900">
+No predictions yet. Click <span className="text-green-400">Generate</span> to create a slip.
 </div>
 )}
 
