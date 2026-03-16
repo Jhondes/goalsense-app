@@ -252,18 +252,17 @@ Generate a slip targeting a specific total odds
 key={odd}
 disabled={luckySlip}
 onClick={() => {
-
   const newValue = targetOdds === odd ? null : odd;
   setTargetOdds(newValue);
-
 }}
 className={`
 px-3 py-1 rounded-md border transition cursor-pointer
-${luckySlip
-  ? "border-gray-700 text-gray-600 cursor-not-allowed"
-  : targetOdds === odd
-  ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)]"
-  : "border-gray-600 text-gray-400 hover:border-green-400 hover:text-green-400"
+${
+  luckySlip
+    ? "border-gray-700 text-gray-600 cursor-not-allowed"
+    : targetOdds === odd
+    ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+    : "border-gray-600 text-gray-400 hover:border-gray-500 hover:text-white"
 }
 `}
 >
