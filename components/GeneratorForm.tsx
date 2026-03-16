@@ -261,7 +261,7 @@ ${
   luckySlip
     ? "border-gray-700 text-gray-600 cursor-not-allowed"
     : targetOdds === odd
-    ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+    ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)] scale-105"
     : "border-gray-600 text-gray-400 hover:border-gray-500 hover:text-white"
 }
 `}
