@@ -5,7 +5,7 @@ import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
 import FloatingSlip from "./FloatingSlip";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function GeneratorForm() {
 
@@ -20,6 +20,13 @@ const [targetOdds, setTargetOdds] = useState<number | null>(null);
 const [mixedMarkets, setMixedMarkets] = useState(false);
 const [luckySlip, setLuckySlip] = useState(false);
 const [showPremiumModal, setShowPremiumModal] = useState(false);
+const resultsRef = useRef<HTMLDivElement | null>(null);
+
+useEffect(() => {
+  if (results.length > 0) {
+    resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+  }
+}, [results]);
 
 /* LOCK PICK FUNCTION */
 const toggleLock = (match: any) => {
@@ -104,6 +111,8 @@ onClick={() => {
   }
 
   generate(lockedPicks);
+
+
 
 }}
 className="w-full p-3 rounded-lg font-semibold bg-green-600 hover:bg-green-500 transition hover:shadow-[0_0_25px_#22c55e] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -314,6 +323,8 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 )}
 
 {/* Results */}
+
+<div ref={resultsRef} className="scroll-mt-24"></div>
 
 <ResultsTable
 results={results}
