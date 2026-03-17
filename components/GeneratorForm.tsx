@@ -7,6 +7,7 @@ import { FireIcon } from "@heroicons/react/24/solid";
 import FloatingSlip from "./FloatingSlip";
 import { useState, useRef, useEffect } from "react";
 
+
 export default function GeneratorForm() {
 
 const { filters, setFilters, results, totalOdds, generate, loading } =
@@ -21,6 +22,19 @@ const [mixedMarkets, setMixedMarkets] = useState(false);
 const [luckySlip, setLuckySlip] = useState(false);
 const [showPremiumModal, setShowPremiumModal] = useState(false);
 const resultsRef = useRef<HTMLDivElement | null>(null);
+const [justGenerated, setJustGenerated] = useState(false);
+
+useEffect(() => {
+  if (results.length > 0) {
+    setJustGenerated(true);
+
+    const timer = setTimeout(() => {
+      setJustGenerated(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }
+}, [results]);
 
 useEffect(() => {
   if (results.length > 0) {
@@ -314,6 +328,8 @@ if (usingAdvancedOptions) {
 
 generate(lockedPicks);
 
+
+
 }}
 className="
 w-full mb-4 p-2 rounded-lg
@@ -334,6 +350,7 @@ totalOdds={totalOdds}
 loading={loading}
 lockedPicks={lockedPicks}
 toggleLock={toggleLock}
+justGenerated={justGenerated}
 />
 
 <FloatingSlip

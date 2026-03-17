@@ -6,12 +6,13 @@ export default function ResultsTable({
   totalOdds,
   loading,
   lockedPicks,
-  toggleLock
+  toggleLock,
+  justGenerated
 }: any) {
 
   if (loading) {
     return (
-      <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3">
+  <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3 animate-[fadeIn_.3s_ease]">
         {[...Array(6)].map((_, i) => (
           <LoadingSkeleton key={i} />
         ))}
@@ -19,21 +20,30 @@ export default function ResultsTable({
     );
   }
 
-  if (!results.length) return null;
+if (!results.length) return null;
 
-  return (
-    <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3">
+return (
+  <>
+    {/* New Slip Indicator */}
+    {justGenerated && (
+  <div className="text-green-400 text-sm font-semibold mb-2 animate-[fadeIn_.3s_ease]">
+    ⚡ New Slip Generated
+  </div>
+)}
 
+    {/* Results Grid */}
+    <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3 animate-[fadeIn_.3s_ease]">
+      
       {results.map((r: any, i: number) => (
-  <MatchCard
-    key={i}
-    match={r}
-    locked={lockedPicks.some(
-      (p: any) => p.home === r.home && p.away === r.away
-    )}
-    toggleLock={toggleLock}
-  />
-))}
+        <MatchCard
+          key={i}
+          match={r}
+          locked={lockedPicks.some(
+            (p: any) => p.home === r.home && p.away === r.away
+          )}
+          toggleLock={toggleLock}
+        />
+      ))}
 
       {/* Premium Accumulator Card */}
       <div
@@ -66,5 +76,6 @@ export default function ResultsTable({
       </div>
 
     </div>
-  );
+  </>
+);
 }
