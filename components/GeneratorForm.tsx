@@ -132,32 +132,7 @@ Generate Predictions
 
 </button>
 
-{/* Regenerate Button */}
-{results.length > 0 && (
-<button
-disabled={loading}
-onClick={() => {
 
-  if (usingAdvancedOptions) {
-    setShowPremiumModal(true);
-    return;
-  }
-
-  generate(lockedPicks);
-
-}}
-className="
-  w-full p-2 rounded-lg
-  border border-green-500
-  text-green-400
-  hover:bg-green-500 hover:text-white
-  transition
-  disabled:opacity-50 disabled:cursor-not-allowed
-"
->
-🔄 Regenerate (keeps locked picks)
-</button>
-)}
 
 {/* ADVANCED OPTIONS TOGGLE */}
 
@@ -325,6 +300,32 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 {/* Results */}
 
 <div ref={resultsRef} className="scroll-mt-24"></div>
+
+{results.length > 0 && (
+<button
+disabled={loading}
+onClick={() => {
+
+if (usingAdvancedOptions) {
+  setShowPremiumModal(true);
+  return;
+}
+
+generate(lockedPicks);
+
+}}
+className="
+w-full mb-4 p-2 rounded-lg
+border border-green-500
+text-green-400
+hover:bg-green-500 hover:text-white
+transition
+disabled:opacity-50 disabled:cursor-not-allowed
+"
+>
+🔄 Regenerate Slip (Keeps locked picks)
+</button>
+)}
 
 <ResultsTable
 results={results}
