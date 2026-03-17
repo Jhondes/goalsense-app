@@ -285,11 +285,6 @@ ${
 
 {/* TIP */}
 
-{results.length > 0 && (
-<div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
-💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
-</div>
-)}
 
 {results.length === 0 && !loading && (
 <div className="text-center text-gray-400 text-sm py-6 border border-gray-700 rounded-lg bg-gray-900">
@@ -300,6 +295,12 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 {/* Results */}
 
 <div ref={resultsRef} className="scroll-mt-24"></div>
+
+{results.length > 0 && (
+<div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
+💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+</div>
+)}
 
 {results.length > 0 && (
 <button
