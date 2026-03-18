@@ -15,7 +15,7 @@ useGenerator();
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const FREE_LOCK_LIMIT = 2;
-const isPremium = false; // later from backend
+const isPremium = false; // TODO: replace with backend user subscription
 
 /* NEW STATES */
 const [showAdvanced, setShowAdvanced] = useState(false);
@@ -388,20 +388,29 @@ onClick={(e) => e.stopPropagation()}
 >
 
 <h2 className="text-xl font-semibold text-yellow-400 mb-2">
-⭐ Premium Feature
+  {premiumReason === "locks"
+    ? "🔒 Lock Limit Reached"
+    : "⭐ Premium Feature"}
 </h2>
 
 <p className="text-gray-300 text-sm mb-4">
-{premiumReason === "locks" ? (
-  <>
-    Free users can lock up to <b>2 picks</b>. Upgrade to Premium to unlock unlimited pick locks.
-  </>
-) : (
-  <>
-    Advanced generator options like <b>Lucky Slip</b>, <b>Mixed Markets</b>, and <b>Target Odds</b> are available only for premium members.
-  </>
-)}
+  {premiumReason === "locks" ? (
+    <>
+      Free users can lock up to <b>2 picks</b>. Upgrade to Premium to unlock unlimited pick locks.
+    </>
+  ) : (
+    <>
+      Advanced generator options like <b>Lucky Slip</b>, <b>Mixed Markets</b>, and <b>Target Odds</b> are available only for premium members.
+    </>
+  )}
 </p>
+
+{/* ✅ ADD HERE */}
+{premiumReason === "locks" && (
+  <p className="text-xs text-yellow-400 mb-5">
+    🚀 Remove limits instantly with Premium
+  </p>
+)}
 
 
 
@@ -418,12 +427,12 @@ Close
 </button>
 
 <button
-onClick={() => {
-  window.location.href = "/pricing";
-}}
-className="px-4 py-2 rounded-md bg-yellow-500 text-black font-semibold hover:bg-yellow-400"
+  onClick={() => {
+    window.location.href = "/pricing";
+  }}
+  className="px-4 py-2 rounded-md bg-yellow-500 text-black font-semibold hover:bg-yellow-400"
 >
-Upgrade
+  {premiumReason === "locks" ? "Unlock Unlimited Locks" : "Upgrade to Premium"}
 </button>
 
 </div>
