@@ -14,6 +14,8 @@ const { filters, setFilters, results, totalOdds, generate, loading } =
 useGenerator();
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
+const FREE_LOCK_LIMIT = 2;
+const isPremium = false; // later from backend
 
 /* NEW STATES */
 const [showAdvanced, setShowAdvanced] = useState(false);
@@ -23,6 +25,7 @@ const [luckySlip, setLuckySlip] = useState(false);
 const [showPremiumModal, setShowPremiumModal] = useState(false);
 const resultsRef = useRef<HTMLDivElement | null>(null);
 const [justGenerated, setJustGenerated] = useState(false);
+const [premiumReason, setPremiumReason] = useState<"locks" | "advanced" | null>(null);
 
 useEffect(() => {
   if (results.length > 0) {
@@ -49,7 +52,7 @@ const toggleLock = (match: any) => {
     (p) => p.home === match.home && p.away === match.away
   );
 
-  /* UNLOCK */
+  // UNLOCK
   if (exists) {
     setLockedPicks(
       lockedPicks.filter(
@@ -59,12 +62,19 @@ const toggleLock = (match: any) => {
     return;
   }
 
-  /* LIMIT LOCKS */
+  // 🔒 FREE LIMIT CHECK (ADD THIS)
+  if (!isPremium && lockedPicks.length >= FREE_LOCK_LIMIT) {
+    setPremiumReason("locks");
+    setShowPremiumModal(true);
+    return;
+  }
+
+  // EXISTING LIMIT (slider safety)
   if (lockedPicks.length >= filters.count) {
     return;
   }
 
-  /* LOCK PICK */
+  // LOCK PICK
   setLockedPicks([...lockedPicks, match]);
 };
 
@@ -120,9 +130,10 @@ disabled={loading}
 onClick={() => {
 
   if (usingAdvancedOptions) {
-    setShowPremiumModal(true);
-    return;
-  }
+  setPremiumReason("advanced");
+  setShowPremiumModal(true);
+  return;
+}
 
   generate(lockedPicks);
 
@@ -322,9 +333,10 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
   onClick={() => {
 
     if (usingAdvancedOptions) {
-      setShowPremiumModal(true);
-      return;
-    }
+  setPremiumReason("advanced");
+  setShowPremiumModal(true);
+  return;
+}
 
     generate(lockedPicks);
 
@@ -380,18 +392,26 @@ onClick={(e) => e.stopPropagation()}
 </h2>
 
 <p className="text-gray-300 text-sm mb-4">
-Advanced generator options like <b>Lucky Slip</b>, <b>Mixed Markets</b>, and 
-<b>Target Odds</b> are available only for premium members.
+{premiumReason === "locks" ? (
+  <>
+    Free users can lock up to <b>2 picks</b>. Upgrade to Premium to unlock unlimited pick locks.
+  </>
+) : (
+  <>
+    Advanced generator options like <b>Lucky Slip</b>, <b>Mixed Markets</b>, and <b>Target Odds</b> are available only for premium members.
+  </>
+)}
 </p>
 
-<p className="text-gray-400 text-xs mb-5">
-Upgrade your membership to unlock smarter and more powerful bet generation.
-</p>
+
 
 <div className="flex gap-3 justify-center">
 
 <button
-onClick={() => setShowPremiumModal(false)}
+onClick={() => {
+  setShowPremiumModal(false);
+  setPremiumReason(null);
+}}
 className="px-4 py-2 rounded-md border border-gray-600 text-gray-400 hover:text-white"
 >
 Close
