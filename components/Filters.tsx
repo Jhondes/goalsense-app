@@ -345,11 +345,14 @@ const nextFiveDays = Array.from({ length: 5 }, (_, i) => {
             </p>
 
             <button
-              onClick={unlockPremium}
-              className="w-full py-2 rounded bg-yellow-500 hover:bg-yellow-400 font-semibold transition"
-            >
-              Unlock Now
-            </button>
+  onClick={() => {
+    setShowModal(false);
+    window.location.href = "/pricing";
+  }}
+  className="w-full py-2 rounded bg-yellow-500 hover:bg-yellow-400 font-semibold transition"
+>
+  Unlock Now
+</button>
 
             <button
               onClick={() => setShowModal(false)}
