@@ -65,9 +65,7 @@ export default function PricingPage() {
               <li className="flex items-center gap-2">
                <Check size={16} /> Unlimited pick locks 🔒
               </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Everything in Free
-              </li>
+              
               <li className="flex items-center gap-2">
                 <Check size={16} /> Lucky Slip 🎰
               </li>
