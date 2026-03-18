@@ -27,22 +27,26 @@ export default function PricingPage() {
             <p className="text-3xl font-bold">₦0</p>
 
             <ul className="space-y-3 text-sm text-gray-300">
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Basic predictions
-              </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Limited markets
-              </li>
-              <li className="flex items-center gap-2 text-gray-500 line-through">
-                Lucky Slip
-              </li>
-              <li className="flex items-center gap-2 text-gray-500 line-through">
-                Mixed Markets
-              </li>
-              <li className="flex items-center gap-2 text-gray-500 line-through">
-                Target Odds
-              </li>
-            </ul>
+  <li className="flex items-center gap-2">
+    <Check size={16} /> Basic predictions
+  </li>
+  <li className="flex items-center gap-2">
+    <Check size={16} /> Limited markets
+  </li>
+  <li className="flex items-center gap-2">
+    <Check size={16} /> Lock up to 2 picks 🔒
+  </li>
+
+  <li className="flex items-center gap-2 text-gray-500 line-through">
+    Lucky Slip
+  </li>
+  <li className="flex items-center gap-2 text-gray-500 line-through">
+    Mixed Markets
+  </li>
+  <li className="flex items-center gap-2 text-gray-500 line-through">
+    Target Odds
+  </li>
+</ul>
 
             <button className="w-full py-2 rounded-lg border border-gray-600 text-gray-400 cursor-not-allowed">
               Current Plan
@@ -58,6 +62,9 @@ export default function PricingPage() {
             <p className="text-3xl font-bold">₦2,500 / month</p>
 
             <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-2">
+               <Check size={16} /> Unlimited pick locks 🔒
+              </li>
               <li className="flex items-center gap-2">
                 <Check size={16} /> Everything in Free
               </li>
