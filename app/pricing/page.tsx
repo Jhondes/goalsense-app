@@ -67,6 +67,10 @@ export default function PricingPage() {
 
   <p className="text-3xl font-bold">₦2,500 / month</p>
 
+  <p className="text-sm text-green-400 font-medium">
+  ≈ ₦83/day — cheaper than daily data 😅
+</p>
+
   <ul className="space-y-3 text-sm">
     <li className="flex items-center gap-2">
       <Check size={16} /> Unlimited pick locks 🔒
