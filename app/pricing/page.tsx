@@ -54,42 +54,49 @@ export default function PricingPage() {
           </div>
 
           {/* PREMIUM PLAN */}
-          <div className="border border-yellow-500 rounded-xl p-6 space-y-5 bg-yellow-500/5 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
-            <h2 className="text-xl font-semibold text-yellow-400">
-              Premium ⭐
-            </h2>
+<div className="relative border border-yellow-500 rounded-xl p-6 space-y-5 bg-yellow-500/5 shadow-[0_0_30px_rgba(234,179,8,0.3)] scale-105">
 
-            <p className="text-3xl font-bold">₦2,500 / month</p>
+  {/* ⭐ BADGE */}
+  <div className="absolute -top-3 right-4 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
+    ⭐ Recommended
+  </div>
 
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-2">
-               <Check size={16} /> Unlimited pick locks 🔒
-              </li>
-              
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Lucky Slip 🎰
-              </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Mixed Markets 🎲
-              </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Target Odds 🎯
-              </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Premium markets access 🔒
-              </li>
-              <li className="flex items-center gap-2">
-                <Check size={16} /> Faster generation ⚡
-              </li>
-            </ul>
+  <h2 className="text-xl font-semibold text-yellow-400">
+    Premium ⭐
+  </h2>
 
-            <button
-              onClick={() => alert("Payment integration coming soon")}
-              className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition"
-            >
-              Upgrade Now
-            </button>
-          </div>
+  <p className="text-3xl font-bold">₦2,500 / month</p>
+
+  <ul className="space-y-3 text-sm">
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Unlimited pick locks 🔒
+    </li>
+    
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Lucky Slip 🎰
+    </li>
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Mixed Markets 🎲
+    </li>
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Target Odds 🎯
+    </li>
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Premium markets access 🔒
+    </li>
+    <li className="flex items-center gap-2">
+      <Check size={16} /> Faster generation ⚡
+    </li>
+  </ul>
+
+  <button
+    onClick={() => alert("Payment integration coming soon")}
+    className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
+  >
+    Upgrade Now
+  </button>
+
+</div>
 
         </div>
 
