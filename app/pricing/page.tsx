@@ -18,7 +18,7 @@ export default function PricingPage() {
         </div>
 
         {/* PRICING CARDS */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 space-y-4 md:space-y-0">
 
           {/* FREE PLAN */}
           <div className="border border-gray-700 rounded-xl p-6 space-y-5 bg-gray-900">
