@@ -97,7 +97,7 @@ export default function PricingPage() {
     onClick={() => alert("Payment integration coming soon")}
     className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
   >
-    Upgrade Now
+    🚀 Upgrade & Unlock All Features
   </button>
 
 </div>
