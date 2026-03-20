@@ -264,12 +264,12 @@ const nextFiveDays = Array.from({ length: 5 }, (_, i) => {
     }
   }}
   className="
-    px-3 py-1 rounded-full text-xs font-semibold
-    bg-gradient-to-r from-pink-500 to-orange-500
-    hover:scale-105 transition
-    shadow-lg hover:shadow-pink-500/50
-    disabled:opacity-50 disabled:cursor-not-allowed animate-pulse
-  "
+px-3 py-1 rounded-full text-xs font-semibold
+bg-gradient-to-r from-pink-500 to-orange-500
+hover:scale-110 transition
+shadow-lg hover:shadow-pink-500/50
+animate-pulse
+"
 >
   {filters.unlocked ? "Premium Active" : "Unlock Premium"}
 </button>

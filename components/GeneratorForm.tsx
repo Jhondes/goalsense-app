@@ -322,10 +322,32 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 <div ref={resultsRef} className="scroll-mt-24"></div>
 
 {results.length > 0 && (
-<div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
-💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
-</div>
+  <>
+    <div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
+      💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+    </div>
+
+    {/* 🔒 LOCK COUNT */}
+    {!isPremium && (
+      <div
+        className={`text-xs text-center mt-2 ${
+          lockedPicks.length >= FREE_LOCK_LIMIT
+            ? "text-red-400"
+            : "text-gray-400"
+        }`}
+      >
+        🔒 {lockedPicks.length}/{FREE_LOCK_LIMIT} locks used
+      </div>
+    )}
+  </>
 )}
+
+{!isPremium && lockedPicks.length >= FREE_LOCK_LIMIT && (
+  <p className="text-xs text-yellow-400 text-center">
+    🚀 Upgrade to unlock unlimited picks
+  </p>
+)}
+
 
 {results.length > 0 && (
 <button
@@ -383,8 +405,12 @@ onClick={() => setShowPremiumModal(false)}
 >
 
 <div
-className="bg-gray-900 border border-yellow-500 rounded-xl p-6 w-[90%] max-w-md text-center animate-[fadeIn_.25s_ease]"
-onClick={(e) => e.stopPropagation()}
+  className={`
+    bg-gray-900 border border-yellow-500 rounded-xl p-6 w-[90%] max-w-md text-center
+    animate-[fadeIn_.25s_ease]
+    ${premiumReason === "locks" ? "animate-shake" : ""}
+  `}
+  onClick={(e) => e.stopPropagation()}
 >
 
 <h2 className="text-xl font-semibold text-yellow-400 mb-2">
