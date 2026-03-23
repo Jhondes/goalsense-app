@@ -2,48 +2,38 @@
 
 export default function MatchCard({ match, locked, toggleLock }: any) {
   return (
-    <div
-      className={`
-        relative
-        bg-gray-900 border
-        rounded-xl p-4
-        transition-all duration-300
-        animate-[fadeIn_0.4s_ease]
-        cursor-pointer
-        ${locked 
-          ? "border-green-500 shadow-[0_0_25px_rgba(34,197,94,0.9)] bg-green-900/20"
-          : "border-gray-700 hover:border-green-500 hover:shadow-[0_0_25px_rgba(34,197,94,0.7)] hover:bg-gray-800"}
-      `}
-    >
-      {/* Lock Button */}
-      <button
-        onClick={() => toggleLock(match)}
-        className="absolute top-2 right-2 text-lg hover:scale-110 transition"
-        title={locked ? "Unlock this pick" : "Lock this pick before regenerating"}
-      >
-        {locked ? "🔒" : "🔓"}
-      </button>
+    <div className="relative border-b border-gray-700 pb-2 flex justify-between items-center">
 
-      <div className="flex justify-between mb-2 items-center">
-        <span className="font-semibold">
+      {/* LEFT SIDE */}
+      <div>
+        <p className="font-semibold text-sm">
           {match.home} vs {match.away}
-        </span>
+        </p>
 
-        <span className="bg-green-600 px-3 py-1 text-sm rounded-full shadow-md">
+        <p className="text-xs text-gray-400">
+          {locked && "🔒 "} {match.prediction}
+        </p>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="flex items-center gap-2">
+        <span
+          className={`text-sm font-semibold ${
+            locked ? "text-yellow-400" : "text-green-400"
+          }`}
+        >
           {match.odds}
         </span>
+
+        {/* Lock button */}
+        <button
+          onClick={() => toggleLock(match)}
+          className="text-sm hover:scale-110 transition"
+        >
+          {locked ? "🔒" : "🔓"}
+        </button>
       </div>
 
-      <div className="text-gray-400">
-        Prediction: {match.prediction}
-      </div>
-
-      {/* Locked Label */}
-      {locked && (
-        <div className="absolute bottom-2 left-2 text-xs text-green-400 font-semibold">
-          Locked 🔒 — Will remain after regeneration
-        </div>
-      )}
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function ResultsTable({
 
   if (loading) {
     return (
-  <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3 animate-[fadeIn_.3s_ease]">
+      <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3 animate-[fadeIn_.3s_ease]">
         {[...Array(6)].map((_, i) => (
           <LoadingSkeleton key={i} />
         ))}
@@ -20,62 +20,79 @@ export default function ResultsTable({
     );
   }
 
-if (!results.length) return null;
+  if (!results.length) return null;
 
-return (
-  <>
-    {/* New Slip Indicator */}
-    {justGenerated && (
-  <div className="text-green-400 text-sm font-semibold mb-2 animate-[fadeIn_.3s_ease]">
-    ⚡ New Slip Generated
-  </div>
-)}
+  return (
+    <>
+      {/* New Slip Indicator */}
+      {justGenerated && (
+        <div className="text-green-400 text-sm font-semibold mb-2 animate-[fadeIn_.3s_ease]">
+          ⚡ New Slip Generated
+        </div>
+      )}
 
-    {/* Results Grid */}
-    <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3 animate-[fadeIn_.3s_ease]">
-      
-      {results.map((r: any, i: number) => (
-        <MatchCard
-          key={i}
-          match={r}
-          locked={lockedPicks.some(
-            (p: any) => p.home === r.home && p.away === r.away
+      {/* Results Grid */}
+      <div className="flex justify-center mt-6">
+        <div className="bg-gray-900 border border-green-500 rounded-xl p-4 w-full max-w-md">
+
+          {/* Header */}
+          <div className="text-center mb-3">
+            <p className="text-green-400 font-bold text-lg">
+              ⚽ GoalSense Slip
+            </p>
+            <p className="text-sm text-gray-400">
+              {results.length} Picks
+            </p>
+          </div>
+
+          {/* Picks */}
+          <div className="space-y-2">
+            {results.map((match: any, index: number) => (
+              <MatchCard
+                key={index} // ✅ Use index as key to avoid duplicates
+                match={match}
+                locked={lockedPicks.some(
+                  (m: any) => m.home === match.home && m.away === match.away
+                )}
+                toggleLock={toggleLock}
+              />
+            ))}
+          </div>
+
+          {/* LOCKED PICKS */}
+          {lockedPicks?.length > 0 && (
+            <>
+              <div className="mt-4 mb-2 text-yellow-400 text-xs font-bold">
+                🔒 Locked Picks
+              </div>
+
+              {lockedPicks.map((r: any, index: number) => (
+                <div key={index} className="border-b border-yellow-600 pb-2">
+                  <p className="text-sm">
+                    {r.home} vs {r.away}
+                  </p>
+
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>{r.prediction}</span>
+                    <span className="text-yellow-400 font-semibold">
+                      {r.odds}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </>
           )}
-          toggleLock={toggleLock}
-        />
-      ))}
 
-      {/* Premium Accumulator Card */}
-      <div
-        className="
-        sm:col-span-2 lg:col-span-3
-        rounded-2xl
-        bg-gradient-to-r from-green-600/20 to-emerald-500/20
-        border border-green-500/40
-        p-6
-        text-center
-        backdrop-blur-md
-        shadow-[0_0_35px_rgba(34,197,94,0.35)]
-      "
-      >
-        <p className="text-gray-400 text-sm tracking-wide">
-          ACCUMULATOR SUMMARY
-        </p>
+          {/* Total Odds */}
+          <div className="mt-4 text-center">
+            <p className="text-xs text-gray-400">Total Odds</p>
+            <p className="text-xl font-bold text-green-400">
+              {totalOdds}
+            </p>
+          </div>
 
-        <p className="text-xl font-semibold text-white mt-2">
-          {results.length} Picks Generated
-        </p>
-
-        <p className="text-4xl font-bold text-green-400 mt-2">
-          {totalOdds}
-        </p>
-
-        <p className="text-xs text-gray-400 mt-1">
-          Total Odds
-        </p>
+        </div>
       </div>
-
-    </div>
-  </>
-);
+    </>
+  );
 }
