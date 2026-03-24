@@ -48,9 +48,9 @@ export default function ResultsTable({
           </div>
 
            {/* Tip inside the slip */}
-    <div className="text-xs text-gray-400 mb-3 text-center">
-      💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
-    </div>
+    <div className="text-xs text-gray-400 mb-3 text-center whitespace-nowrap overflow-hidden text-ellipsis">
+  💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+</div>
 
           {/* Picks */}
           <div className="space-y-2">
