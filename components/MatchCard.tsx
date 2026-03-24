@@ -10,17 +10,23 @@ export default function MatchCard({ match, locked, toggleLock }: any) {
           {match.home} vs {match.away}
         </p>
 
-        <p className="text-xs text-gray-400">
-          {locked && "🔒 "} {match.prediction}
+        {/* Prediction + Locked Indicator */}
+        <p className="text-xs text-gray-400 flex items-center gap-2">
+          {match.prediction}
+
+          {/* LOCKED INDICATOR */}
+         {locked && (
+         <span className="absolute left-1/2 transform -translate-x-1/2 text-yellow-400/70 text-xs font-bold">
+         LOCKED
+         </span>
+    )}
         </p>
       </div>
 
       {/* RIGHT SIDE */}
       <div className="flex items-center gap-2">
         <span
-          className={`text-sm font-semibold ${
-            locked ? "text-yellow-400" : "text-green-400"
-          }`}
+          className={`text-sm font-semibold ${locked ? "text-yellow-400" : "text-green-400"}`}
         >
           {match.odds}
         </span>
@@ -33,7 +39,6 @@ export default function MatchCard({ match, locked, toggleLock }: any) {
           {locked ? "🔒" : "🔓"}
         </button>
       </div>
-
     </div>
   );
 }

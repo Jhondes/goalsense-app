@@ -4,7 +4,6 @@ import { useGenerator } from "@/hooks/useGenerator";
 import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
-import FloatingSlip from "./FloatingSlip";
 import { useState, useRef, useEffect } from "react";
 
 
@@ -323,22 +322,9 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 
 {results.length > 0 && (
   <>
-    <div className="text-sm text-yellow-400 bg-gray-800 border border-yellow-500 rounded-lg p-2 text-center">
-      💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
-    </div>
+    
 
-    {/* 🔒 LOCK COUNT */}
-    {!isPremium && (
-      <div
-        className={`text-xs text-center mt-2 ${
-          lockedPicks.length >= FREE_LOCK_LIMIT
-            ? "text-red-400"
-            : "text-gray-400"
-        }`}
-      >
-        🔒 {lockedPicks.length}/{FREE_LOCK_LIMIT} locks used
-      </div>
-    )}
+    
   </>
 )}
 
@@ -350,37 +336,37 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 
 
 {results.length > 0 && (
-<button
-  disabled={loading}
-  onClick={() => {
-
-    if (usingAdvancedOptions) {
-  setPremiumReason("advanced");
-  setShowPremiumModal(true);
-  return;
-}
-
-    generate(lockedPicks);
-
-  }}
-  className="
-  w-full mb-4 p-2 rounded-lg
-  border border-green-500
-  text-green-400
-  hover:bg-green-500 hover:text-white
-  transition
-  disabled:opacity-50 disabled:cursor-not-allowed
-"
->
-  {loading ? (
-    <>
-      <span className="inline-block mr-2 animate-spin-fast">⚽</span>
-      Regenerating Slip...
-    </>
-  ) : (
-    "🔄 Regenerate Slip (Keeps locked picks)"
-  )}
-</button>
+  <div className="flex justify-center mt-2"> {/* reduced gap with mt-2 */}
+    <button
+      disabled={loading}
+      onClick={() => {
+        if (usingAdvancedOptions) {
+          setPremiumReason("advanced");
+          setShowPremiumModal(true);
+          return;
+        }
+        generate(lockedPicks);
+      }}
+      className="
+        w-full max-w-md   /* same width as slip */
+        p-2 rounded-lg
+        border border-green-500
+        text-green-400
+        hover:bg-green-500 hover:text-white
+        transition
+        disabled:opacity-50 disabled:cursor-not-allowed
+      "
+    >
+      {loading ? (
+        <>
+          <span className="inline-block mr-2 animate-spin-fast">⚽</span>
+          Regenerating Slip...
+        </>
+      ) : (
+        "🔄 Regenerate Slip (Keeps locked picks)"
+      )}
+    </button>
+  </div>
 )}
 
 <ResultsTable
@@ -392,10 +378,7 @@ toggleLock={toggleLock}
 justGenerated={justGenerated}
 />
 
-<FloatingSlip
-results={results}
-totalOdds={totalOdds}
-/>
+
 
 {showPremiumModal && (
 

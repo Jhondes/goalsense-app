@@ -25,11 +25,13 @@ export default function ResultsTable({
   return (
     <>
       {/* New Slip Indicator */}
-      {justGenerated && (
-        <div className="text-green-400 text-sm font-semibold mb-2 animate-[fadeIn_.3s_ease]">
-          ⚡ New Slip Generated
-        </div>
-      )}
+{justGenerated && (
+  <div className="flex justify-center mb-2">
+    <div className="text-green-400 text-sm font-semibold animate-[fadeIn_.3s_ease] w-full max-w-md text-center">
+      ⚡ New Slip Generated
+    </div>
+  </div>
+)}
 
       {/* Results Grid */}
       <div className="flex justify-center mt-6">
@@ -45,6 +47,11 @@ export default function ResultsTable({
             </p>
           </div>
 
+           {/* Tip inside the slip */}
+    <div className="text-xs text-gray-400 mb-3 text-center">
+      💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
+    </div>
+
           {/* Picks */}
           <div className="space-y-2">
             {results.map((match: any, index: number) => (
@@ -59,29 +66,7 @@ export default function ResultsTable({
             ))}
           </div>
 
-          {/* LOCKED PICKS */}
-          {lockedPicks?.length > 0 && (
-            <>
-              <div className="mt-4 mb-2 text-yellow-400 text-xs font-bold">
-                🔒 Locked Picks
-              </div>
-
-              {lockedPicks.map((r: any, index: number) => (
-                <div key={index} className="border-b border-yellow-600 pb-2">
-                  <p className="text-sm">
-                    {r.home} vs {r.away}
-                  </p>
-
-                  <div className="flex justify-between text-xs text-gray-400">
-                    <span>{r.prediction}</span>
-                    <span className="text-yellow-400 font-semibold">
-                      {r.odds}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
+          
 
           {/* Total Odds */}
           <div className="mt-4 text-center">
