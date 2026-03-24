@@ -5,6 +5,7 @@ import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
 import { useState, useRef, useEffect } from "react";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 
 
 export default function GeneratorForm() {
@@ -448,6 +449,30 @@ Close
 
 )}
 
+{results.length > 0 && (
+  <button
+    onClick={() => {
+      document
+        .getElementById("generator")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+    className="
+      fixed bottom-6 right-6
+      z-50
+      bg-green-600 hover:bg-green-500
+      text-white
+      px-4 py-2 rounded-full
+      shadow-[0_0_20px_rgba(34,197,94,0.6)]
+      transition
+      flex items-center gap-2
+    "
+  >
+    <AdjustmentsHorizontalIcon className="w-5 h-5" />
+    <span className="text-sm font-medium hidden sm:inline">
+      Edit Filters
+    </span>
+  </button>
+)}
 </div>
 );
 }
