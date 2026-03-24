@@ -48,7 +48,7 @@ export default function ResultsTable({
           </div>
 
            {/* Tip inside the slip */}
-    <div className="text-xs text-gray-400 mb-3 text-center whitespace-nowrap overflow-hidden text-ellipsis">
+   <div className="text-[10px] sm:text-xs text-gray-400 mb-3 text-center whitespace-nowrap">
   💡 Tip: Lock a pick 🔒 before regenerating to keep it in your slip.
 </div>
 
