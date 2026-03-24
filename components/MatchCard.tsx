@@ -2,36 +2,28 @@
 
 export default function MatchCard({ match, locked, toggleLock }: any) {
   return (
-    <div className="relative border-b border-gray-700 pb-2 flex justify-between items-center">
-
+    <div
+      className={`
+        relative
+        border-b border-gray-700 pb-2 flex justify-between items-center
+        bg-gray-900  /* solid background to prevent ghosting */
+        transition-all duration-300
+      `}
+    >
       {/* LEFT SIDE */}
       <div>
-        <p className="font-semibold text-sm">
-          {match.home} vs {match.away}
-        </p>
-
-        {/* Prediction + Locked Indicator */}
-        <p className="text-xs text-gray-400 flex items-center gap-2">
-          {match.prediction}
-
-          {/* LOCKED INDICATOR */}
-         {locked && (
-         <span className="absolute left-1/2 transform -translate-x-1/2 text-yellow-400/70 text-xs font-bold">
-         LOCKED
-         </span>
-    )}
+        <p className="font-semibold text-sm">{match.home} vs {match.away}</p>
+        <p className="text-xs text-gray-400">
+          {locked && <span className="text-yellow-400 font-bold">LOCKED</span>} {match.prediction}
         </p>
       </div>
 
       {/* RIGHT SIDE */}
       <div className="flex items-center gap-2">
-        <span
-          className={`text-sm font-semibold ${locked ? "text-yellow-400" : "text-green-400"}`}
-        >
+        <span className={`text-sm font-semibold ${locked ? "text-yellow-400" : "text-green-400"}`}>
           {match.odds}
         </span>
 
-        {/* Lock button */}
         <button
           onClick={() => toggleLock(match)}
           className="text-sm hover:scale-110 transition"
