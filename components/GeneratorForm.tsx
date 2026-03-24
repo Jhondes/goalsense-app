@@ -328,11 +328,7 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
   </>
 )}
 
-{!isPremium && lockedPicks.length >= FREE_LOCK_LIMIT && (
-  <p className="text-xs text-yellow-400 text-center">
-    🚀 Upgrade to unlock unlimited picks
-  </p>
-)}
+
 
 
 {results.length > 0 && (
