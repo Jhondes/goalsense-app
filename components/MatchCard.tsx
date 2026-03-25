@@ -38,6 +38,7 @@ export default function MatchCard({ match, locked, toggleLock }: any) {
   onClick={() => toggleLock(match)}
   className={`
     p-1 rounded-full transition transform hover:scale-110 active:scale-95
+    focus:outline-none focus:ring-0   /* ✅ ADD THIS */
     ${locked ? "text-yellow-400" : "text-gray-400 hover:text-green-400"}
   `}
   title={locked ? "Unlock pick" : "Lock pick"}
