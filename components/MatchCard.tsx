@@ -1,5 +1,7 @@
 "use client";
 
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
+
 export default function MatchCard({ match, locked, toggleLock }: any) {
   return (
     <div className="relative border-b border-gray-700 pb-2 flex justify-between items-center">
@@ -33,11 +35,19 @@ export default function MatchCard({ match, locked, toggleLock }: any) {
 
         {/* Lock button */}
         <button
-          onClick={() => toggleLock(match)}
-          className="text-sm hover:scale-110 transition"
-        >
-          {locked ? "🔒" : "🔓"}
-        </button>
+  onClick={() => toggleLock(match)}
+  className={`
+    p-1 rounded-full transition transform hover:scale-110 active:scale-95
+    ${locked ? "text-yellow-400" : "text-gray-400 hover:text-green-400"}
+  `}
+  title={locked ? "Unlock pick" : "Lock pick"}
+>
+  {locked ? (
+    <LockClosedIcon className="w-5 h-5" />
+  ) : (
+    <LockOpenIcon className="w-5 h-5 rotate-[-20deg]" />
+  )}
+</button>
       </div>
     </div>
   );
