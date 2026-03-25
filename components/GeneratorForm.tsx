@@ -358,7 +358,8 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 
 
 {results.length > 0 && (
-  <div className="flex justify-center mt-2"> {/* reduced gap with mt-2 */}
+  <div className="flex flex-col items-center mt-2">
+    
     <button
       disabled={loading}
       onClick={() => {
@@ -370,7 +371,7 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
         generate(lockedPicks);
       }}
       className="
-        w-full max-w-md   /* same width as slip */
+        w-full max-w-md
         p-2 rounded-lg
         border border-green-500
         text-green-400
@@ -382,12 +383,20 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
       {loading ? (
         <>
           <span className="inline-block mr-2 animate-spin-fast">⚽</span>
-          Regenerating Slip...
+          Regenerating...
         </>
       ) : (
-        "🔄 Regenerate Slip (Keeps locked picks)"
+        "🔄 Regenerate Slip"
       )}
     </button>
+
+    {/* 👇 FORCE THIS BELOW */}
+    {lockedPicks.length > 0 && (
+  <p className="text-xs text-gray-400 mt-1 text-center">
+    🔒 {lockedPicks.length} locked pick{lockedPicks.length !== 1 && "s"} will stay
+  </p>
+)}
+
   </div>
 )}
 
