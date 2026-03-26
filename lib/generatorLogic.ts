@@ -13,18 +13,23 @@ export function generatePredictions(filters: any) {
   ];
 
   const picks: any[] = [];
-  const usedMatches = new Set(); // ✅ track used fixtures
+  const usedMatches = new Set();
 
-  while (picks.length < picksCount) {
+  // ✅ ADD THIS HERE (before loop)
+  const maxMatches = (teams.length * (teams.length - 1)) / 2;
+  const safeCount = Math.min(picksCount, maxMatches);
+
+  // ✅ USE safeCount HERE
+  while (picks.length < safeCount) {
     const home =
       teams[Math.floor(Math.random() * teams.length)];
     const away =
       teams[Math.floor(Math.random() * teams.length)];
 
-    // ❌ prevent same team vs itself
+    // ❌ prevent same team
     if (home === away) continue;
 
-    // ✅ prevent duplicates (and reverse duplicates)
+    // ❌ prevent duplicates + reverse duplicates
     const key = [home, away].sort().join("-");
 
     if (usedMatches.has(key)) continue;
@@ -32,7 +37,7 @@ export function generatePredictions(filters: any) {
     usedMatches.add(key);
 
     picks.push({
-      id: crypto.randomUUID(), // ✅ VERY IMPORTANT
+      id: crypto.randomUUID(),
       home,
       away,
       prediction: filters.type || "Over 2.5",
