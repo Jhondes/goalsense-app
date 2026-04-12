@@ -10,12 +10,29 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 
 export default function GeneratorForm() {
 
-const { filters, setFilters, results, totalOdds, generate, loading } =
-useGenerator();
+const {
+  filters,
+  setFilters,
+  results,
+  totalOdds,
+  generate,
+  loading,
+  availableLeagues, // ✅ ADD THIS
+} = useGenerator();
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const FREE_LOCK_LIMIT = 2;
 const isPremium = false; // TODO: replace with backend user subscription
+
+const getRiskLevel = (count: number) => {
+  if (count <= 3) return { label: "Safe", color: "text-green-400" };
+  if (count <= 7) return { label: "Balanced", color: "text-yellow-400" };
+  if (count <= 10) return { label: "Risky", color: "text-orange-400" };
+  return { label: "Crazy", color: "text-red-500" };
+};
+
+const risk = getRiskLevel(filters.count);
+
 
 /* NEW STATES */
 const [showAdvanced, setShowAdvanced] = useState(false);
@@ -26,6 +43,7 @@ const [showPremiumModal, setShowPremiumModal] = useState(false);
 const resultsRef = useRef<HTMLDivElement | null>(null);
 const [justGenerated, setJustGenerated] = useState(false);
 const [premiumReason, setPremiumReason] = useState<"locks" | "advanced" | null>(null);
+
 
 useEffect(() => {
   if (results.length > 0) {
@@ -115,23 +133,36 @@ id="generator"
 className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] transition space-y-4"
 >
 
-<Filters filters={filters} setFilters={setFilters} />
+<Filters
+  filters={filters}
+  setFilters={setFilters}
+  availableLeagues={availableLeagues}
+/>
 
 {/* Picks slider */}
 <div className="space-y-2">
 
-<div className="flex justify-between text-sm">
-<span>Picks</span>
+<div className="flex justify-between items-center text-sm">
+  <span>Picks</span>
 
-<span className="font-semibold text-green-400">
-{filters.count}
+  <div className="flex items-center gap-2">
+    <span className="font-semibold text-green-400">
+      {filters.count}
+    </span>
+
+    <span className={`
+  text-[10px] px-2 py-[2px] rounded
+  ${risk.color} bg-white/5 border border-white/10
+`}>
+  {risk.label}
 </span>
+  </div>
 </div>
 
 <input
 type="range"
 min={1}
-max={20}
+max={isPremium ? 20 : 10}
 value={filters.count}
 onChange={(e) => {
 
@@ -147,7 +178,15 @@ onChange={(e) => {
 className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transition"
 />
 
+{filters.count > 7 && (
+    <p className="text-xs text-orange-400 mt-1">
+      ⚠️ Higher picks reduce winning probability
+    </p>
+  )}
+
 </div>
+
+
 
 {/* Generate Button */}
 <button
