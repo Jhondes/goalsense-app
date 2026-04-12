@@ -1,121 +1,84 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
-
-
-
-export default function Filters({ filters, setFilters }: any) {
+export default function Filters({ filters, setFilters, availableLeagues }: any) {
   const [open, setOpen] = useState(false);
-const [showModal, setShowModal] = useState(false);
-const [selectedDates, setSelectedDates] = useState<string[]>([]);
-const [availableLeagues, setAvailableLeagues] = useState<string[]>([]);
-const [selectedLeagues, setSelectedLeagues] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedLeagues, setSelectedLeagues] = useState<string[]>([]);
+  const [shake, setShake] = useState(false);
 
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const isPremium = filters.unlocked; // ✅ CONNECTED TO YOUR SYSTEM
 
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  /* CLOSE DROPDOWN */
   useEffect(() => {
-  function handleClickOutside(event: MouseEvent) {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setOpen(false);
-    }
-  }
-
-  document.addEventListener("mousedown", handleClickOutside);
-
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
-
-
-// 👇👇👇 ADD THE NEW ONE RIGHT HERE 👇👇👇
-
-/* REMOVE THIS COMMENT ONCE BACKEND IS READY
-useEffect(() => {
-  if (!filters.dates || filters.dates.length === 0) {
-    setAvailableLeagues([]);
-    setSelectedLeagues([]);
-    return;
-  }
-
-  async function fetchLeagues() {
-  try {
-    const res = await fetch("/api/leagues", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dates: filters.dates }),
-    });
-
-    // ✅ Prevent JSON crash
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("Server returned:", text);
-      return;
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
     }
 
-    const data = await res.json();
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-    setAvailableLeagues(data.leagues || []);
+  /* NEXT DAYS */
+  const nextFiveDays = Array.from({ length: 5 }, (_, i) => {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + i);
+    return date;
+  });
 
-    setSelectedLeagues(prev =>
-      prev.filter(l => (data.leagues || []).includes(l))
-    );
+  /* SYNC LEAGUES */
+  useEffect(() => {
+    if (filters.leagues) {
+      setSelectedLeagues(filters.leagues);
+    }
+  }, [filters.leagues]);
 
-  } catch (err) {
-    console.error("Failed to fetch leagues", err);
-  }
-}
+  /* SYNC DATES */
+  useEffect(() => {
+    if (filters.dates) {
+      const mapped = filters.dates
+        .map((iso: string) => {
+          const found = nextFiveDays.find(
+            (d) => d.toISOString().split("T")[0] === iso
+          );
+          return found?.toDateString();
+        })
+        .filter(Boolean);
 
-  fetchLeagues();
-}, [filters.dates]);
-REMOVE THIS COMMENT ONCE BACKEND IS READY */ 
+      setSelectedDates(mapped as string[]);
+    }
+  }, [filters.dates]);
 
-useEffect(() => {
-  if (filters.leagues) {
-    setSelectedLeagues(filters.leagues);
-  }
-}, [filters.leagues]);
-
-
-useEffect(() => {
-  if (filters.dates) {
-    const mapped = filters.dates.map((iso: string) => {
-      const found = nextFiveDays.find(
-        d => d.toISOString().split("T")[0] === iso
-      );
-      return found?.toDateString();
-    }).filter(Boolean);
-
-    setSelectedDates(mapped as string[]);
-  }
-}, [filters.dates]);
-
-
+  /* MARKETS */
   const markets = [
-  { name: "Over 1.5", premium: false },
-  { name: "1X2", premium: false },
-  { name: "Over 2.5", premium: true },
-  { name: "Team 0.5", premium: true },
-  { name: "Team 1.5", premium: true },
-  { name: "Team 2.5", premium: true },
-  { name: "BTTS", premium: true },
-  
-];
+    { name: "Over 1.5", premium: false },
+    { name: "Over 2.5", premium: true },
+    { name: "Team 0.5", premium: true },
+    { name: "Team 1.5", premium: true },
+    { name: "Team 2.5", premium: true },
+    { name: "BTTS", premium: true },
+  ];
 
-// 👇 ADD IT RIGHT HERE
-const nextFiveDays = Array.from({ length: 5 }, (_, i) => {
-  const date = new Date();
-  date.setHours(12, 0, 0, 0); // 👈 prevents timezone shift
-  date.setDate(date.getDate() + i);
-  return date;
-});
-
+  /* HANDLE SELECT */
   const handleSelect = (market: any) => {
-    if (market.premium && !filters.unlocked) {
+    if (market.premium && !isPremium) {
       setShowModal(true);
+
+      // shake effect
+      setShake(true);
+      setTimeout(() => setShake(false), 300);
+
       return;
     }
 
@@ -123,252 +86,225 @@ const nextFiveDays = Array.from({ length: 5 }, (_, i) => {
     setOpen(false);
   };
 
-  const unlockPremium = () => {
-    setFilters({ ...filters, unlocked: true });
-    setShowModal(false);
-  };
-
   return (
-  <div className="space-y-4 relative"> 
+    <div className="space-y-4 relative">
 
-    {/* DATE SELECTOR — PASTE IT HERE */}
-    <div>
-      <h3 className="text-sm font-semibold text-gray-300 mb-2">
-        Select Date
-      </h3>
+      {/* DATE */}
+      <div>
+        <h3 className="text-sm font-semibold text-gray-300 mb-2">
+          Select Date
+        </h3>
 
+        <div className="grid grid-cols-5 gap-2">
+          {nextFiveDays.map((date) => {
+            const formatted = date.toDateString();
+            const isActive = selectedDates.includes(formatted);
 
+            return (
+              <button
+                key={formatted}
+                onClick={() => {
+                  let updatedDates;
 
-      <div className="grid grid-cols-5 gap-2">
-        {nextFiveDays.map((date) => {
-          const formatted = date.toDateString();
-          const isoDate = date.toISOString().split("T")[0];
-          const isActive = selectedDates.includes(formatted);
+                  if (isActive) {
+                    updatedDates = selectedDates.filter((d) => d !== formatted);
+                  } else {
+                    updatedDates = [...selectedDates, formatted];
+                  }
 
- return (
-            <button
-              key={formatted}
-              onClick={() => {
-                let updatedDates;
+                  setSelectedDates(updatedDates);
 
-                if (isActive) {
-                  updatedDates = selectedDates.filter(d => d !== formatted);
-                } else {
-                  updatedDates = [...selectedDates, formatted];
-                }
+                  const isoDates = updatedDates.map((d) => {
+                    const found = nextFiveDays.find(
+                      (nd) => nd.toDateString() === d
+                    );
+                    return found?.toISOString().split("T")[0];
+                  });
 
-                setSelectedDates(updatedDates);
+                  setFilters({
+                    ...filters,
+                    dates: isoDates,
+                    leagues: [],
+                  });
 
-                const isoDates = updatedDates.map(d => {
-                  const found = nextFiveDays.find(
-                    nd => nd.toDateString() === d
-                  );
-                  return found?.toISOString().split("T")[0];
-                });
-
-                setFilters({
-                  ...filters,
-                  dates: isoDates,
-                });
-              }}
-              className={`
-                w-full py-2 rounded text-[11px] sm:text-xs font-semibold transition
-                ${
+                  setSelectedLeagues([]);
+                }}
+                className={`w-full py-2 rounded text-[11px] sm:text-xs font-semibold transition ${
                   isActive
                     ? "bg-green-500 text-black"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                }
-              `}
-            >
-              {date.toLocaleDateString("en-US", {
-                weekday: "short",
-                day: "numeric",
-                month: "short",
-              })}
-            </button>
-          );
-        })}
+                }`}
+              >
+                {date.toLocaleDateString("en-US", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                })}
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
 
-    {/* ================= LEAGUE SELECTOR ================= */}
+      {/* LEAGUES */}
+      {selectedDates.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">
+            Select Leagues
+          </h3>
 
-    {selectedDates.length > 0 && (
-  <div>
-    <h3 className="text-sm font-semibold text-gray-300 mb-2">
-      Select Leagues
-    </h3>
+          <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+            {availableLeagues?.length > 0 ? (
+              availableLeagues.map((league: any) => {
+                const active = selectedLeagues.includes(league.name);
 
-    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
-      {availableLeagues.length > 0 ? (
-        availableLeagues.map((league) => {
-          const active = selectedLeagues.includes(league);
+                return (
+                  <button
+                    key={league.name}
+                    onClick={() => {
+                      let updated;
 
-          return (
-            <button
-              key={league}
-              onClick={() => {
-                let updated;
+                      if (active) {
+                        updated = selectedLeagues.filter(
+                          (l) => l !== league.name
+                        );
+                      } else {
+                        updated = [...selectedLeagues, league.name];
+                      }
 
-                if (active) {
-                  updated = selectedLeagues.filter(l => l !== league);
-                } else {
-                  updated = [...selectedLeagues, league];
-                }
+                      setSelectedLeagues(updated);
 
-                setSelectedLeagues(updated);
-
-                setFilters({
-                  ...filters,
-                  leagues: updated,
-                });
-              }}
-              className={`
-                px-3 py-1 rounded-full text-xs font-semibold transition
-                ${
-                  active
-                    ? "bg-green-500 text-black"
-                    : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                }
-              `}
-            >
-              {league}
-            </button>
-          );
-        })
-      ) : (
-        <p className="text-xs text-gray-500">
-          {selectedDates.length === 1
-            ? "No leagues available for selected date"
-            : "No leagues available for selected dates"}
-        </p>
+                      setFilters({
+                        ...filters,
+                        leagues: updated,
+                      });
+                    }}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+                      active
+                        ? "bg-green-500 text-black"
+                        : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                    }`}
+                  >
+                    {league.name} ({league.count})
+                  </button>
+                );
+              })
+            ) : (
+              <p className="text-xs text-gray-500">
+                No leagues available for selected date
+              </p>
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-)}
 
-    {/* Unlock Button */}
-
-
-      {/* Unlock Button */}
+      {/* EVENTS */}
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-semibold text-gray-300">
-          Events
-        </h3>
+        <h3 className="text-sm font-semibold text-gray-300">Events</h3>
 
         <button
-  disabled={filters.unlocked}
-  onClick={() => {
-    if (!filters.unlocked) {
-      window.location.href = "/pricing";
-    }
-  }}
-  className="
-px-3 py-1 rounded-full text-xs font-semibold
-bg-gradient-to-r from-pink-500 to-orange-500
-hover:scale-110 transition
-shadow-lg hover:shadow-pink-500/50
-animate-pulse
-"
->
-  {filters.unlocked ? "Premium Active" : "Unlock Premium"}
-</button>
+          disabled={isPremium}
+          onClick={() => {
+            if (!isPremium) window.location.href = "/pricing";
+          }}
+          className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-pink-500 to-orange-500 hover:scale-110 transition shadow-lg animate-pulse"
+        >
+          {isPremium ? "Premium Active" : "Unlock Premium"}
+        </button>
       </div>
 
-      {/* Custom Dropdown */}
-      {/* Custom Dropdown */}
-<div ref={dropdownRef} className="relative">
-
+      {/* MARKET */}
+      <div ref={dropdownRef} className="relative">
         <div
-  onClick={() => setOpen(!open)}
-  className="w-full border border-gray-700 bg-gray-800 px-4 py-3 rounded cursor-pointer flex justify-between items-center hover:border-gray-500 transition"
->
-  <span className="text-sm">
-    {filters.type || "Choose Market"}
-  </span>
-
-  <ChevronDown
-    size={18}
-    className={`
-      text-gray-400 transition-transform duration-200
-      ${open ? "rotate-180" : ""}
-    `}
-  />
-</div>
-
+          onClick={() => setOpen(!open)}
+          className="w-full border border-gray-700 bg-gray-800 px-4 py-3 rounded cursor-pointer flex justify-between items-center"
+        >
+          <span className="text-sm flex items-center gap-2">
+            {filters.type || "Choose Market"}
+            {filters.type && <span className="text-green-400 text-xs">✔</span>}
+          </span>
+          <ChevronDown size={18} />
+        </div>
 
         {open && (
-          <div className={`absolute w-full mt-2 bg-gray-900 border border-gray-700 rounded shadow-lg z-50 transition-all duration-150 ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div
+            className={`
+              absolute w-full mt-2 bg-gray-900 border border-gray-700 rounded shadow-lg z-50
+              ${shake ? "animate-shake" : ""}
+            `}
+          >
             {markets.map((market) => (
               <div
                 key={market.name}
                 onClick={() => handleSelect(market)}
                 className={`
-                  flex justify-between items-center
-                  px-4 py-2 cursor-pointer
-                  hover:bg-gray-800 transition
+                  flex justify-between items-center px-4 py-2 rounded-md transition-all duration-200
+                  ${market.premium && !isPremium
+                    ? "opacity-60 blur-[0.3px] hover:blur-0 hover:opacity-80"
+                    : "hover:bg-gray-800"
+                  }
+                  ${market.premium && !isPremium ? "cursor-not-allowed" : "cursor-pointer"}
+                  hover:shadow-[0_0_10px_rgba(34,197,94,0.3)]
+                  active:scale-[0.98]
                 `}
               >
-                <span
-                  className={
-                    market.premium
-                      ? "text-yellow-400"
-                      : "text-white"
-                  }
-                >
+                <span className="flex items-center gap-2">
                   {market.name}
-                </span>
 
-                <span className="text-xs">
-                  {market.premium ? (
-                    filters.unlocked ? (
-                      <span className="text-yellow-400">PREMIUM</span>
-                    ) : (
-                      <span className="text-gray-400 animate-pulse">
-                        🔒
-                      </span>
-                    )
-                  ) : (
-                    <span className="text-green-400">FREE</span>
+                  {market.premium && (
+                    <span className="text-[10px] px-2 py-[2px] rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/40">
+                      👑 PRO
+                    </span>
                   )}
                 </span>
+
+                {market.premium && !isPremium && (
+                  <span className="text-yellow-400 text-xs">🔒</span>
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Premium Modal */}
+      {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-200">
-          <div className="bg-gray-900 p-6 rounded-lg w-80 text-center space-y-4 border border-gray-700">
-            <h2 className="text-lg font-semibold">
-              Premium Market
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-gray-900 border border-yellow-500 rounded-2xl p-6 w-[90%] max-w-sm text-center shadow-[0_0_30px_rgba(234,179,8,0.3)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-4xl mb-2">👑</div>
+
+            <h2 className="text-lg font-bold text-yellow-400 mb-2">
+              Premium Required
             </h2>
-            <p className="text-sm text-gray-400">
-              Unlock premium markets to access this market.
+
+            <p className="text-sm text-gray-300 mb-4">
+              Unlock advanced markets like <b>Over 2.5</b>, <b>BTTS</b> and more.
             </p>
 
-            <button
-  onClick={() => {
-    setShowModal(false);
-    window.location.href = "/pricing";
-  }}
-  className="w-full py-2 rounded bg-yellow-500 hover:bg-yellow-400 font-semibold transition"
->
-  Unlock Now
-</button>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 border border-gray-600 rounded text-gray-400"
+              >
+                Maybe Later
+              </button>
 
-            <button
-              onClick={() => setShowModal(false)}
-              className="text-sm text-gray-500"
-            >
-              Cancel
-            </button>
+              <button
+                onClick={() => (window.location.href = "/pricing")}
+                className="px-4 py-2 bg-yellow-500 text-black rounded font-semibold hover:bg-yellow-400"
+              >
+                Upgrade 👑
+              </button>
+            </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }
