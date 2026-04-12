@@ -1,9 +1,18 @@
-import { NextResponse } from "next/server";
-import { generatePredictions } from "@/lib/generatorLogic";
+const express = require("express");
+const router = express.Router();
 
-export async function POST(req: Request) {
-  const filters = await req.json();
-  const data = generatePredictions(filters);
+const generatePredictions = require("../utils/generator");
 
-  return NextResponse.json(data);
-}
+router.post("/", (req, res) => {
+  try {
+    const filters = req.body;
+
+    const data = generatePredictions(filters);
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Error generating predictions" });
+  }
+});
+
+module.exports = router;
