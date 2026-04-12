@@ -1,29 +1,102 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generatePredictions } from "@/lib/generatorLogic";
+import { supabase } from "@/lib/supabaseClient";
 
 export function useGenerator() {
-
   const [filters, setFilters] = useState({
     type: "Over 1.5",
     count: 3,
+    dates: [] as string[],     // ✅ array
+    leagues: [] as string[],   // ✅ array
     unlocked: false,
   });
 
   const [results, setResults] = useState<any[]>([]);
   const [totalOdds, setTotalOdds] = useState("0.00");
   const [loading, setLoading] = useState(false);
+  const [matches, setMatches] = useState<any[]>([]);
+  const [availableLeagues, setAvailableLeagues] = useState<any[]>([]); // {name, count}
 
-  const generate = async (lockedPicks: any[] = []) => {
+  /* FETCH MATCHES (✅ FIXED TO SUPABASE) */
+  useEffect(() => {
+    fetchMatches();
+  }, []);
+
+  async function fetchMatches() {
     try {
-      setLoading(true);
+      const { data, error } = await supabase
+        .from("matches")
+        .select("*")
+        .order("match_date", { ascending: true });
 
-      const data = await generatePredictions(filters);
+      if (error) {
+        console.error("Supabase error:", error);
+        return;
+      }
 
-      await new Promise(res => setTimeout(res, 1200));
+      const formatted = (data || []).map((m: any) => ({
+        id: m.id,
+        home: m.home_team,
+        away: m.away_team,
+        league: m.league,
+        market: m.market,
+        odds: Number(m.odds),
+        date: m.match_date
+          ? String(m.match_date).split("T")[0]
+          : "",
+      }));
 
-// remove duplicates from generated picks
+      setMatches(formatted);
+    } catch (err) {
+      console.error("Failed to fetch matches", err);
+    }
+  }
+
+  /* 🔥 UPDATE AVAILABLE LEAGUES WITH COUNT (UNCHANGED) */
+  useEffect(() => {
+    if (!filters.dates || filters.dates.length === 0) {
+      setAvailableLeagues([]);
+      return;
+    }
+
+    const leagueMap: Record<string, number> = {};
+
+    matches.forEach((m) => {
+      const matchDate = m.date?.includes("T")
+        ? m.date.split("T")[0]
+        : m.date;
+
+      if (filters.dates.includes(matchDate)) {
+        if (!leagueMap[m.league]) {
+          leagueMap[m.league] = 0;
+        }
+        leagueMap[m.league]++;
+      }
+    });
+
+    const leaguesWithCount = Object.entries(leagueMap).map(
+      ([name, count]) => ({ name, count })
+    );
+
+    setAvailableLeagues(leaguesWithCount);
+  }, [filters.dates, matches]);
+
+  /* GENERATE PREDICTIONS (UNCHANGED) */
+  const generate = async (lockedPicks: any[] = []) => {
+    if (!matches || matches.length === 0) {
+      console.warn("No matches loaded yet");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = generatePredictions(filters, matches);
+
+      await new Promise((res) => setTimeout(res, 1200));
+
       const filtered = data.picks.filter(
         (r: any) =>
           !lockedPicks.some(
@@ -31,19 +104,16 @@ export function useGenerator() {
           )
       );
 
-// remove duplicates from generated picks
       const combined = [...lockedPicks, ...filtered].slice(0, filters.count);
 
       setResults(combined);
 
-// recalculate odds
       const odds = combined.reduce(
         (acc, pick) => acc * Number(pick.odds),
         1
       );
 
       setTotalOdds(odds.toFixed(2));
-
     } catch (err) {
       console.error("Generator error:", err);
     } finally {
@@ -51,5 +121,14 @@ export function useGenerator() {
     }
   };
 
-  return { filters, setFilters, results, totalOdds, generate, loading };
+  return {
+    filters,
+    setFilters,
+    results,
+    totalOdds,
+    generate,
+    loading,
+    matches,
+    availableLeagues, // ✅ IMPORTANT
+  };
 }
