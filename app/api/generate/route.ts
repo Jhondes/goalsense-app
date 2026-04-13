@@ -6,7 +6,10 @@ export async function POST(req: Request) {
 
     const result = generatePredictions(body);
 
-    return Response.json({ success: true, result });
+    return Response.json({
+      success: true,
+      data: result,
+    });
   } catch (error) {
     return Response.json(
       { success: false, error: "Server error" },
