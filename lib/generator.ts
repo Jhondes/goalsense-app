@@ -1,5 +1,7 @@
 export default function generatePredictions(data: any) {
   return {
-    message: "working",
+    success: true,
+    message: "Generator working",
     input: data,
   };
+}
