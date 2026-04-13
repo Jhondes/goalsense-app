@@ -3,4 +3,3 @@ export default function generatePredictions(data: any) {
     message: "working",
     input: data,
   };
-}
