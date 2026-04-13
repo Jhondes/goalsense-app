@@ -14,7 +14,7 @@ export default function MatchCard({ match, locked, toggleLock }: any) {
 
         {/* Prediction + Locked Indicator */}
         <p className="text-xs text-gray-400 flex items-center gap-2">
-          {match.prediction}
+          {match.market}
 
           {/* LOCKED INDICATOR */}
          {locked && (

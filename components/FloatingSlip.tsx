@@ -5,7 +5,7 @@ export default function FloatingSlip({ results, totalOdds }: any) {
   if (!results.length) return null;
 
   const slipText = results
-    .map((r: any) => `${r.home} vs ${r.away} — ${r.prediction} (${r.odds})`)
+    .map((r: any) => `${r.home} vs ${r.away} — ${r.market} (${r.odds})`)
     .join("\n");
 
   const text = `GoalSense Bet Slip
