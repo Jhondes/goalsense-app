@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
+import generatePredictions from "@/lib/generator";
 
-const generatePredictions = require("../utils/generator");
-
-router.post("/", (req, res) => {
+export async function POST(req: Request) {
   try {
-    const filters = req.body;
+    const body = await req.json();
 
-    const data = generatePredictions(filters);
+    const result = generatePredictions(body);
 
-    res.json(data);
+    return Response.json({
+      success: true,
+      data: result,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Error generating predictions" });
+    return Response.json(
+      { success: false, error: "Server error" },
+      { status: 500 }
+    );
   }
-});
-
-module.exports = router;
+}
