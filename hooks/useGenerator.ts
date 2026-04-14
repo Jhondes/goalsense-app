@@ -61,7 +61,10 @@ export function useGenerator() {
       return;
     }
 
-    const leagueMap: Record<string, number> = {};
+    const leagueMap: Record<
+  string,
+  { name: string; count: number }
+> = {};
 
     matches.forEach((m) => {
   const matchDate = m.date;
