@@ -64,19 +64,23 @@ export function useGenerator() {
     const leagueMap: Record<string, number> = {};
 
     matches.forEach((m) => {
-      const matchDate = m.date;
+  const matchDate = m.date;
 
-      if (filters.dates.includes(matchDate)) {
-        if (!leagueMap[m.league]) {
-          leagueMap[m.league] = 0;
-        }
-        leagueMap[m.league]++;
-      }
-    });
+  if (filters.dates.includes(matchDate)) {
+    const cleanLeague = m.league?.trim().toLowerCase();
 
-    const leaguesWithCount = Object.entries(leagueMap).map(
-      ([name, count]) => ({ name, count })
-    );
+    if (!leagueMap[cleanLeague]) {
+      leagueMap[cleanLeague] = {
+        name: m.league.trim(), // keep original for display
+        count: 0,
+      };
+    }
+
+    leagueMap[cleanLeague].count++;
+  }
+});
+
+    const leaguesWithCount = Object.values(leagueMap);
 
     setAvailableLeagues(leaguesWithCount);
   }, [filters.dates, matches]);
