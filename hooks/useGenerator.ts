@@ -64,9 +64,7 @@ export function useGenerator() {
     const leagueMap: Record<string, number> = {};
 
     matches.forEach((m) => {
-      const matchDate = m.date?.includes("T")
-        ? m.date.split("T")[0]
-        : m.date;
+      const matchDate = m.date;
 
       if (filters.dates.includes(matchDate)) {
         if (!leagueMap[m.league]) {
@@ -85,41 +83,58 @@ export function useGenerator() {
 
   /* GENERATE PREDICTIONS (UNCHANGED) */
   const generate = async (lockedPicks: any[] = []) => {
-    if (!matches || matches.length === 0) {
-      console.warn("No matches loaded yet");
-      return;
+  if (!matches || matches.length === 0) {
+    console.warn("No matches loaded yet");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    let filteredMatches = [...matches];
+
+    // ✅ FILTER BY DATE
+    if (filters.dates && filters.dates.length > 0) {
+      filteredMatches = filteredMatches.filter((m) =>
+        filters.dates.includes(m.date)
+      );
     }
 
-    setLoading(true);
-
-    try {
-      const data = generatePredictions(filters, matches);
-
-      await new Promise((res) => setTimeout(res, 1200));
-
-      const filtered = data.picks.filter(
-        (r: any) =>
-          !lockedPicks.some(
-            (p) => p.home === r.home && p.away === r.away
-          )
+    // ✅ FILTER BY LEAGUE
+    if (filters.leagues && filters.leagues.length > 0) {
+      filteredMatches = filteredMatches.filter((m) =>
+        filters.leagues.includes(m.league)
       );
-
-      const combined = [...lockedPicks, ...filtered].slice(0, filters.count);
-
-      setResults(combined);
-
-      const odds = combined.reduce(
-        (acc, pick) => acc * Number(pick.odds),
-        1
-      );
-
-      setTotalOdds(odds.toFixed(2));
-    } catch (err) {
-      console.error("Generator error:", err);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    // ✅ NOW PASS FILTERED MATCHES
+    const data = generatePredictions(filters, filteredMatches);
+
+    await new Promise((res) => setTimeout(res, 1200));
+
+    const filtered = data.picks.filter(
+      (r: any) =>
+        !lockedPicks.some(
+          (p) => p.home === r.home && p.away === r.away
+        )
+    );
+
+    const combined = [...lockedPicks, ...filtered].slice(0, filters.count);
+
+    setResults(combined);
+
+    const odds = combined.reduce(
+      (acc, pick) => acc * Number(pick.odds),
+      1
+    );
+
+    setTotalOdds(odds.toFixed(2));
+  } catch (err) {
+    console.error("Generator error:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return {
     filters,
