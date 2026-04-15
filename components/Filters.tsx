@@ -44,6 +44,19 @@ export default function Filters({ filters, setFilters, availableLeagues }: any) 
     }
   }, [filters.leagues]);
 
+  useEffect(() => {
+  if (availableLeagues?.length > 0 && selectedLeagues.length === 0) {
+    const allLeagues = availableLeagues.map((l: any) => l.name);
+
+    setSelectedLeagues(allLeagues);
+
+    setFilters({
+      ...filters,
+      leagues: allLeagues,
+    });
+  }
+}, [availableLeagues]);
+
   /* SYNC DATES */
   useEffect(() => {
     if (filters.dates) {
@@ -149,44 +162,52 @@ export default function Filters({ filters, setFilters, availableLeagues }: any) 
       {/* LEAGUES */}
       {selectedDates.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-gray-300 mb-2">
-            Select Leagues
-          </h3>
+          <h3 className="text-sm font-semibold text-gray-300 mb-1">
+  Available Leagues
+</h3>
+
+<p className="text-xs text-gray-500 mb-3">
+  Deselect leagues you don’t want the generator to pick from
+</p>
 
           <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
             {availableLeagues?.length > 0 ? (
-              availableLeagues.map((league: any) => {
-                const active = selectedLeagues.includes(league.name);
+             availableLeagues.map((league: any) => {
+                const checked = selectedLeagues.includes(league.name);
 
                 return (
-                  <button
+                  <label
                     key={league.name}
-                    onClick={() => {
-                      let updated;
-
-                      if (active) {
-                        updated = selectedLeagues.filter(
-                          (l) => l !== league.name
-                        );
-                      } else {
-                        updated = [...selectedLeagues, league.name];
-                      }
-
-                      setSelectedLeagues(updated);
-
-                      setFilters({
-                        ...filters,
-                        leagues: updated,
-                      });
-                    }}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
-                      active
-                        ? "bg-green-500 text-black"
-                        : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                    }`}
+                    className="flex items-center gap-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 transition cursor-pointer"
                   >
-                    {league.name} ({league.count})
-                  </button>
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => {
+                        let updated;
+
+                        if (checked) {
+                          updated = selectedLeagues.filter(
+                            (l) => l !== league.name
+                          );
+                        } else {
+                          updated = [...selectedLeagues, league.name];
+                        }
+
+                        setSelectedLeagues(updated);
+
+                        setFilters({
+                          ...filters,
+                          leagues: updated,
+                        });
+                      }}
+                      className="accent-green-500 cursor-pointer"
+                    />
+
+                    <span className="text-xs font-semibold text-gray-300">
+                      {league.name} ({league.count})
+                    </span>
+                  </label>
                 );
               })
             ) : (
