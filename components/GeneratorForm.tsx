@@ -6,6 +6,7 @@ import ResultsTable from "./ResultsTable";
 import { FireIcon } from "@heroicons/react/24/solid";
 import { useState, useRef, useEffect } from "react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
+import { useUser } from "@/context/UserContext";
 
 
 export default function GeneratorForm() {
@@ -22,7 +23,8 @@ const {
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const FREE_LOCK_LIMIT = 2;
-const isPremium = false; // TODO: replace with backend user subscription
+const { profile, loading: userLoading } = useUser();
+const isPremium = profile?.is_premium;
 
 const getRiskLevel = (count: number) => {
   if (count <= 3) return { label: "Safe", color: "text-green-400" };
@@ -82,10 +84,12 @@ const toggleLock = (match: any) => {
 
   // 🔒 FREE LIMIT CHECK (ADD THIS)
   if (!isPremium && lockedPicks.length >= FREE_LOCK_LIMIT) {
-    setPremiumReason("locks");
-    setShowPremiumModal(true);
-    return;
-  }
+  if (userLoading) return;
+
+  setPremiumReason("locks");
+  setShowPremiumModal(true);
+  return;
+}
 
   // EXISTING LIMIT (slider safety)
   if (lockedPicks.length >= filters.count) {
@@ -137,6 +141,7 @@ className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6
   filters={filters}
   setFilters={setFilters}
   availableLeagues={availableLeagues}
+  isPremium={isPremium}
 />
 
 {/* Picks slider */}
@@ -193,7 +198,7 @@ className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transit
 disabled={loading}
 onClick={() => {
 
-  if (usingAdvancedOptions) {
+  if (!isPremium && usingAdvancedOptions) {
   setPremiumReason("advanced");
   setShowPremiumModal(true);
   return;
@@ -402,7 +407,7 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
     <button
       disabled={loading}
       onClick={() => {
-        if (usingAdvancedOptions) {
+        if (!isPremium && usingAdvancedOptions) {
           setPremiumReason("advanced");
           setShowPremiumModal(true);
           return;

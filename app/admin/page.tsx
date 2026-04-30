@@ -32,6 +32,13 @@ export default function AdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>({});
 
+
+const [userEmail, setUserEmail] = useState("");
+const [userData, setUserData] = useState<any>(null);
+const [userLoading, setUserLoading] = useState(false);
+
+
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -200,6 +207,58 @@ async function handleUpdate(id: string) {
     borderRadius: "5px",
   };
 
+
+
+  // 🔍 Find user
+async function findUser() {
+  setUserLoading(true);
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", userEmail)
+    .single();
+
+  if (error) {
+    alert("User not found ❌");
+    setUserData(null);
+  } else {
+    setUserData(data);
+  }
+
+  setUserLoading(false);
+}
+
+// 💎 Grant premium
+async function grantPremium() {
+  if (!userData) return;
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ is_premium: true })
+    .eq("id", userData.id)
+    .select();
+
+  console.log("UPDATED ROW:", data);
+  console.log("ERROR:", error);
+
+  if (error) {
+    alert("Upgrade failed ❌");
+    return;
+  }
+
+  // 🚨 VERY IMPORTANT CHECK
+  if (!data || data.length === 0) {
+    alert("No rows updated ❌ (RLS issue)");
+    return;
+  }
+
+  alert("User upgraded 🚀");
+  setUserData(data[0]); // use real DB response
+}
+
+
+
   return (
     <div
       style={{
@@ -273,6 +332,72 @@ async function handleUpdate(id: string) {
           Test DB
         </button>
       </div>
+
+
+      {/* USER UPGRADE SECTION */}
+<div
+  style={{
+    marginTop: "20px",
+    padding: "20px",
+    backgroundColor: "#2a2a2a",
+    borderRadius: "10px",
+  }}
+>
+  <h2 style={{ marginBottom: "10px" }}>User Upgrade</h2>
+
+  <input
+    type="email"
+    placeholder="Enter user email"
+    value={userEmail}
+    onChange={(e) => setUserEmail(e.target.value)}
+    style={inputStyle}
+  />
+
+  <button
+    onClick={findUser}
+    style={{
+      width: "100%",
+      marginTop: "10px",
+      padding: "10px",
+      backgroundColor: "#0fbcf9",
+      color: "white",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+    }}
+  >
+    {userLoading ? "Searching..." : "Find User"}
+  </button>
+
+  {userData && (
+    <div style={{ marginTop: "15px" }}>
+      <p><strong>Email:</strong> {userData.email}</p>
+      <p>
+        <strong>Status:</strong>{" "}
+        {userData.is_premium ? "Premium ✅" : "Free ❌"}
+      </p>
+
+      {!userData.is_premium && (
+        <button
+          onClick={grantPremium}
+          style={{
+            marginTop: "10px",
+            padding: "10px",
+            backgroundColor: "#4caf50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Grant Premium
+        </button>
+      )}
+    </div>
+  )}
+</div>
+
+
 
       {/* Filters */}
       <div style={{ width: "100%", maxWidth: "500px", marginTop: "20px" }}>

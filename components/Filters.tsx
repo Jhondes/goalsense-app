@@ -3,14 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
-export default function Filters({ filters, setFilters, availableLeagues }: any) {
+export default function Filters({
+  filters,
+  setFilters,
+  availableLeagues,
+  isPremium
+}: any) {
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedLeagues, setSelectedLeagues] = useState<string[]>([]);
   const [shake, setShake] = useState(false);
-
-  const isPremium = filters.unlocked; // ✅ CONNECTED TO YOUR SYSTEM
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,9 +80,6 @@ export default function Filters({ filters, setFilters, availableLeagues }: any) 
   const markets = [
     { name: "Over 1.5", premium: false },
     { name: "Over 2.5", premium: true },
-    { name: "Team 0.5", premium: true },
-    { name: "Team 1.5", premium: true },
-    { name: "Team 2.5", premium: true },
     { name: "BTTS", premium: true },
   ];
 

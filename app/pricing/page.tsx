@@ -1,8 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import UpgradeModal from "@/components/UpgradeModal";
+
 import { Check } from "lucide-react";
 
+
+
 export default function PricingPage() {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gray-950 text-white px-4 py-10">
       <div className="max-w-5xl mx-auto space-y-10">
@@ -94,11 +100,13 @@ export default function PricingPage() {
   </ul>
 
   <button
-    onClick={() => alert("Payment integration coming soon")}
-    className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
-  >
-    🚀 Upgrade & Unlock All Features
-  </button>
+  onClick={() => setOpen(true)}
+  className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
+>
+  🚀 Upgrade & Unlock All Features
+</button>
+
+  <UpgradeModal open={open} onClose={() => setOpen(false)} />
 
 </div>
 

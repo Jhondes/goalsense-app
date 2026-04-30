@@ -1,12 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { UserProvider } from "@/context/UserContext";
 
 export const metadata: Metadata = {
   title: "Football Generator | Smart Market Predictions",
   description:
     "Generate intelligent football markets using advanced filtering and AI-powered logic. Built for serious football analysts.",
 
-icons: {
+  icons: {
     icon: "/icon.png",
   },
 
@@ -20,9 +21,8 @@ icons: {
 
   openGraph: {
     title: "Football Generator",
-    description:
-      "Smart AI-powered football market generator.",
-    url: "https://yourdomain.vercel.app", // change after deploy
+    description: "Smart AI-powered football market generator.",
+    url: "https://yourdomain.vercel.app",
     siteName: "Football Generator",
     type: "website",
   },
@@ -43,7 +43,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white antialiased">
-        {children}
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );
