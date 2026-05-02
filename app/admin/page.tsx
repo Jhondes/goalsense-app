@@ -23,6 +23,8 @@ export default function AdminPage() {
     date: "",
   });
 
+  const [authorized, setAuthorized] = useState(false);
+  const [password, setPassword] = useState("");
   const [matches, setMatches] = useState<Match[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [availableLeagues, setAvailableLeagues] = useState<string[]>([]);
@@ -129,7 +131,7 @@ const [userLoading, setUserLoading] = useState(false);
 
 
 async function handleUpdate(id: string) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("matches")
     .update({
       home_team: editForm.home,
@@ -139,26 +141,31 @@ async function handleUpdate(id: string) {
       odds: Number(editForm.odds),
       match_date: editForm.date,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select();
 
-  if (error) {
+  // 👇 ADD IT RIGHT HERE
+  console.log("Updated rows:", data);
+
+  if (error || !data || data.length === 0) {
     console.error("Update error:", error);
     alert("Update failed ❌");
     return;
   }
 
-  // update UI instantly
-  setMatches((prev) =>
-    prev.map((m) =>
-      m.id === id ? { ...m, ...editForm } : m
-    )
-  );
+  await fetchMatches();
 
   setEditingId(null);
   setEditForm({});
   alert("Updated ✅");
 }
 
+useEffect(() => {
+  const isAuth = localStorage.getItem("admin_auth");
+  if (isAuth === "true") {
+    setAuthorized(true);
+  }
+}, []);
 
   useEffect(() => {
     console.log("ALL MATCHES:", matches);
@@ -257,7 +264,64 @@ async function grantPremium() {
   setUserData(data[0]); // use real DB response
 }
 
+const handleLogin = () => {
+  if (password === "Idk@126") {
+    localStorage.setItem("admin_auth", "true"); // 👈 save
+    setAuthorized(true);
+  } else {
+    alert("Wrong password ❌");
+  }
+};
 
+if (!authorized) {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#121212",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <h2 style={{ marginBottom: "20px" }}>Admin Access</h2>
+
+      <input
+        type="password"
+        placeholder="Enter password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={{
+          padding: "12px",
+          width: "250px",
+          backgroundColor: "#1e1e1e",
+          color: "white",
+          border: "1px solid #444",
+          borderRadius: "6px",
+          outline: "none",
+        }}
+      />
+
+      <button
+        onClick={handleLogin}
+        style={{
+          marginTop: "12px",
+          padding: "10px 20px",
+          backgroundColor: "#0fbcf9",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+          cursor: "pointer",
+          fontWeight: "bold",
+        }}
+      >
+        Enter
+      </button>
+    </div>
+  );
+}
 
   return (
     <div
