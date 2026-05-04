@@ -242,7 +242,12 @@ async function grantPremium() {
 
   const { data, error } = await supabase
     .from("users")
-    .update({ is_premium: true })
+    .update({
+      is_premium: true,
+      premium_expires_at: new Date(
+        Date.now() + 30 * 24 * 60 * 60 * 1000 // 30 days
+      ).toISOString(),
+    })
     .eq("id", userData.id)
     .select();
 
