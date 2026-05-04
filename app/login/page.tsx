@@ -10,46 +10,63 @@ export default function LoginPage() {
   const [isSignup, setIsSignup] = useState(false);
 
   const handleAuth = async () => {
-  setLoading(true);
+    setLoading(true);
 
-  if (isSignup) {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    if (isSignup) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (error) {
-      alert(error.message);
-      return;
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      // ⚠️ Email confirmation case
+      if (!data.session) {
+        alert("Account created ✅ Check your email to confirm.");
+        return;
+      }
+
+      // ✅ Redirect after signup
+      const redirect = localStorage.getItem("after_login_redirect");
+
+      if (redirect) {
+        localStorage.removeItem("after_login_redirect");
+        window.location.href = redirect;
+      } else {
+        window.location.href = "/";
+      }
+
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      setLoading(false);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      alert("Logged in ✅");
+
+      // ✅ Redirect after login
+      const redirect = localStorage.getItem("after_login_redirect");
+
+      if (redirect) {
+        localStorage.removeItem("after_login_redirect");
+        window.location.href = redirect;
+      } else {
+        window.location.href = "/";
+      }
     }
-
-    // ⚠️ IMPORTANT: check session
-    if (!data.session) {
-      alert("Account created ✅ Check your email to confirm.");
-      return;
-    }
-
-    // ✅ if auto-login works
-    window.location.href = "/";
-  } else {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    setLoading(false);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    alert("Logged in ✅");
-    window.location.href = "/";
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-4">

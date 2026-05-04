@@ -6,28 +6,19 @@ import { supabase } from "@/lib/supabaseClient";
 export default function UpgradeModal({ open, onClose }: any) {
   if (!open) return null;
 
-  const handlePaid = async () => {
-  const { data, error } = await supabase.auth.getSession();
-
+  const handleUpgrade = async () => {
+  const { data } = await supabase.auth.getSession();
   const user = data?.session?.user;
 
-  
-
-  // 🚨 NOT LOGGED IN → STOP and redirect
+  // 🚨 Not logged in → save intent + redirect
   if (!user) {
+    localStorage.setItem("after_login_redirect", "/pricing");
     window.location.href = "/login";
     return;
   }
 
-  // ✅ LOGGED IN → proceed to WhatsApp
-  const message = `I have paid for GoalSense Premium.
-Email: ${user.email}
-UserID: ${user.id}`;
-
-  window.open(
-    `https://wa.me/234XXXXXXXXXX?text=${encodeURIComponent(message)}`,
-    "_blank"
-  );
+  // ✅ Logged in → send to Paystack WITH email
+  window.location.href = `https://paystack.shop/pay/goalsense-premium?email=${user.email}`;
 };
 
   return (
@@ -44,23 +35,28 @@ UserID: ${user.id}`;
           </ul>
 
           <div className="mt-4">
-            <p className="font-semibold">To upgrade:</p>
-            <p>Bank: XXXX</p>
-            <p>Account Name: XXXX</p>
-            <p>Amount: ₦XXXX</p>
-          </div>
+  <p className="font-semibold">To upgrade:</p>
 
-          <p className="mt-3">
-            After payment, click below and send proof via WhatsApp.
-          </p>
+  <p className="text-green-400 font-semibold">
+    Secure payment powered by Paystack
+  </p>
+
+  <p className="text-gray-300 mt-2">
+    Click the button below to complete payment instantly with card or bank transfer.
+  </p>
+</div>
+
+<p className="mt-3 text-blue-400">
+  After payment, your account will be upgraded automatically.
+</p>
         </div>
 
         <div className="mt-6 flex gap-3">
           <button
-            onClick={handlePaid}
+            onClick={handleUpgrade}
             className="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg font-semibold"
           >
-            I Have Paid
+            Pay Now
           </button>
 
           <button
