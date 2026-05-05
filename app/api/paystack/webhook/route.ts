@@ -6,13 +6,14 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-  // ✅ create client INSIDE function (fix)
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const body = await req.text();
+  // ✅ FIX: raw body handling
+  const rawBody = await req.arrayBuffer();
+  const body = Buffer.from(rawBody).toString("utf8");
 
   const signature = req.headers.get("x-paystack-signature");
 
@@ -21,9 +22,13 @@ export async function POST(req: NextRequest) {
     .update(body)
     .digest("hex");
 
-  //if (hash !== signature) {
-  //  return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-  //}
+  // DEBUG (temporary)
+  console.log("signature:", signature);
+  console.log("hash:", hash);
+
+  if (hash !== signature) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+  }
 
   const event = JSON.parse(body);
 
@@ -34,17 +39,13 @@ export async function POST(req: NextRequest) {
       Date.now() + 30 * 24 * 60 * 60 * 1000
     ).toISOString();
 
-    const { error } = await supabase
+    await supabase
       .from("users")
       .update({
         is_premium: true,
         premium_expires_at: expiry,
       })
       .eq("email", email);
-
-    if (error) {
-      console.error("DB update error:", error);
-    }
   }
 
   return NextResponse.json({ received: true });
