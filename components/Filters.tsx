@@ -173,7 +173,7 @@ export default function Filters({
           <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
             {availableLeagues?.length > 0 ? (
              availableLeagues.map((league: any) => {
-                const checked = selectedLeagues.includes(league.name);
+  const checked = selectedLeagues.includes(league.name);
 
                 return (
                   <label
@@ -187,12 +187,10 @@ export default function Filters({
                         let updated;
 
                         if (checked) {
-                          updated = selectedLeagues.filter(
-                            (l) => l !== league.name
-                          );
-                        } else {
-                          updated = [...selectedLeagues, league.name];
-                        }
+  updated = selectedLeagues.filter((l) => l !== league.name);
+} else {
+  updated = [...selectedLeagues, league.name];
+}
 
                         setSelectedLeagues(updated);
 
@@ -205,7 +203,7 @@ export default function Filters({
                     />
 
                     <span className="text-xs font-semibold text-gray-300">
-                      {league.name} ({league.count})
+                      {league.name} ({league.count}) 
                     </span>
                   </label>
                 );
