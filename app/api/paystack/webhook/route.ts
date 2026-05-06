@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     ).toISOString();
 
     await supabase
-      .from("users")
+      .from("profiles")
       .update({
         is_premium: true,
         premium_expires_at: expiry,
