@@ -241,7 +241,7 @@ async function grantPremium() {
   if (!userData) return;
 
   const { data, error } = await supabase
-    .from("users")
+    .from("profiles")
     .update({
       is_premium: true,
       premium_expires_at: new Date(
