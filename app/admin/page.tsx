@@ -3,12 +3,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import React, { useState, useEffect } from "react";
 
-import { createClient } from "@supabase/supabase-js";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
 
 type Match = {
   id: string;
@@ -228,7 +223,7 @@ async function findUser() {
   setUserLoading(true);
 
   const { data, error } = await supabase
-    .from("users")
+    .from("profiles")
     .select("*")
     .eq("email", userEmail)
     .single();
@@ -247,33 +242,31 @@ async function findUser() {
 async function grantPremium() {
   if (!userData) return;
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .update({
-      is_premium: true,
-      premium_expires_at: new Date(
-        Date.now() + 30 * 24 * 60 * 60 * 1000 // 30 days
-      ).toISOString(),
-    })
-    .eq("id", userData.id)
-    .select();
+  const res = await fetch("/api/admin/grant-premium", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: userData.id,
+    }),
+  });
 
-  console.log("UPDATED ROW:", data);
-  console.log("ERROR:", error);
+  const result = await res.json();
 
-  if (error) {
+  console.log(result);
+
+  if (!res.ok) {
     alert("Upgrade failed ❌");
     return;
   }
 
-  // 🚨 VERY IMPORTANT CHECK
-  if (!data || data.length === 0) {
-    alert("No rows updated ❌ (RLS issue)");
-    return;
-  }
-
   alert("User upgraded 🚀");
-  setUserData(data[0]); // use real DB response
+
+  setUserData({
+    ...userData,
+    is_premium: true,
+  });
 }
 
 const handleLogin = () => {
