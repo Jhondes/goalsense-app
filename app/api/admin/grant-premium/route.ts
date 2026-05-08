@@ -1,22 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error("Missing Supabase environment variables");
-}
-
-const supabaseAdmin = createClient(
-  supabaseUrl,
-  serviceRoleKey
-);
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { userId } = body;
+
+    const userId = body.userId;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      return NextResponse.json(
+        { error: "Missing environment variables" },
+        { status: 500 }
+      );
+    }
+
+    const supabaseAdmin = createClient(
+      supabaseUrl,
+      serviceRoleKey
+    );
 
     const expiry = new Date(
       Date.now() + 30 * 24 * 60 * 60 * 1000
@@ -30,6 +36,9 @@ export async function POST(req: NextRequest) {
       })
       .eq("id", userId)
       .select();
+
+    console.log("UPDATED:", data);
+    console.log("ERROR:", error);
 
     if (error) {
       return NextResponse.json(
