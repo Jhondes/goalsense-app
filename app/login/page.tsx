@@ -103,6 +103,18 @@ export default function LoginPage() {
             : "Login"}
         </button>
 
+        {/* ✅ ADD THIS HERE */}
+{!isSignup && (
+  <p style={{ marginTop: "10px", textAlign: "center" }}>
+    <a
+      href="/forgot-password"
+      style={{ color: "#0fbcf9" }}
+    >
+      Forgot Password?
+    </a>
+  </p>
+)}
+
         <p className="text-sm text-center text-gray-400">
           {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
           <span
