@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import BackgroundBalls from "@/components/BackgroundBalls";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -25,8 +26,13 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-4">
-      <div className="w-full max-w-md bg-gray-900 p-6 rounded-xl space-y-5">
+    <div className="relative min-h-screen flex items-center justify-center bg-gray-950 text-white px-4 overflow-hidden">
+      
+      {/* Animated Background */}
+      <BackgroundBalls />
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-md bg-gray-900/90 backdrop-blur-sm p-6 rounded-xl space-y-5 border border-gray-800">
 
         <h1 className="text-2xl font-bold text-center">
           Forgot Password
