@@ -264,9 +264,10 @@ async function grantPremium() {
     console.log("RESULT:", result);
 
     if (!res.ok) {
-      alert(result.error || "Upgrade failed ❌");
-      return;
-    }
+  console.log("BACKEND ERROR:", result);
+  alert(result.error || "Upgrade failed ❌");
+  return;
+}
 
     alert("User upgraded 🚀");
 
