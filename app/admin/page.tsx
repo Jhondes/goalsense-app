@@ -222,13 +222,18 @@ useEffect(() => {
 async function findUser() {
   setUserLoading(true);
 
+  const cleanEmail = userEmail.toLowerCase().trim();
+
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("email", userEmail)
-    .single();
+    .ilike("email", cleanEmail)
+    .maybeSingle();
 
-  if (error) {
+  console.log("USER:", data);
+  console.log("ERROR:", error);
+
+  if (error || !data) {
     alert("User not found ❌");
     setUserData(null);
   } else {
@@ -242,31 +247,37 @@ async function findUser() {
 async function grantPremium() {
   if (!userData) return;
 
-  const res = await fetch("/api/admin/grant-premium", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId: userData.id,
-    }),
-  });
+  try {
+    const res = await fetch("/api/admin/grant-premium", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userData.id,
+      }),
+    });
 
-  const result = await res.json();
+    const result = await res.json();
 
-  console.log(result);
+    console.log("STATUS:", res.status);
+    console.log("RESULT:", result);
 
-  if (!res.ok) {
-    alert("Upgrade failed ❌");
-    return;
+    if (!res.ok) {
+      alert(result.error || "Upgrade failed ❌");
+      return;
+    }
+
+    alert("User upgraded 🚀");
+
+    setUserData({
+      ...userData,
+      is_premium: true,
+    });
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong ❌");
   }
-
-  alert("User upgraded 🚀");
-
-  setUserData({
-    ...userData,
-    is_premium: true,
-  });
 }
 
 const handleLogin = () => {

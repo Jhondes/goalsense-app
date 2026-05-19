@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+    // 👇 ADD HERE
+    console.log("SUPABASE URL:", supabaseUrl);
+    console.log("SERVICE ROLE:", !!serviceRoleKey);
+    console.log("USER ID:", userId);
+
     if (!supabaseUrl || !serviceRoleKey) {
       return NextResponse.json(
         { error: "Missing environment variables" },
@@ -32,11 +37,12 @@ export async function POST(req: NextRequest) {
       .from("profiles")
       .update({
         is_premium: true,
-        premium_expires_at: expiry,
+        premium_expires: expiry,
       })
       .eq("id", userId)
       .select();
 
+    // 👇 ADD HERE
     console.log("UPDATED:", data);
     console.log("ERROR:", error);
 
