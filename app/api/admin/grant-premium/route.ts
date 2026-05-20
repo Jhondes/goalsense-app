@@ -21,12 +21,10 @@ console.log(
   !!process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-    // 👇 ADD HERE
-    console.log("SUPABASE URL:", supabaseUrl);
-    console.log("SERVICE ROLE:", !!serviceRoleKey);
-    console.log("USER ID:", userId);
+console.log("USER ID:", userId);
 
-    
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     const supabaseAdmin = createClient(
       supabaseUrl,
