@@ -9,20 +9,24 @@ export async function POST(req: NextRequest) {
 
     const userId = body.userId;
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    console.log("ALL ENV KEYS:", Object.keys(process.env));
+
+console.log(
+  "SUPABASE URL EXISTS:",
+  !!process.env.NEXT_PUBLIC_SUPABASE_URL
+);
+
+console.log(
+  "SERVICE ROLE EXISTS:",
+  !!process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
     // 👇 ADD HERE
     console.log("SUPABASE URL:", supabaseUrl);
     console.log("SERVICE ROLE:", !!serviceRoleKey);
     console.log("USER ID:", userId);
 
-    if (!supabaseUrl || !serviceRoleKey) {
-      return NextResponse.json(
-        { error: "Missing environment variables" },
-        { status: 500 }
-      );
-    }
+    
 
     const supabaseAdmin = createClient(
       supabaseUrl,
