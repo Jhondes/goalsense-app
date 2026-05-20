@@ -9,27 +9,25 @@ export async function POST(req: NextRequest) {
 
     const userId = body.userId;
 
-    console.log("ALL ENV KEYS:", Object.keys(process.env));
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-console.log(
-  "SUPABASE URL EXISTS:",
-  !!process.env.NEXT_PUBLIC_SUPABASE_URL
-);
-
-console.log(
-  "SERVICE ROLE EXISTS:",
-  !!process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-console.log("USER ID:", userId);
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // DEBUG
+    if (!supabaseUrl || !serviceRoleKey) {
+      return NextResponse.json(
+        {
+          error: "Missing env variables",
+          supabaseUrl: !!supabaseUrl,
+          serviceRoleKey: !!serviceRoleKey,
+        },
+        { status: 500 }
+      );
+    }
 
     const supabaseAdmin = createClient(
-  supabaseUrl!,
-  serviceRoleKey!
-);
+      supabaseUrl,
+      serviceRoleKey
+    );
 
     const expiry = new Date(
       Date.now() + 30 * 24 * 60 * 60 * 1000
@@ -44,13 +42,12 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
       .eq("id", userId)
       .select();
 
-    // 👇 ADD HERE
-    console.log("UPDATED:", data);
-    console.log("ERROR:", error);
-
     if (error) {
       return NextResponse.json(
-        { error: error.message },
+        {
+          error: error.message,
+          details: error,
+        },
         { status: 500 }
       );
     }
@@ -59,11 +56,12 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
       success: true,
       data,
     });
-  } catch (err) {
-    console.error(err);
 
+  } catch (err: any) {
     return NextResponse.json(
-      { error: "Server error" },
+      {
+        error: err?.message || "Server error",
+      },
       { status: 500 }
     );
   }
