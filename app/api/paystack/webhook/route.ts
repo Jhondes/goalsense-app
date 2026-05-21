@@ -30,21 +30,24 @@ export async function POST(req: NextRequest) {
   console.log("PAYSTACK EVENT:", event.event);
 
   if (event.event === "charge.success") {
-  const email = event.data.customer.email;
+  const email = event.data.customer.email.toLowerCase().trim();
+
+  console.log("PAYSTACK EMAIL:", email);
 
   const expiry = new Date(
     Date.now() + 30 * 24 * 60 * 60 * 1000
   ).toISOString();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
     .update({
       is_premium: true,
       premium_expires: expiry,
     })
-    .eq("email", email);
+    .eq("email", email)
+    .select();
 
-  console.log("EMAIL:", email);
+  console.log("UPDATED DATA:", data);
   console.log("SUPABASE ERROR:", error);
 }
 
