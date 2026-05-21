@@ -1,18 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import { createClient } from "@supabase/supabase-js";
-
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(req: NextRequest) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const rawBody = await req.arrayBuffer();
-  const body = Buffer.from(rawBody).toString("utf8");
+  const body = await req.text(); // ✅ FIXED
 
   const signature = req.headers.get("x-paystack-signature");
 
@@ -21,14 +13,12 @@ export async function POST(req: NextRequest) {
     .update(body)
     .digest("hex");
 
-  console.log("signature:", signature);
-  console.log("hash:", hash);
+  console.log("SIGNATURE:", signature);
+  console.log("MATCH:", hash === signature);
 
   if (hash !== signature) {
-    return NextResponse.json(
-      { error: "Invalid signature" },
-      { status: 401 }
-    );
+    console.log("❌ INVALID SIGNATURE - STOPPED");
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
   const event = JSON.parse(body);
@@ -42,18 +32,16 @@ export async function POST(req: NextRequest) {
       Date.now() + 30 * 24 * 60 * 60 * 1000
     ).toISOString();
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("profiles")
       .update({
         is_premium: true,
         premium_expires_at: expiry,
       })
-      .eq("email", email)
-      .select();
+      .eq("email", email);
 
-    console.log("CUSTOMER EMAIL:", email);
-    console.log("UPDATED DATA:", data);
-    console.log("UPDATE ERROR:", error);
+    console.log("EMAIL:", email);
+    console.log("SUPABASE ERROR:", error);
   }
 
   return NextResponse.json({ received: true });
