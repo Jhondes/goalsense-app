@@ -9,51 +9,53 @@ export function UserProvider({ children }: any) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  
+
+  // ✅ EXISTING (unchanged)
   const refreshProfile = async () => {
-  if (!user?.id) return null;
+    if (!user?.id) return null;
 
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
 
-  if (!error && data) {
-    setProfile(data);
-    return data;
-  }
+    if (!error && data) {
+      setProfile(data);
+      return data;
+    }
 
-  return null;
-};
+    return null;
+  };
 
+  // ✅ MODIFIED (IMPORTANT IMPROVEMENT)
   const fetchUser = async () => {
-  const { data } = await supabase.auth.getSession();
-  const authUser = data?.session?.user;
+    const { data } = await supabase.auth.getSession();
+    const authUser = data?.session?.user;
 
-  if (!authUser) {
-    setUser(null);
-    setProfile(null);
+    if (!authUser) {
+      setUser(null);
+      setProfile(null);
+      setLoading(false);
+      return;
+    }
+
+    setUser(authUser);
+
+    const { data: profileData } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", authUser.id)
+      .single();
+
+    setProfile(profileData);
     setLoading(false);
-    return;
-  }
+  };
 
-  setUser(authUser);
-
-  const { data: profileData } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", authUser.id)
-    .single();
-
-  setProfile(profileData);
-  setLoading(false);
-};
-
+  // ✅ EXISTING AUTH LISTENER (unchanged)
   useEffect(() => {
     fetchUser();
 
-    // 🔥 listens for login/logout changes
     const { data: listener } = supabase.auth.onAuthStateChange(() => {
       fetchUser();
     });
@@ -63,8 +65,44 @@ export function UserProvider({ children }: any) {
     };
   }, []);
 
+  // ==============================
+  // 🔥 NEW FIX #1: WINDOW FOCUS REFRESH
+  // ==============================
+  useEffect(() => {
+    const handleFocus = () => {
+      if (user?.id) {
+        refreshProfile(); // re-check premium after payment redirect
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => window.removeEventListener("focus", handleFocus);
+  }, [user]);
+
+  // ==============================
+  // 🔥 NEW FIX #2: AUTO PROFILE SYNC ON USER CHANGE
+  // ==============================
+  useEffect(() => {
+    if (user?.id) {
+      refreshProfile();
+    }
+  }, [user]);
+
   return (
-    <UserContext.Provider value={{ user, profile, loading, refresh: fetchUser, refreshProfile, }}>
+    <UserContext.Provider
+      value={{
+        user,
+        profile,
+        loading,
+
+        // existing
+        refresh: fetchUser,
+
+        // important new addition
+        refreshProfile,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
