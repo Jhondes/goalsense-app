@@ -9,21 +9,25 @@ export default function PaymentSuccess() {
 
   useEffect(() => {
 
-    const activatePremium = async () => {
+  const activatePremium = async () => {
 
-      // wait a little for webhook/database update
+    for (let i = 0; i < 5; i++) {
+
+      const updatedProfile = await refreshProfile();
+
+      if (updatedProfile?.is_premium) {
+        break;
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
 
-      // ✅ refresh latest user profile
-      await refreshProfile();
+    window.location.href = "/";
+  };
 
-      // redirect home
-      window.location.href = "/";
-    };
+  activatePremium();
 
-    activatePremium();
-
-  }, []);
+}, [refreshProfile]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-4">
@@ -44,13 +48,6 @@ export default function PaymentSuccess() {
         <p className="text-xs text-gray-500">
           You will be redirected shortly.
         </p>
-
-        <button
-          onClick={() => (window.location.href = "/")}
-          className="mt-4 w-full bg-green-600 hover:bg-green-500 py-2 rounded-lg font-semibold"
-        >
-          Go to Home
-        </button>
 
       </div>
     </div>

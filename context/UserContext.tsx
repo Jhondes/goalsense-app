@@ -9,8 +9,9 @@ export function UserProvider({ children }: any) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  
   const refreshProfile = async () => {
-  if (!user?.id) return;
+  if (!user?.id) return null;
 
   const { data, error } = await supabase
     .from("users")
@@ -20,7 +21,10 @@ export function UserProvider({ children }: any) {
 
   if (!error && data) {
     setProfile(data);
+    return data;
   }
+
+  return null;
 };
 
   const fetchUser = async () => {
