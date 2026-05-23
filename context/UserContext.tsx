@@ -9,29 +9,42 @@ export function UserProvider({ children }: any) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const refreshProfile = async () => {
+  if (!user?.id) return;
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (!error && data) {
+    setProfile(data);
+  }
+};
 
   const fetchUser = async () => {
-    const { data } = await supabase.auth.getSession();
-    const authUser = data?.session?.user;
+  const { data } = await supabase.auth.getSession();
+  const authUser = data?.session?.user;
 
-    if (!authUser) {
-      setUser(null);
-      setProfile(null);
-      setLoading(false);
-      return;
-    }
-
-    setUser(authUser);
-
-    const { data: profileData } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", authUser.id)
-      .single();
-
-    setProfile(profileData);
+  if (!authUser) {
+    setUser(null);
+    setProfile(null);
     setLoading(false);
-  };
+    return;
+  }
+
+  setUser(authUser);
+
+  const { data: profileData } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", authUser.id)
+    .single();
+
+  setProfile(profileData);
+  setLoading(false);
+};
 
   useEffect(() => {
     fetchUser();
@@ -47,7 +60,7 @@ export function UserProvider({ children }: any) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, profile, loading, refresh: fetchUser }}>
+    <UserContext.Provider value={{ user, profile, loading, refresh: fetchUser, refreshProfile, }}>
       {children}
     </UserContext.Provider>
   );

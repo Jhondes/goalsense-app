@@ -1,13 +1,28 @@
 "use client";
 
 import { useEffect } from "react";
+import { useUser } from "@/context/UserContext";
 
 export default function PaymentSuccess() {
+
+  const { refreshProfile } = useUser();
+
   useEffect(() => {
-    // Optional: small delay then go home
-    setTimeout(() => {
+
+    const activatePremium = async () => {
+
+      // wait a little for webhook/database update
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // ✅ refresh latest user profile
+      await refreshProfile();
+
+      // redirect home
       window.location.href = "/";
-    }, 4000);
+    };
+
+    activatePremium();
+
   }, []);
 
   return (
@@ -36,6 +51,7 @@ export default function PaymentSuccess() {
         >
           Go to Home
         </button>
+
       </div>
     </div>
   );

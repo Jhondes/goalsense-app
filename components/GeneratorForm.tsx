@@ -23,7 +23,7 @@ const {
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const FREE_LOCK_LIMIT = 2;
-const { profile, loading: userLoading } = useUser();
+const { profile, loading: userLoading, refreshProfile } = useUser();
 const isPremium = profile?.is_premium;
 
 const getRiskLevel = (count: number) => {
@@ -105,26 +105,29 @@ const usingAdvancedOptions =
 
 
 const [collapsed, setCollapsed] = useState(false);
-let scrollTimeout: any = null;
+const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
 useEffect(() => {
   const handleScroll = () => {
-    // Collapse immediately on scroll
     setCollapsed(true);
 
-    // Clear previous timeout
-    if (scrollTimeout) clearTimeout(scrollTimeout);
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
 
-    // Expand after user stops scrolling
-    scrollTimeout = setTimeout(() => {
+    scrollTimeout.current = setTimeout(() => {
       setCollapsed(false);
-    }, 150); // adjust delay if needed
+    }, 150);
   };
 
   window.addEventListener("scroll", handleScroll);
 
   return () => {
     window.removeEventListener("scroll", handleScroll);
+
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
   };
 }, []);
 
@@ -390,13 +393,7 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
 
 <div ref={resultsRef} className="scroll-mt-24"></div>
 
-{results.length > 0 && (
-  <>
-    
 
-    
-  </>
-)}
 
 
 
