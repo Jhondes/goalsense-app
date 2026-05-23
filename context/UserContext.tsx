@@ -15,7 +15,7 @@ export function UserProvider({ children }: any) {
     if (!user?.id) return null;
 
     const { data, error } = await supabase
-      .from("users")
+      .from("profiles")
       .select("*")
       .eq("id", user.id)
       .single();
@@ -43,7 +43,7 @@ export function UserProvider({ children }: any) {
     setUser(authUser);
 
     const { data: profileData } = await supabase
-      .from("users")
+      .from("profiles")
       .select("*")
       .eq("id", authUser.id)
       .single();
