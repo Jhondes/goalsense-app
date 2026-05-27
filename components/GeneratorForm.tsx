@@ -23,8 +23,14 @@ const {
 
 const [lockedPicks, setLockedPicks] = useState<any[]>([]);
 const FREE_LOCK_LIMIT = 2;
-const { profile, loading: userLoading, refreshProfile } = useUser();
-const isPremium = profile?.is_premium;
+const {
+  profile,
+  hasPremium,
+  loading: userLoading,
+  refreshProfile,
+} = useUser();
+
+const isPremium = hasPremium;
 
 const getRiskLevel = (count: number) => {
   if (count <= 3) return { label: "Safe", color: "text-green-400" };

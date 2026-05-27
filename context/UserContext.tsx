@@ -89,11 +89,17 @@ export function UserProvider({ children }: any) {
     }
   }, [user]);
 
+  const hasPremium =
+    profile?.is_premium &&
+    profile?.premium_expires &&
+    new Date(profile.premium_expires) > new Date();
+
   return (
     <UserContext.Provider
       value={{
         user,
         profile,
+        hasPremium,
         loading,
 
         // existing
