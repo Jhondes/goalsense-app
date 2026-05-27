@@ -2,51 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { useUser } from "@/context/UserContext";
 
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const { user, hasPremium, premiumExpiryText } = useUser();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     window.location.href = "/";
   };
 
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getSession();
-      const authUser = data?.session?.user;
-
-      if (!authUser) {
-        setUser(null);
-        setProfile(null);
-        return;
-      }
-
-      setUser(authUser);
-
-      const { data: profileData } = await supabase
-        .from("profiles") // ✅ FIXED
-        .select("*")
-        .eq("id", authUser.id)
-        .single();
-
-      setProfile(profileData);
-    };
-
-    getUser();
-
-    // ✅ listen for login/logout automatically
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
-      getUser();
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+  
 
   return (
     <nav className="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
@@ -73,13 +40,20 @@ export default function Navbar() {
     
     <div className="flex flex-col text-right">
       <span className="text-green-400 font-semibold">
-        {profile?.is_premium ? "Premium ✅" : "Logged in ✅"}
+        {hasPremium ? "Premium ✅" : "Logged in ✅"}
       </span>
 
       <span className="text-xs text-gray-400">
         {user.email}
       </span>
-    </div>
+    
+
+    {hasPremium && premiumExpiryText && (
+                <span className="text-[11px] text-yellow-400">
+                  👑 {premiumExpiryText}
+                </span>
+              )}
+            </div>
 
     <button
       onClick={handleLogout}

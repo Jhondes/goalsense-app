@@ -94,12 +94,34 @@ export function UserProvider({ children }: any) {
     profile?.premium_expires &&
     new Date(profile.premium_expires) > new Date();
 
+    const premiumExpiryText = profile?.premium_expires
+  ? (() => {
+      const now = new Date();
+      const expiry = new Date(profile.premium_expires);
+
+      const diff = expiry.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        return "Expired";
+      }
+
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+      if (days === 1) {
+        return "1 day left";
+      }
+
+      return `${days} days left`;
+    })()
+  : null;
+
   return (
     <UserContext.Provider
       value={{
         user,
         profile,
         hasPremium,
+        premiumExpiryText,
         loading,
 
         // existing
