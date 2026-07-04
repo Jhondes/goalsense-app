@@ -55,9 +55,7 @@ export default function Footer() {
                 How It Works
               </a>
             </li>
-            <li className="opacity-60 cursor-not-allowed">
-              Dashboard (Coming Soon)
-            </li>
+            
           </ul>
         </div>
 
