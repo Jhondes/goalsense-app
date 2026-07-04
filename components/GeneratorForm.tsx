@@ -228,7 +228,7 @@ Generating...
 ) : (
 <>
 <FireIcon className="w-5 h-5 inline-block mr-2" />
-Generate Predictions
+Generate
 </>
 )}
 
