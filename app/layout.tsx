@@ -3,13 +3,19 @@ import type { Metadata } from "next";
 import { UserProvider } from "@/context/UserContext";
 
 export const metadata: Metadata = {
-  title: "Football Generator | Smart Market Predictions",
+  title: "GoalSense | Smart Football Prediction Generator",
   description:
-    "Generate intelligent football markets using advanced filtering and AI-powered logic. Built for serious football analysts.",
+    "GoalSense is a smart football prediction generator that helps users create football prediction slips using advanced filtering and intelligent match selection.",
 
   icons: {
     icon: "/icon.png",
   },
+
+  metadataBase: new URL("https://goalsense.live"),
+
+  alternates: {
+  canonical: "/",
+},
 
   keywords: [
     "football predictions",
@@ -20,19 +26,21 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title: "Football Generator",
-    description: "Smart AI-powered football market generator.",
-    url: "https://yourdomain.vercel.app",
-    siteName: "Football Generator",
-    type: "website",
-  },
+  title: "GoalSense | Smart Football Prediction Generator",
+  description:
+    "Generate football prediction slips with intelligent filtering and advanced match selection.",
+  url: "https://goalsense.live",
+  siteName: "GoalSense",
+  type: "website",
+},
 
   twitter: {
-    card: "summary_large_image",
-    title: "Football Generator",
-    description:
-      "Generate intelligent football markets using AI-powered logic.",
-  },
+  card: "summary_large_image",
+  title: "GoalSense",
+  description:
+    "Generate football prediction slips with intelligent filtering.",
+  images: ["/og-image.png"],
+},
 };
 
 export default function RootLayout({
