@@ -235,13 +235,22 @@ export default function Filters({
       {/* MARKET */}
       <div ref={dropdownRef} className="relative">
         <div
-          onClick={() => setOpen(!open)}
-          className="w-full border border-gray-700 bg-gray-800 px-4 py-3 rounded cursor-pointer flex justify-between items-center"
-        >
+  onClick={() => {
+    if (!filters.mixedMarkets) {
+      setOpen(!open);
+    }
+  }}
+  className={`w-full border px-4 py-3 rounded flex justify-between items-center ${
+    filters.mixedMarkets
+      ? "bg-gray-700 cursor-not-allowed opacity-60"
+      : "bg-gray-800 cursor-pointer"
+  }`}
+>
           <span className="text-sm flex items-center gap-2">
-            {filters.type || "Choose Market"}
-            {filters.type && <span className="text-green-400 text-xs">✔</span>}
-          </span>
+  {filters.mixedMarkets
+    ? "🎲 Mixed Markets"
+    : filters.type || "Choose Market"}
+</span>
           <ChevronDown size={18} />
         </div>
 

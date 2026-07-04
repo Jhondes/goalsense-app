@@ -44,9 +44,6 @@ const risk = getRiskLevel(filters.count);
 
 /* NEW STATES */
 const [showAdvanced, setShowAdvanced] = useState(false);
-const [targetOdds, setTargetOdds] = useState<number | null>(null);
-const [mixedMarkets, setMixedMarkets] = useState(false);
-const [luckySlip, setLuckySlip] = useState(false);
 const [showPremiumModal, setShowPremiumModal] = useState(false);
 const resultsRef = useRef<HTMLDivElement | null>(null);
 const [justGenerated, setJustGenerated] = useState(false);
@@ -107,7 +104,9 @@ const toggleLock = (match: any) => {
 };
 
 const usingAdvancedOptions =
-  luckySlip || mixedMarkets || targetOdds !== null;
+  filters.luckySlip ||
+  filters.mixedMarkets ||
+  filters.targetOdds !== null;
 
 
 const [collapsed, setCollapsed] = useState(false);
@@ -275,25 +274,25 @@ Generate a completely random accumulator
 <button
 onClick={() => {
 
-  const newValue = !luckySlip;
+  const newValue = !filters.luckySlip;
 
-  setLuckySlip(newValue);
-
-  if (newValue) {
-    setMixedMarkets(false);
-    setTargetOdds(null);
-  }
+setFilters({
+  ...filters,
+  luckySlip: newValue,
+  mixedMarkets: newValue ? false : filters.mixedMarkets,
+  targetOdds: newValue ? null : filters.targetOdds,
+});
 
 }}
 className={`
 w-full p-2 rounded-md border transition
-${luckySlip
+${filters.luckySlip
   ? "border-yellow-500 text-yellow-400 bg-yellow-500/10"
   : "border-gray-600 text-gray-400 hover:border-yellow-400 hover:text-yellow-400"
 }
 `}
 >
-{luckySlip ? "Enabled" : "Enable Lucky Slip"}
+{filters.luckySlip ? "Enabled" : "Enable Lucky Slip"}
 
 </button>
 
@@ -312,23 +311,29 @@ Allow generator to combine multiple betting markets
 </p>
 
 <button
-disabled={luckySlip}
-onClick={() => setMixedMarkets(!mixedMarkets)}
-className={`
-w-full p-2 rounded-md border transition
-${luckySlip
-  ? "border-gray-700 text-gray-600 cursor-not-allowed"
-  : mixedMarkets
-  ? "border-purple-500 text-purple-400 bg-purple-500/10"
-  : "border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400"
-}
-`}
+  disabled={filters.luckySlip}
+  onClick={() =>
+    setFilters({
+      ...filters,
+      mixedMarkets: !filters.mixedMarkets,
+    })
+  }
+  className={`
+    w-full p-2 rounded-md border transition
+    ${
+      filters.luckySlip
+        ? "border-gray-700 text-gray-600 cursor-not-allowed"
+        : filters.mixedMarkets
+        ? "border-purple-500 text-purple-400 bg-purple-500/10"
+        : "border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400"
+    }
+  `}
 >
-{luckySlip
-  ? "Disabled (Lucky Slip active)"
-  : mixedMarkets
-  ? "Enabled"
-  : "Enable Mixed Markets"}
+  {filters.luckySlip
+    ? "Disabled (Lucky Slip active)"
+    : filters.mixedMarkets
+    ? "Enabled"
+    : "Enable Mixed Markets"}
 </button>
 
 </div>
@@ -347,33 +352,44 @@ Generate a slip targeting a specific total odds
 
 {/* STATUS TEXT (ADD HERE) */}
 
-<p className={`text-xs mb-2 ${targetOdds ? "text-green-400" : "text-gray-500"}`}>
-{targetOdds ? `Targeting ${targetOdds} odds` : "No target odds selected"}
+<p
+  className={`text-xs mb-2 ${
+    filters.targetOdds ? "text-green-400" : "text-gray-500"
+  }`}
+>
+  {filters.targetOdds
+    ? `Targeting ${filters.targetOdds} odds`
+    : "No target odds selected"}
 </p>
 
 <div className="flex gap-2">
 
-{[5,10,20].map((odd)=>(
-<button
-key={odd}
-disabled={luckySlip}
-onClick={() => {
-  const newValue = targetOdds === odd ? null : odd;
-  setTargetOdds(newValue);
-}}
-className={`
-px-3 py-1 rounded-md border transition cursor-pointer
-${
-  luckySlip
-    ? "border-gray-700 text-gray-600 cursor-not-allowed"
-    : targetOdds === odd
-    ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)] scale-105"
-    : "border-gray-600 text-gray-400 hover:border-gray-500 hover:text-white"
-}
-`}
->
-{odd}
-</button>
+{[5, 10, 20].map((odd) => (
+  <button
+    key={odd}
+    disabled={filters.luckySlip}
+    onClick={() => {
+      const newValue =
+        filters.targetOdds === odd ? null : odd;
+
+      setFilters({
+        ...filters,
+        targetOdds: newValue,
+      });
+    }}
+    className={`
+      px-3 py-1 rounded-md border transition cursor-pointer
+      ${
+        filters.luckySlip
+          ? "border-gray-700 text-gray-600 cursor-not-allowed"
+          : filters.targetOdds === odd
+          ? "border-green-500 text-green-400 bg-green-500/10 shadow-[0_0_10px_rgba(34,197,94,0.5)] scale-105"
+          : "border-gray-600 text-gray-400 hover:border-gray-500 hover:text-white"
+      }
+    `}
+  >
+    {odd}
+  </button>
 ))}
 
 </div>

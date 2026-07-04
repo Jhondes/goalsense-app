@@ -11,17 +11,17 @@ export function generatePredictions(filters: any, matches: any[]) {
 
   let filtered = [...matches];
 
-  // ✅ Filter by market (type)
- if (filters.type) {
+
+
+ // ✅ Filter by market (Normal Mode only)
+if (!filters.luckySlip && !filters.mixedMarkets && filters.type) {
   filtered = filtered.filter((m) => {
     if (!m.market) return false;
 
-    // ✅ SPECIAL HANDLING FOR 1X2
-    if (filters.type === "1X2") {
-      return m.market.toLowerCase() === "1x2";
-    }
-
-    return m.market.toLowerCase() === filters.type.toLowerCase();
+    return (
+      m.market.toLowerCase() ===
+      filters.type.toLowerCase()
+    );
   });
 }
 
@@ -33,17 +33,89 @@ export function generatePredictions(filters: any, matches: any[]) {
     };
   }
 
-  // ✅ Shuffle matches
-  const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+  // Fisher-Yates shuffle
+function shuffle(array: any[]) {
+  const arr = [...array];
 
-  // ✅ Pick required number
-  const picks = shuffled.slice(0, picksCount).map((match) => ({
-    id: match.id || crypto.randomUUID(),
-    home: match.home,
-    away: match.away,
-    market: match.market,
-    odds: match.odds,
-  }));
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
+}
+
+
+let selected: any[] = [];
+
+if (filters.targetOdds) {
+  let remaining = [...filtered];
+let runningTotal = 1;
+
+const maxPicks = Math.min(picksCount, filtered.length);
+
+// Find the lowest available odd
+const lowestOdd = Math.min(...remaining.map(m => Number(m.odds)));
+
+// Minimum achievable total with this many picks
+const minimumPossible = Math.pow(lowestOdd, maxPicks);
+
+if (minimumPossible > Number(filters.targetOdds)) {
+  return {
+    picks: [],
+    totalOdds: "0.00",
+  };
+}
+
+
+
+for (let i = 0; i < maxPicks; i++) {
+  if (remaining.length === 0) break;
+
+  const picksLeft = maxPicks - i;
+
+  // Ideal odds needed for each remaining pick
+  const idealOdd = Math.pow(
+    Number(filters.targetOdds) / runningTotal,
+    1 / picksLeft
+  );
+
+  // Sort by closeness to the ideal odds
+  remaining.sort(
+    (a, b) =>
+      Math.abs(Number(a.odds) - idealOdd) -
+      Math.abs(Number(b.odds) - idealOdd)
+  );
+
+  // Randomly choose from the 5 closest
+  const top = remaining.slice(0, Math.min(5, remaining.length));
+
+  const chosen =
+    top[Math.floor(Math.random() * top.length)];
+
+  if (!chosen) break;
+
+  selected.push(chosen);
+
+  runningTotal *= Number(chosen.odds);
+
+  // Remove the chosen match
+  remaining = remaining.filter((m) => m.id !== chosen.id);
+}
+} else {
+  selected = shuffle(filtered).slice(
+    0,
+    Math.min(picksCount, filtered.length)
+  );
+}
+
+const picks = selected.map((match) => ({
+  id: match.id || crypto.randomUUID(),
+  home: match.home,
+  away: match.away,
+  market: match.market,
+  odds: match.odds,
+}));
 
   // ✅ Calculate total odds
   const totalOdds = picks

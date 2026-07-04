@@ -10,6 +10,10 @@ export function useGenerator() {
     count: 3,
     dates: [] as string[],
     leagues: [] as string[],
+
+    targetOdds: null as number | null,
+    mixedMarkets: false,
+    luckySlip: false,
   });
 
   const [results, setResults] = useState<any[]>([]);
