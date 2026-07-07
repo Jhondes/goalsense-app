@@ -163,10 +163,47 @@ async function handleUpdate(id: string) {
 }
 
 useEffect(() => {
-  const isAuth = localStorage.getItem("admin_auth");
-  if (isAuth === "true") {
-    setAuthorized(true);
+  const stored = localStorage.getItem("admin-auth");
+
+  if (!stored) return;
+
+  try {
+    const session = JSON.parse(stored);
+
+    if (
+      session.authenticated &&
+      session.expires > Date.now()
+    ) {
+      setAuthorized(true);
+    } else {
+      localStorage.removeItem("admin-auth");
+    }
+  } catch {
+    localStorage.removeItem("admin-auth");
   }
+}, []);
+
+
+useEffect(() => {
+  const stored = localStorage.getItem("admin-auth");
+
+  if (!stored) return;
+
+  try {
+    const session = JSON.parse(stored);
+
+    const remaining = session.expires - Date.now();
+
+    if (remaining > 0) {
+      const timer = setTimeout(() => {
+        localStorage.removeItem("admin-auth");
+        setAuthorized(false);
+        alert("Your admin session has expired. Please log in again.");
+      }, remaining);
+
+      return () => clearTimeout(timer);
+    }
+  } catch {}
 }, []);
 
   useEffect(() => {
@@ -283,7 +320,13 @@ async function grantPremium() {
 
 const handleLogin = () => {
   if (password === "Idk@126") {
-    localStorage.setItem("admin_auth", "true"); // 👈 save
+    localStorage.setItem(
+  "admin-auth",
+  JSON.stringify({
+    authenticated: true,
+    expires: Date.now() + 60 * 60 * 1000, // 1 hour
+  })
+); // 👈 save
     setAuthorized(true);
   } else {
     alert("Wrong password ❌");
@@ -366,6 +409,16 @@ if (!authorized) {
         <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
           Admin Dashboard
         </h1>
+
+         <button
+        onClick={() => {
+          localStorage.removeItem("admin-auth");
+          setAuthorized(false);
+        }}
+        className="mb-6 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+      >
+        Logout
+      </button>
 
         {["home", "away", "league", "market", "odds", "date"].map((field) => (
           <input
