@@ -32,6 +32,14 @@ export const metadata: Metadata = {
   url: "https://goalsense.live",
   siteName: "GoalSense",
   type: "website",
+  images: [
+    {
+      url: "/og-image.jpg",
+      width: 1200,
+      height: 630,
+      alt: "GoalSense",
+    },
+  ],
 },
 
   twitter: {
