@@ -240,11 +240,11 @@ export default function Filters({
       setOpen(!open);
     }
   }}
-  className={`w-full border px-4 py-3 rounded flex justify-between items-center ${
-    filters.mixedMarkets
-      ? "bg-gray-700 cursor-not-allowed opacity-60"
-      : "bg-gray-800 cursor-pointer"
-  }`}
+  className={`w-full border border-gray-700 px-4 py-3 rounded flex justify-between items-center transition-all duration-200 select-none ${
+  filters.mixedMarkets
+    ? "bg-gray-700 cursor-not-allowed opacity-60"
+    : "bg-gray-800 cursor-pointer hover:border-green-500 active:border-green-500"
+}`}
 >
           <span className="text-sm flex items-center gap-2">
   {filters.mixedMarkets
