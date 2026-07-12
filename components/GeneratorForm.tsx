@@ -7,6 +7,7 @@ import { FireIcon } from "@heroicons/react/24/solid";
 import { useState, useRef, useEffect } from "react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@/context/UserContext";
+import FloatingSlip from "./FloatingSlip";
 
 
 export default function GeneratorForm() {
@@ -573,6 +574,12 @@ Close
     )}
   </button>
 )}
+
+<FloatingSlip
+  results={results}
+  totalOdds={totalOdds}
+/>
+
 </div>
 );
 }

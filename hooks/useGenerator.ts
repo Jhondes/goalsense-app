@@ -184,6 +184,8 @@ export function useGenerator() {
       );
 
       setTotalOdds(odds.toFixed(2));
+
+      
     } catch (err) {
       console.error("Generator error:", err);
     } finally {

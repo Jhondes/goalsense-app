@@ -1,6 +1,16 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { saveSlip } from "@/lib/saveSlip";
+
 export default function FloatingSlip({ results, totalOdds }: any) {
+
+  const [saved, setSaved] = useState(false);
+
+  // ✅ Reset whenever a new slip is generated
+  useEffect(() => {
+    setSaved(false);
+  }, [results]);
 
   if (!results.length) return null;
 
@@ -16,26 +26,37 @@ Total Odds: ${totalOdds}
 
 Generated with GoalSense.live`;
 
-  const copySlip = () => {
-    navigator.clipboard.writeText(text);
-    alert("Slip copied!");
-  };
+  const copySlip = async () => {
+  if (!saved) {
+    await saveSlip(results, totalOdds);
+    setSaved(true);
+  }
+
+  await navigator.clipboard.writeText(text);
+
+  alert("Slip copied!");
+};
 
   const shareSlip = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "GoalSense Bet Slip",
-          text: text,
-        });
-      } catch (err) {
-        console.log("Share cancelled");
-      }
-    } else {
-      navigator.clipboard.writeText(text);
-      alert("Sharing not supported. Slip copied instead.");
+  if (!saved) {
+    await saveSlip(results, totalOdds);
+    setSaved(true);
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "GoalSense Bet Slip",
+        text,
+      });
+    } catch {
+      console.log("Share cancelled");
     }
-  };
+  } else {
+    await navigator.clipboard.writeText(text);
+    alert("Sharing not supported. Slip copied instead.");
+  }
+};
 
   return (
   <div
