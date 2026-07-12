@@ -42,14 +42,41 @@ const [userData, setUserData] = useState<any>(null);
 const [userLoading, setUserLoading] = useState(false);
 
 
+const [todayMatches, setTodayMatches] = useState(0);
+const [premiumUsers, setPremiumUsers] = useState(0);
+
+
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   useEffect(() => {
-    fetchMatches();
-  }, []);
+  fetchMatches();
+  loadDashboardStats();
+}, []);
+
+
+  async function loadDashboardStats() {
+  const now = new Date();
+const today =
+  `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
+  // Today's matches
+  const { count: matchesCount } = await supabase
+    .from("matches")
+    .select("*", { count: "exact", head: true })
+    .eq("match_date", today);
+
+  // Premium users
+  const { count: premiumCount } = await supabase
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .eq("is_premium", true);
+
+  setTodayMatches(matchesCount ?? 0);
+  setPremiumUsers(premiumCount ?? 0);
+}
 
   // ✅ FIXED: Properly closed function
   async function fetchMatches() {
@@ -107,6 +134,7 @@ const [userLoading, setUserLoading] = useState(false);
     } else {
       alert("Match added ✅");
       fetchMatches(); // refresh list
+      loadDashboardStats();
     }
   }
 
@@ -127,6 +155,7 @@ const [userLoading, setUserLoading] = useState(false);
 
   // ✅ instantly update UI (better UX than refetch)
   setMatches((prev) => prev.filter((m) => m.id !== id));
+  loadDashboardStats();
 
   alert("Deleted ✅");
 }
@@ -156,6 +185,7 @@ async function handleUpdate(id: string) {
   }
 
   await fetchMatches();
+  await loadDashboardStats();
 
   setEditingId(null);
   setEditForm({});
@@ -312,6 +342,7 @@ async function grantPremium() {
       ...userData,
       is_premium: true,
     });
+    loadDashboardStats();
   } catch (err) {
     console.error(err);
     alert("Something went wrong ❌");
@@ -409,6 +440,49 @@ if (!authorized) {
         <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
           Admin Dashboard
         </h1>
+
+        <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "15px",
+    marginBottom: "20px",
+  }}
+>
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa", marginBottom: "8px" }}>
+      Today's Matches
+    </p>
+
+    <h2 style={{ fontSize: "32px", color: "#0fbcf9" }}>
+      {todayMatches}
+    </h2>
+  </div>
+
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa", marginBottom: "8px" }}>
+      Premium Users
+    </p>
+
+    <h2 style={{ fontSize: "32px", color: "#4caf50" }}>
+      {premiumUsers}
+    </h2>
+  </div>
+</div>
 
          <button
         onClick={() => {
