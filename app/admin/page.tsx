@@ -45,6 +45,8 @@ const [userLoading, setUserLoading] = useState(false);
 const [todayMatches, setTodayMatches] = useState(0);
 const [premiumUsers, setPremiumUsers] = useState(0);
 
+const [generatedSlips, setGeneratedSlips] = useState(0);
+
 
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -74,8 +76,13 @@ const today =
     .select("*", { count: "exact", head: true })
     .eq("is_premium", true);
 
+    const { count: slipsCount } = await supabase
+    .from("slips")
+    .select("*", { count: "exact", head: true });
+
   setTodayMatches(matchesCount ?? 0);
   setPremiumUsers(premiumCount ?? 0);
+  setGeneratedSlips(slipsCount ?? 0);
 }
 
   // ✅ FIXED: Properly closed function
@@ -444,7 +451,7 @@ if (!authorized) {
         <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: "15px",
     marginBottom: "20px",
   }}
@@ -482,7 +489,26 @@ if (!authorized) {
       {premiumUsers}
     </h2>
   </div>
+
+   {/* Generated Slips */}
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa", marginBottom: "8px" }}>
+      Generated Slips
+    </p>
+
+    <h2 style={{ fontSize: "32px", color: "#f59e0b" }}>
+      {generatedSlips}
+    </h2>
+  </div>
 </div>
+
 
          <button
         onClick={() => {
