@@ -547,33 +547,7 @@ Close
 
 )}
 
-{results.length > 0 && (
-  <button
-    onClick={() => {
-      document
-        .getElementById("generator")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }}
-    className={`
-      fixed bottom-6 right-6 z-50
-      bg-green-600 hover:bg-green-500
-      text-white
-      rounded-full
-      shadow-[0_0_20px_rgba(34,197,94,0.6)]
-      transition-all duration-300
-      flex items-center
-      ${collapsed ? "p-3" : "px-4 py-2 gap-2"}
-    `}
-  >
-    <AdjustmentsHorizontalIcon className="w-5 h-5" />
 
-    {!collapsed && (
-      <span className="text-xs sm:text-sm font-medium">
-        Edit Filters
-      </span>
-    )}
-  </button>
-)}
 
 <FloatingSlip
   results={results}

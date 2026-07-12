@@ -61,14 +61,15 @@ Generated with GoalSense.live`;
   return (
   <div
     className="
-      fixed bottom-6 left-1/2 -translate-x-1/2
-      bg-gray-900 border border-green-500
-      rounded-xl px-6 py-3
-      flex items-center gap-3 sm:gap-6
-      shadow-[0_0_25px_rgba(34,197,94,0.4)]
-      backdrop-blur
-      z-50
-    "
+fixed bottom-6 left-1/2 -translate-x-1/2
+bg-gray-900 border border-green-500
+rounded-xl px-4 py-3
+flex flex-wrap items-center justify-center gap-2 sm:gap-4
+w-[95%] max-w-xl
+shadow-[0_0_25px_rgba(34,197,94,0.4)]
+backdrop-blur
+z-50
+"
   >
 
       <div className="text-sm">
@@ -108,6 +109,17 @@ Generated with GoalSense.live`;
       >
         Share Slip
       </button>
+
+      <button
+  onClick={() =>
+    document
+      .getElementById("generator")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+  className="bg-gray-700 px-4 py-1 rounded-lg hover:bg-gray-600"
+>
+  Filters
+</button>
 
     </div>
   );
