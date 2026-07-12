@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Footer() {
   const [year, setYear] = useState("");
@@ -27,8 +28,8 @@ export default function Footer() {
         {/* Brand */}
         <div className="space-y-6">
           <h2 className="text-3xl font-extrabold text-white tracking-wide">
-            Football Generator
-          </h2>
+  GoalSense
+</h2>
           <p className="text-sm leading-relaxed text-gray-400">
             Intelligent filtering and probability modeling.
           </p>
@@ -72,17 +73,43 @@ export default function Footer() {
 
         {/* Legal */}
         <div className="space-y-6">
-          <h3 className="text-white font-semibold text-lg tracking-wide">
-            Legal
-          </h3>
-          <p className="text-sm leading-relaxed">
-            This platform provides analytical tools only. No guarantees are made
-            regarding outcomes. Always act responsibly.
-          </p>
-          <p className="text-xs opacity-60">
-            18+ Only. For educational purposes.
-          </p>
-        </div>
+  <h3 className="text-white font-semibold text-lg tracking-wide">
+    Support & Legal
+  </h3>
+
+  <ul className="space-y-3 text-sm">
+    <li>
+      <Link
+        href="/privacy"
+        className="hover:text-emerald-400 transition duration-300"
+      >
+        Privacy Policy
+      </Link>
+    </li>
+
+    <li>
+      <Link
+        href="/terms"
+        className="hover:text-emerald-400 transition duration-300"
+      >
+        Terms & Conditions
+      </Link>
+    </li>
+
+    <li>
+      <Link
+        href="/contact"
+        className="hover:text-emerald-400 transition duration-300"
+      >
+        Contact Us
+      </Link>
+    </li>
+  </ul>
+
+  <p className="text-xs opacity-60">
+    18+ Only. For educational purposes.
+  </p>
+</div>
 
       </div>
 
@@ -92,7 +119,7 @@ export default function Footer() {
         {/* Neon Pulse Dot */}
         <div className="absolute left-1/2 -translate-x-1/2 -top-2 w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_25px_6px_rgba(16,185,129,0.7)] animate-pulse" />
 
-        © {year} Football Generator. All rights reserved.
+        © {year} GoalSense. All rights reserved.
 
       </div>
     </footer>
