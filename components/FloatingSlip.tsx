@@ -116,9 +116,15 @@ z-50
       .getElementById("generator")
       ?.scrollIntoView({ behavior: "smooth" })
   }
-  className="bg-gray-700 px-4 py-1 rounded-lg hover:bg-gray-600"
+  className="
+bg-slate-700
+hover:bg-slate-600
+px-4 py-1
+rounded-lg
+transition
+"
 >
-  Filters
+  ⚙️ Filters
 </button>
 
     </div>
