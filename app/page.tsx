@@ -5,6 +5,7 @@ import HowItWorks from "@/components/HowItWorks";
 import BackgroundBalls from "@/components/BackgroundBalls";
 import Footer from "@/components/Footer";
 import SeoContent from "@/components/SeoContent";
+import PredictionLinks from "@/components/PredictionLinks";
 
 async function delay() {
   return new Promise((resolve) => setTimeout(resolve, 2000));
@@ -59,7 +60,11 @@ export default async function Home() {
         </main>
       </div>
 
-      
+      <section className="max-w-4xl mx-auto px-6 py-12">
+  <PredictionLinks />
+</section>
+
+<Footer />
 <Footer />
     </>
   );
