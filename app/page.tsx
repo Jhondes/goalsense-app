@@ -4,6 +4,7 @@ import HowItWorks from "@/components/HowItWorks";
 /*import ActivityTicker from "@/components/ActivityTicker";*/
 import BackgroundBalls from "@/components/BackgroundBalls";
 import Footer from "@/components/Footer";
+import SeoContent from "@/components/SeoContent";
 
 async function delay() {
   return new Promise((resolve) => setTimeout(resolve, 2000));
@@ -51,6 +52,9 @@ export default async function Home() {
           <section className="relative z-10">
             <HowItWorks />
           </section>
+
+          {/* SEO CONTENT */}
+          <SeoContent />
 
         </main>
       </div>
