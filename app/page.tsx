@@ -64,7 +64,7 @@ export default async function Home() {
   <PredictionLinks />
 </section>
 
-<Footer />
+
 <Footer />
     </>
   );
