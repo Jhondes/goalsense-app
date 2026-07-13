@@ -99,14 +99,36 @@ for (let i = 0; i < maxPicks; i++) {
 
   runningTotal *= Number(chosen.odds);
 
-  // Remove the chosen match
-  remaining = remaining.filter((m) => m.id !== chosen.id);
+  // Remove every market for the selected fixture
+remaining = remaining.filter((m) => {
+  const fixtureKey = [m.home, m.away].sort().join("|");
+  const chosenKey = [chosen.home, chosen.away].sort().join("|");
+
+  return fixtureKey !== chosenKey;
+});
 }
 } else {
-  selected = shuffle(filtered).slice(
-    0,
-    Math.min(picksCount, filtered.length)
-  );
+ const shuffled = shuffle(filtered);
+
+const usedFixtures = new Set<string>();
+selected = [];
+
+for (const match of shuffled) {
+  const fixtureKey = [match.home, match.away]
+  .sort()
+  .join("|");
+
+  if (usedFixtures.has(fixtureKey)) {
+    continue;
+  }
+
+  usedFixtures.add(fixtureKey);
+  selected.push(match);
+
+  if (selected.length >= picksCount) {
+    break;
+  }
+}
 }
 
 const picks = selected.map((match) => ({
