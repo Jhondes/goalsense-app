@@ -49,7 +49,24 @@ export async function POST(req: NextRequest) {
 
   console.log("UPDATED DATA:", data);
   console.log("SUPABASE ERROR:", error);
-}
+
+  // ✅ Record the subscription
+    if (data && data.length > 0) {
+      const profile = data[0];
+
+      const { error: subscriptionError } = await supabase
+        .from("subscriptions")
+        .insert({
+          user_id: profile.id,
+          amount: event.data.amount / 100, // Paystack sends kobo
+          expires_at: expiry,
+        });
+
+      console.log("SUBSCRIPTION ERROR:", subscriptionError);
+    }
+  }
+
+
 
   return NextResponse.json({ received: true });
 }
