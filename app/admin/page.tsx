@@ -80,46 +80,6 @@ const [stats, setStats] = useState({
 }, []);
 
 
-  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5 mb-8">
-
-  <div className="bg-gray-900 border border-green-500 rounded-xl p-5">
-    <p className="text-gray-400 text-sm">Premium Users</p>
-    <p className="text-3xl font-bold text-green-400">
-      {stats.totalPremiumUsers}
-    </p>
-  </div>
-
-  <div className="bg-gray-900 border border-blue-500 rounded-xl p-5">
-    <p className="text-gray-400 text-sm">First-Time</p>
-    <p className="text-3xl font-bold text-blue-400">
-      {stats.firstTimeSubscribers}
-    </p>
-  </div>
-
-  <div className="bg-gray-900 border border-yellow-500 rounded-xl p-5">
-    <p className="text-gray-400 text-sm">Renewals</p>
-    <p className="text-3xl font-bold text-yellow-400">
-      {stats.renewalSubscriptions}
-    </p>
-  </div>
-
-  <div className="bg-gray-900 border border-purple-500 rounded-xl p-5">
-    <p className="text-gray-400 text-sm">Subscriptions</p>
-    <p className="text-3xl font-bold text-purple-400">
-      {stats.totalSubscriptions}
-    </p>
-  </div>
-
-  <div className="bg-gray-900 border border-emerald-500 rounded-xl p-5">
-    <p className="text-gray-400 text-sm">Revenue</p>
-    <p className="text-3xl font-bold text-emerald-400">
-      ₦{stats.totalRevenue.toLocaleString()}
-    </p>
-  </div>
-
-</div>
-
-
   async function loadDashboardStats() {
   const now = new Date();
 const today =
@@ -508,6 +468,85 @@ if (!authorized) {
         <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
           Admin Dashboard
         </h1>
+
+        <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+    gap: "15px",
+    marginBottom: "25px",
+  }}
+>
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>Premium Users</p>
+    <h2 style={{ color: "#4caf50", fontSize: "30px" }}>
+      {stats.totalPremiumUsers}
+    </h2>
+  </div>
+
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>First-Time</p>
+    <h2 style={{ color: "#2196f3", fontSize: "30px" }}>
+      {stats.firstTimeSubscribers}
+    </h2>
+  </div>
+
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>Renewals</p>
+    <h2 style={{ color: "#ffc107", fontSize: "30px" }}>
+      {stats.renewalSubscriptions}
+    </h2>
+  </div>
+
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>Subscriptions</p>
+    <h2 style={{ color: "#9c27b0", fontSize: "30px" }}>
+      {stats.totalSubscriptions}
+    </h2>
+  </div>
+
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>Revenue</p>
+    <h2 style={{ color: "#00c853", fontSize: "30px" }}>
+      ₦{stats.totalRevenue.toLocaleString()}
+    </h2>
+  </div>
+</div>
 
         <div
   style={{
