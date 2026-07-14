@@ -48,6 +48,15 @@ const [premiumUsers, setPremiumUsers] = useState(0);
 const [generatedSlips, setGeneratedSlips] = useState(0);
 
 
+const [stats, setStats] = useState({
+  totalPremiumUsers: 0,
+  firstTimeSubscribers: 0,
+  renewalSubscriptions: 0,
+  totalSubscriptions: 0,
+  totalRevenue: 0,
+});
+
+
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,6 +66,58 @@ const [generatedSlips, setGeneratedSlips] = useState(0);
   fetchMatches();
   loadDashboardStats();
 }, []);
+
+
+  useEffect(() => {
+  async function loadStats() {
+    const res = await fetch("/api/admin/stats");
+    const data = await res.json();
+
+    setStats(data);
+  }
+
+  loadStats();
+}, []);
+
+
+  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5 mb-8">
+
+  <div className="bg-gray-900 border border-green-500 rounded-xl p-5">
+    <p className="text-gray-400 text-sm">Premium Users</p>
+    <p className="text-3xl font-bold text-green-400">
+      {stats.totalPremiumUsers}
+    </p>
+  </div>
+
+  <div className="bg-gray-900 border border-blue-500 rounded-xl p-5">
+    <p className="text-gray-400 text-sm">First-Time</p>
+    <p className="text-3xl font-bold text-blue-400">
+      {stats.firstTimeSubscribers}
+    </p>
+  </div>
+
+  <div className="bg-gray-900 border border-yellow-500 rounded-xl p-5">
+    <p className="text-gray-400 text-sm">Renewals</p>
+    <p className="text-3xl font-bold text-yellow-400">
+      {stats.renewalSubscriptions}
+    </p>
+  </div>
+
+  <div className="bg-gray-900 border border-purple-500 rounded-xl p-5">
+    <p className="text-gray-400 text-sm">Subscriptions</p>
+    <p className="text-3xl font-bold text-purple-400">
+      {stats.totalSubscriptions}
+    </p>
+  </div>
+
+  <div className="bg-gray-900 border border-emerald-500 rounded-xl p-5">
+    <p className="text-gray-400 text-sm">Revenue</p>
+    <p className="text-3xl font-bold text-emerald-400">
+      ₦{stats.totalRevenue.toLocaleString()}
+    </p>
+  </div>
+
+</div>
 
 
   async function loadDashboardStats() {
