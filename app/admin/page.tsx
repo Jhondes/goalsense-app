@@ -551,7 +551,7 @@ if (!authorized) {
         <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: "15px",
     marginBottom: "20px",
   }}
@@ -573,22 +573,7 @@ if (!authorized) {
     </h2>
   </div>
 
-  <div
-    style={{
-      background: "#2a2a2a",
-      padding: "20px",
-      borderRadius: "10px",
-      textAlign: "center",
-    }}
-  >
-    <p style={{ color: "#aaa", marginBottom: "8px" }}>
-      Premium Users
-    </p>
 
-    <h2 style={{ fontSize: "32px", color: "#4caf50" }}>
-      {premiumUsers}
-    </h2>
-  </div>
 
    {/* Generated Slips */}
   <div
@@ -600,7 +585,7 @@ if (!authorized) {
     }}
   >
     <p style={{ color: "#aaa", marginBottom: "8px" }}>
-      Generated Slips
+      Saved Slips
     </p>
 
     <h2 style={{ fontSize: "32px", color: "#f59e0b" }}>
