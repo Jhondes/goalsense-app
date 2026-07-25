@@ -35,8 +35,7 @@ export default function ContactPage() {
             <h2 className="text-xl font-semibold">Response Time</h2>
 
             <p className="mt-3 text-gray-400">
-              We usually respond within 24 hours. Most questions are answered
-              much sooner.
+              We typically respond within a few hours, and often much sooner. If you contact us outside business hours, we'll get back to you as soon as possible.
             </p>
           </div>
 
