@@ -40,9 +40,9 @@ export default function HowItWorks() {
           ⚡ Quick Start
         </span>
 
-        <h2 className="mt-5 text-[2rem] sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
-          How GoalSense Works
-        </h2>
+        <h2 className="mt-5 text-[1.75rem] sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
+  How GoalSense Works
+</h2>
 
         <p className="mt-3 text-sm sm:text-base leading-7 text-gray-400">
           Generate football predictions in just four simple steps.
