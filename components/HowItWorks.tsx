@@ -34,17 +34,17 @@ export default function HowItWorks() {
     <section className="relative z-10 mt-16 mx-auto max-w-6xl rounded-3xl border border-gray-800 bg-gradient-to-b from-gray-900 to-black p-6 md:p-10">
 
       {/* Header */}
-      <div className="mx-auto mb-12 max-w-3xl text-center">
+      <div className="mx-auto mb-10 max-w-3xl text-center">
 
         <span className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-green-400">
           ⚡ Quick Start
         </span>
 
-        <h2 className="mt-5 text-3xl font-extrabold text-white md:text-4xl">
+        <h2 className="mt-5 text-[2rem] sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
           How GoalSense Works
         </h2>
 
-        <p className="mt-4 text-base leading-7 text-gray-400 md:text-lg">
+        <p className="mt-3 text-sm sm:text-base leading-7 text-gray-400">
           Generate football predictions in just four simple steps.
           Choose today's fixtures, customize your betting preferences,
           and receive your accumulator slip in seconds.
