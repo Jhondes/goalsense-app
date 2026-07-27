@@ -8,6 +8,7 @@ import SeoContent from "@/components/SeoContent";
 import PredictionLinks from "@/components/PredictionLinks";
 import ResponsibleGamingBanner from "@/components/ResponsibleGamingBanner";
 import WhyChooseGoalSense from "@/components/WhyChooseGoalSense";
+import FAQ from "@/components/FAQ";
 
 async function delay() {
   return new Promise((resolve) => setTimeout(resolve, 2000));
@@ -60,6 +61,11 @@ export default async function Home() {
           {/* WHY CHOOSE GOALSENSE */}
 <section className="relative z-10">
   <WhyChooseGoalSense />
+</section>
+
+{/* FAQ */}
+<section className="relative z-10">
+  <FAQ />
 </section>
 
           {/* SEO CONTENT */}
