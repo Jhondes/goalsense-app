@@ -10,12 +10,10 @@ import ResponsibleGamingBanner from "@/components/ResponsibleGamingBanner";
 import WhyChooseGoalSense from "@/components/WhyChooseGoalSense";
 import FAQ from "@/components/FAQ";
 
-async function delay() {
-  return new Promise((resolve) => setTimeout(resolve, 2000));
-}
 
-export default async function Home() {
-  await delay();
+
+export default function Home() {
+  
   return (
     <>
       <Navbar />

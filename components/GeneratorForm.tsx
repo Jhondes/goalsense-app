@@ -3,11 +3,15 @@
 import { useGenerator } from "@/hooks/useGenerator";
 import Filters from "./Filters";
 import ResultsTable from "./ResultsTable";
-import { FireIcon } from "@heroicons/react/24/solid";
 import { useState, useRef, useEffect } from "react";
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@/context/UserContext";
 import FloatingSlip from "./FloatingSlip";
+import {
+  ArrowPathIcon,
+  SparklesIcon,
+} from "@heroicons/react/24/solid";
+
+
 
 
 export default function GeneratorForm() {
@@ -204,35 +208,64 @@ className="w-full cursor-pointer accent-green-500 hover:accent-green-400 transit
 
 {/* Generate Button */}
 <button
-disabled={loading}
-onClick={() => {
+  disabled={loading}
+  onClick={() => {
+    if (!isPremium && usingAdvancedOptions) {
+      setPremiumReason("advanced");
+      setShowPremiumModal(true);
+      return;
+    }
 
-  if (!isPremium && usingAdvancedOptions) {
-  setPremiumReason("advanced");
-  setShowPremiumModal(true);
-  return;
-}
-
-  generate(lockedPicks);
-
-
-
-}}
-className="w-full p-3 rounded-lg font-semibold bg-green-600 hover:bg-green-500 transition hover:shadow-[0_0_25px_#22c55e] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+    generate(lockedPicks);
+  }}
+  className="
+    group
+    relative
+    w-full
+    overflow-hidden
+    rounded-xl
+    bg-gradient-to-r
+    from-green-500
+    via-emerald-500
+    to-green-600
+    px-5
+    py-4
+    font-semibold
+    text-white
+    transition-all
+    duration-300
+    hover:scale-[1.02]
+    hover:shadow-[0_0_25px_rgba(34,197,94,0.45)]
+    active:scale-[0.98]
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
 >
+  {/* Shine Effect */}
+  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
-{loading ? (
-<>
-<span className="inline-block mr-2 animate-spin-fast">⚽</span>
-Generating...
-</>
-) : (
-<>
-<FireIcon className="w-5 h-5 inline-block mr-2" />
-Generate
-</>
-)}
-
+  <span className="relative flex items-center justify-center gap-3">
+    {loading ? (
+      <>
+        <ArrowPathIcon className="w-5 h-5 animate-spin" />
+        <span>Generating Smart Slip...</span>
+      </>
+    ) : (
+      <>
+        <SparklesIcon
+  className="
+    w-5 h-5
+    text-yellow-300
+    group-hover:text-white
+    group-hover:rotate-12
+    transition-all
+    duration-300
+  "
+/>
+        <span>Generate Predictions</span>
+      </>
+    )}
+  </span>
 </button>
 
 
@@ -407,8 +440,20 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-<div className="text-center text-gray-400 text-sm py-6 border border-gray-700 rounded-lg bg-gray-900">
-No predictions yet. Click <span className="text-green-400">Generate</span> to create a slip.
+<div className="rounded-xl border border-gray-700 bg-gray-900 p-8 text-center">
+  <div className="text-4xl mb-3">⚽</div>
+
+  <h3 className="text-lg font-semibold text-white">
+    Ready to Build Your Slip?
+  </h3>
+
+  <p className="mt-2 text-sm text-gray-400">
+    Select your filters above, then click
+    <span className="text-green-400 font-medium">
+      {" "}Generate Predictions
+    </span>{" "}
+    to create your football accumulator.
+  </p>
 </div>
 )}
 
@@ -425,40 +470,57 @@ No predictions yet. Click <span className="text-green-400">Generate</span> to cr
   <div className="flex flex-col items-center mt-2">
     
     <button
-      disabled={loading}
-      onClick={() => {
-        if (!isPremium && usingAdvancedOptions) {
-          setPremiumReason("advanced");
-          setShowPremiumModal(true);
-          return;
-        }
-        generate(lockedPicks);
-      }}
-      className="
-        w-full max-w-md
-        p-2 rounded-lg
-        border border-green-500
-        text-green-400
-        hover:bg-green-500 hover:text-white
-        transition
-        disabled:opacity-50 disabled:cursor-not-allowed
-      "
-    >
-      {loading ? (
-        <>
-          <span className="inline-block mr-2 animate-spin-fast">⚽</span>
-          Regenerating...
-        </>
-      ) : (
-        "🔄 Regenerate Slip"
-      )}
-    </button>
+  disabled={loading}
+  onClick={() => {
+    if (!isPremium && usingAdvancedOptions) {
+      setPremiumReason("advanced");
+      setShowPremiumModal(true);
+      return;
+    }
+
+    generate(lockedPicks);
+  }}
+  className="
+    group
+    w-full max-w-md
+    flex items-center justify-center gap-3
+    rounded-xl
+    border border-green-500/40
+    bg-gradient-to-r from-green-500/10 via-green-500/5 to-emerald-500/10
+    px-5 py-3
+    text-green-400
+    font-semibold
+    transition-all duration-300
+    hover:border-green-400
+    hover:bg-green-500
+    hover:text-white
+    hover:shadow-[0_0_20px_rgba(34,197,94,0.35)]
+    active:scale-[0.98]
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
+>
+  {loading ? (
+    <>
+      <ArrowPathIcon className="w-5 h-5 animate-spin" />
+      <span>Regenerating...</span>
+    </>
+  ) : (
+    <>
+      <ArrowPathIcon className="w-5 h-5 group-hover:rotate-180 transition duration-500" />
+      <span>Regenerate Slip</span>
+    </>
+  )}
+</button>
 
     {/* 👇 FORCE THIS BELOW */}
     {lockedPicks.length > 0 && (
-  <p className="text-xs text-gray-400 mt-1 text-center">
-    🔒 {lockedPicks.length} locked pick{lockedPicks.length !== 1 && "s"} will stay
-  </p>
+  <p className="mt-2 text-center text-xs text-gray-400">
+  🔒 <span className="text-green-400 font-medium">
+    {lockedPicks.length}
+  </span>{" "}
+  locked pick{lockedPicks.length !== 1 && "s"} will remain after regeneration.
+</p>
 )}
 
   </div>
