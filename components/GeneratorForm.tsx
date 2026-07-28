@@ -440,21 +440,23 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-<div className="rounded-xl border border-gray-700 bg-gray-900 p-8 text-center">
-  <div className="text-4xl mb-3">⚽</div>
+  <div className="rounded-xl border border-gray-700 bg-gray-900/80 p-6 text-center">
 
-  <h3 className="text-lg font-semibold text-white">
-    Ready to Build Your Slip?
-  </h3>
+    <div className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-green-400">
+      Ready to Build Your Slip?
+    </div>
 
-  <p className="mt-2 text-sm text-gray-400">
-    Select your filters above, then click
-    <span className="text-green-400 font-medium">
-      {" "}Generate Predictions
-    </span>{" "}
-    to create your football accumulator.
-  </p>
-</div>
+    
+
+    <p className="mt-2 text-sm leading-7 text-gray-400 max-w-md mx-auto">
+      Select your filters above, then click
+      <span className="font-semibold text-green-400">
+        {" "}Generate Predictions
+      </span>{" "}
+      to instantly create your football accumulator.
+    </p>
+
+  </div>
 )}
 
 {/* Results */}
