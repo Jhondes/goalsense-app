@@ -61,9 +61,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white antialiased">
-        <UserProvider>
         <OrganizationSchema />
         <WebsiteSchema />
+
+        <UserProvider>
           {children}
         </UserProvider>
       </body>
