@@ -440,29 +440,34 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-  <div className="rounded-2xl border border-green-500/20 bg-gradient-to-b from-gray-900 to-gray-950 p-8 text-center shadow-lg">
+  <div className="mx-auto max-w-xl rounded-2xl border border-gray-700 bg-gray-900 p-8 text-center shadow-lg">
 
     {/* Icon */}
-    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20">
       <SparklesIcon className="h-8 w-8 text-green-400" />
     </div>
 
     {/* Badge */}
-    <div className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-green-400">
-      READY TO WIN?
+    <div className="mt-5 inline-flex items-center rounded-full border border-green-500/20 bg-green-500/10 px-5 py-1">
+      <span className="text-xs font-semibold uppercase tracking-[0.35em] text-green-400">
+        Ready to Win?
+      </span>
     </div>
 
     {/* Heading */}
-    <h3 className="mt-5 text-2xl font-bold text-white">
-      Create Your Next Smart Slip
+    <h3 className="mt-6 text-3xl sm:text-4xl font-bold leading-tight text-white">
+      Create Your Smart Slip
     </h3>
 
     {/* Description */}
-    <p className="mt-3 max-w-md mx-auto text-gray-400 leading-8">
-      Choose your filters, select the number of picks, and let
-      <span className="text-green-400 font-semibold"> GoalSense </span>
+    <p className="mx-auto mt-5 max-w-lg text-base sm:text-lg leading-8 text-gray-400">
+      Choose your filters, select your number of picks, and let{" "}
+      <span className="font-semibold text-green-400">
+        GoalSense
+      </span>{" "}
       instantly generate football predictions powered by today's fixtures.
     </p>
+
   </div>
 )}
 
