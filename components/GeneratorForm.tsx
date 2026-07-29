@@ -440,32 +440,33 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-  <div className="mx-auto max-w-xl rounded-2xl border border-gray-700 bg-gray-900 p-8 text-center shadow-lg">
+  <div className="mx-auto max-w-2xl rounded-3xl border border-gray-700 bg-gradient-to-b from-gray-900 to-gray-950 px-6 py-10 sm:px-10 text-center shadow-xl">
 
     {/* Icon */}
-    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
       <SparklesIcon className="h-8 w-8 text-green-400" />
     </div>
 
     {/* Badge */}
-    <div className="mt-5 inline-flex items-center rounded-full border border-green-500/20 bg-green-500/10 px-5 py-1">
+    <div className="mt-6 inline-flex items-center rounded-full border border-green-500/20 bg-green-500/10 px-5 py-2">
       <span className="text-xs font-semibold uppercase tracking-[0.35em] text-green-400">
-        Ready to Win?
+        Ready to Win
       </span>
     </div>
 
     {/* Heading */}
-    <h3 className="mt-6 text-3xl sm:text-4xl font-bold leading-tight text-white">
+    <h3 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
       Create Your Smart Slip
     </h3>
 
     {/* Description */}
-    <p className="mx-auto mt-5 max-w-lg text-base sm:text-lg leading-8 text-gray-400">
-      Choose your filters, select your number of picks, and let{" "}
+    <p className="mx-auto mt-5 max-w-xl text-base sm:text-lg leading-8 text-gray-400">
+      Choose your filters, select the number of picks, and let{" "}
       <span className="font-semibold text-green-400">
         GoalSense
       </span>{" "}
-      instantly generate football predictions powered by today's fixtures.
+      instantly generate intelligent football predictions powered by today's
+      fixtures.
     </p>
 
   </div>
