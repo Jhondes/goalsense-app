@@ -3,212 +3,185 @@ import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
 
 export const metadata: Metadata = {
-  title: "Over 2.5 Goals Predictions Today | GoalSense",
+  title: "Over 2.5 Predictions Today | GoalSense",
   description:
-    "Generate today's Over 2.5 Goals football predictions using GoalSense. Create smart accumulator slips with today's fixtures from Europe's biggest leagues.",
+    "Generate today's Over 2.5 football predictions, goals tips and accumulator selections using GoalSense.",
   keywords: [
     "over 2.5 predictions",
-    "over 2.5 football tips",
-    "today over 2.5 predictions",
-    "over 2.5 goals today",
-    "football over 2.5",
+    "over 2.5 football predictions",
+    "today over 2.5 tips",
+    "over 2.5 accumulator",
     "goal predictions",
+    "football goals tips",
   ],
   alternates: {
     canonical: "https://goalsense.live/over-2.5-predictions",
-  },
-  openGraph: {
-    title: "Over 2.5 Goals Predictions Today | GoalSense",
-    description:
-      "Generate today's Over 2.5 football predictions with GoalSense.",
-    url: "https://goalsense.live/over-2.5-predictions",
-    siteName: "GoalSense",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Over 2.5 Goals Predictions Today | GoalSense",
-    description:
-      "Create Over 2.5 accumulator slips using today's football fixtures.",
   },
 };
 
 export default function Over25Predictions() {
   return (
-    <main className="max-w-4xl mx-auto px-6 py-16">
+    <main className="max-w-5xl mx-auto px-6 py-16">
 
-      {/* Breadcrumb Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://goalsense.live",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Over 2.5 Predictions",
-                item: "https://goalsense.live/over-2.5-predictions",
-              },
-            ],
-          }),
-        }}
-      />
-
-      {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "What are Over 2.5 Goals predictions?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text:
-                    "Over 2.5 Goals predictions identify football matches expected to produce at least three total goals.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "How does GoalSense generate Over 2.5 predictions?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text:
-                    "GoalSense lets users generate Over 2.5 selections using today's football fixtures and customizable filters.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Can I build accumulator slips?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text:
-                    "Yes. GoalSense allows you to combine multiple Over 2.5 selections into accumulator slips.",
-                },
-              },
-            ],
-          }),
-        }}
-      />
-
-      <h1 className="text-4xl font-bold mb-2">
-        Over 2.5 Goals Predictions Today
+      <h1 className="text-4xl md:text-5xl font-bold mb-8">
+        Today's Over 2.5 Predictions
       </h1>
 
-      <p className="text-sm text-gray-500 mb-8">
-        Last updated: July 2026
+      <p className="text-lg text-gray-300 leading-8 mb-8">
+        Looking for today's Over 2.5 predictions? GoalSense helps football fans
+        generate intelligent goal-based betting selections using today's
+        fixtures. Whether you're creating a small accumulator or searching for
+        high-scoring matches across Europe's top leagues, GoalSense makes the
+        process quick and simple.
       </p>
 
-      <p className="text-gray-300 leading-8">
-        Over 2.5 Goals remains one of the most popular football betting
-        markets because it focuses on exciting matches expected to produce
-        three or more total goals. Instead of predicting the exact winner,
-        bettors simply need the match to finish with at least three goals,
-        making it a favourite market for accumulator betting.
-      </p>
-
-      <p className="text-gray-300 leading-8 mt-6">
-        GoalSense simplifies the process by allowing you to generate today's
-        Over 2.5 football predictions in seconds. Simply choose today's
-        fixtures, select the Over 2.5 market, decide how many selections you
-        want and instantly create an accumulator slip.
-      </p>
-
-      <h2 className="text-3xl font-bold mt-12 mb-4">
-        Why Choose Over 2.5 Predictions?
-      </h2>
-
-      <p className="text-gray-300 leading-8">
-        Many football leagues consistently produce high-scoring matches.
-        Instead of spending hours analysing every fixture manually, GoalSense
-        helps you quickly generate selections using today's available
-        matches. Whether you're creating a small double or a larger
-        accumulator, the generator saves time and keeps everything organised.
-      </p>
-
-      <h2 className="text-3xl font-bold mt-12 mb-4">
-        How GoalSense Works
-      </h2>
-
-      <ol className="list-decimal pl-6 space-y-3 text-gray-300 leading-8">
-        <li>Select today's football fixtures.</li>
-        <li>Choose the Over 2.5 Goals market.</li>
-        <li>Select the number of picks.</li>
-        <li>Generate your prediction slip instantly.</li>
-        <li>Save, copy or share your accumulator.</li>
-      </ol>
-
-      <h2 className="text-3xl font-bold mt-12 mb-4">
-        More Betting Markets
-      </h2>
-
-      <p className="text-gray-300 leading-8">
-        Looking for additional football markets? GoalSense also lets you
-        generate BTTS predictions, Match Winner selections and today's
-        football accumulators using the same simple workflow.
-      </p>
-
-      <div className="mt-12">
-        <Link
-          href="/"
-          className="inline-block rounded-xl bg-green-600 px-6 py-3 font-semibold hover:bg-green-500 transition"
-        >
-          Generate Over 2.5 Predictions
-        </Link>
-      </div>
-
-      <section className="mt-20 space-y-8">
-
-        <h2 className="text-3xl font-bold">
-          Frequently Asked Questions
+      <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6 mb-12">
+        <h2 className="text-2xl font-semibold mb-3">
+          What Does Over 2.5 Goals Mean?
         </h2>
 
+        <p className="text-gray-300 leading-7">
+          An Over 2.5 Goals bet wins when at least three goals are scored during
+          normal time. For example, results such as 2-1, 3-0, 4-2 or 5-1 all
+          qualify as winning outcomes, while scores like 1-1 or 2-0 do not.
+        </p>
+      </div>
+
+      <h2 className="text-3xl font-bold mt-14 mb-5">
+        Why Over 2.5 Is So Popular
+      </h2>
+
+      <p className="text-gray-300 leading-8 mb-6">
+        Over 2.5 Goals is one of the most popular football betting markets
+        because it focuses on the total number of goals rather than predicting
+        the winning team. This allows bettors to benefit from exciting,
+        attacking matches regardless of which side wins.
+      </p>
+
+      <h2 className="text-3xl font-bold mt-16 mb-5">
+        How GoalSense Finds Over 2.5 Matches
+      </h2>
+
+      <p className="text-gray-300 leading-8 mb-6">
+        GoalSense allows users to filter today's fixtures and instantly generate
+        Over 2.5 selections. Rather than manually checking dozens of matches,
+        the platform helps organize fixtures into easy-to-build accumulator
+        slips using smart filters.
+      </p>
+
+      <h2 className="text-3xl font-bold mt-16 mb-5">
+        Tips for Betting Over 2.5 Goals
+      </h2>
+
+      <div className="space-y-6 text-gray-300 leading-8">
+
         <div>
-          <h3 className="text-xl font-semibold">
-            What does Over 2.5 Goals mean?
+          <h3 className="font-semibold text-white mb-2">
+            ⚽ Focus on Attacking Teams
           </h3>
 
-          <p className="text-gray-400 mt-2">
-            The match must finish with at least three total goals for the
-            prediction to win.
+          <p>
+            Teams with strong attacking records and consistent goal scoring are
+            often better candidates for Over 2.5 markets.
           </p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold">
-            Can I generate accumulators?
+          <h3 className="font-semibold text-white mb-2">
+            📊 Check Recent Form
           </h3>
 
-          <p className="text-gray-400 mt-2">
-            Yes. GoalSense allows you to combine multiple Over 2.5 selections
-            into one accumulator slip.
+          <p>
+            Recent matches often reveal whether a team is currently involved in
+            high-scoring games.
           </p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold">
-            Which leagues are available?
+          <h3 className="font-semibold text-white mb-2">
+            🌍 Use Major Leagues
           </h3>
 
-          <p className="text-gray-400 mt-2">
-            GoalSense supports today's fixtures from major football leagues,
-            making it easy to generate predictions across multiple
-            competitions.
+          <p>
+            Europe's top competitions generally provide stronger statistics and
+            more consistent scoring trends than smaller leagues.
           </p>
         </div>
 
-      </section>
+      </div>
+
+      <h2 className="text-3xl font-bold mt-16 mb-5">
+        Why Choose GoalSense?
+      </h2>
+
+      <ul className="space-y-3 list-disc pl-6 text-gray-300">
+        <li>Generate Over 2.5 predictions in seconds.</li>
+        <li>Filter fixtures by league.</li>
+        <li>Create football accumulators instantly.</li>
+        <li>Lock your favourite selections.</li>
+        <li>Premium features for advanced prediction generation.</li>
+      </ul>
+
+      <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
+
+        <h2 className="text-3xl font-bold mb-4">
+          Generate Today's Over 2.5 Predictions
+        </h2>
+
+        <p className="text-gray-400 leading-7 mb-8">
+          Build today's Over 2.5 accumulator in seconds using GoalSense's
+          intelligent football prediction generator.
+        </p>
+
+        <Link
+          href="/"
+          className="inline-flex items-center rounded-lg bg-green-600 px-6 py-3 font-semibold hover:bg-green-500 transition"
+        >
+          Generate Predictions →
+        </Link>
+
+      </div>
+
+      <h2 className="text-3xl font-bold mt-20 mb-6">
+        Frequently Asked Questions
+      </h2>
+
+      <div className="space-y-8">
+
+        <div>
+          <h3 className="font-semibold text-xl mb-2">
+            What does Over 2.5 mean?
+          </h3>
+
+          <p className="text-gray-400 leading-7">
+            It means at least three goals must be scored during normal time for
+            the bet to win.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-xl mb-2">
+            Is Over 2.5 a good accumulator market?
+          </h3>
+
+          <p className="text-gray-400 leading-7">
+            Many football bettors include Over 2.5 selections in accumulators
+            because they don't require predicting the winning team.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-xl mb-2">
+            Can GoalSense generate Over 2.5 predictions?
+          </h3>
+
+          <p className="text-gray-400 leading-7">
+            Yes. GoalSense allows users to generate Over 2.5 football
+            predictions using today's available fixtures and supported leagues.
+          </p>
+        </div>
+
+      </div>
 
       <div className="mt-20">
         <PredictionLinks />
