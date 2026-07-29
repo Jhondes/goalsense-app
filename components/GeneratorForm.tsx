@@ -440,22 +440,29 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-  <div className="rounded-xl border border-gray-700 bg-gray-900/80 p-6 text-center">
+  <div className="rounded-2xl border border-green-500/20 bg-gradient-to-b from-gray-900 to-gray-950 p-8 text-center shadow-lg">
 
-    <div className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-green-400">
-      Ready to Build Your Slip?
+    {/* Icon */}
+    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20">
+      <SparklesIcon className="h-8 w-8 text-green-400" />
     </div>
 
-    
+    {/* Badge */}
+    <div className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-green-400">
+      READY TO WIN?
+    </div>
 
-    <p className="mt-2 text-sm leading-7 text-gray-400 max-w-md mx-auto">
-      Select your filters above, then click
-      <span className="font-semibold text-green-400">
-        {" "}Generate Predictions
-      </span>{" "}
-      to instantly create your football accumulator.
+    {/* Heading */}
+    <h3 className="mt-5 text-2xl font-bold text-white">
+      Create Your Next Smart Slip
+    </h3>
+
+    {/* Description */}
+    <p className="mt-3 max-w-md mx-auto text-gray-400 leading-8">
+      Choose your filters, select the number of picks, and let
+      <span className="text-green-400 font-semibold"> GoalSense </span>
+      instantly generate football predictions powered by today's fixtures.
     </p>
-
   </div>
 )}
 
