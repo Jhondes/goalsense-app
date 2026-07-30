@@ -16,63 +16,71 @@ export default function Navbar() {
   
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-      
-      {/* Logo */}
-      <Link href="/#generator" className="flex items-center gap-2">
-  <Image
-    src="/logomain.png"
-    alt="GoalSense"
-    width={46}
-    height={46}
-    className="h-[46px] w-[46px] object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.35)]"
-    priority
-  />
+    <nav className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900 px-4 py-4">
+  <div className="mx-auto flex max-w-7xl items-center justify-between">
 
-  <span className="text-xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-    GoalSense.
-  </span>
-</Link>
+    {/* Logo */}
+    <Link href="/#generator" className="flex items-center gap-2">
+      <Image
+        src="/logomain.png"
+        alt="GoalSense"
+        width={50}
+        height={50}
+        className="h-12 w-12 object-contain drop-shadow-[0_0_6px_rgba(16,185,129,0.35)]"
+        priority
+      />
 
-      {/* Menu */}        
+      <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-xl font-extrabold text-transparent">
+        GoalSense
+      </span>
+    </Link>
+
+    {/* Right side */}
+    {user ? (
       <div className="flex items-center gap-4">
-        {user ? (
-  <div className="flex items-center gap-3">
-    
-    <div className="flex flex-col text-right">
-      <span className="text-green-400 font-semibold">
-        {hasPremium ? "Premium ✅" : "Logged in ✅"}
-      </span>
 
-      <span className="text-xs text-gray-400">
-        {user.email}
-      </span>
-    
+        {/* User info */}
+<div className="flex flex-col items-end">
 
-    {hasPremium && premiumExpiryText && (
-                <span className="text-[11px] text-yellow-400">
-                  👑 {premiumExpiryText}
-                </span>
-              )}
-            </div>
+  {/* Premium/Login badge */}
+  <div className="rounded-full bg-emerald-500/15 px-3 py-1">
+    <span className="text-xs font-semibold text-emerald-400">
+      {hasPremium ? "Premium ✓" : "Logged in ✓"}
+    </span>
+  </div>
 
-    <button
-      onClick={handleLogout}
-      className="px-4 py-2 text-sm text-red-400 hover:text-red-300"
-    >
-      Logout
-    </button>
+  {/* Email (hidden on mobile) */}
+  <span className="hidden text-xs text-gray-400 sm:block mt-1">
+    {user.email}
+  </span>
+
+  {/* Premium expiry */}
+  {hasPremium && premiumExpiryText && (
+    <span className="mt-1 text-[11px] text-yellow-300">
+      👑 {premiumExpiryText}
+    </span>
+  )}
+
+</div>
+
+        <button
+          onClick={handleLogout}
+          className="rounded-lg px-3 py-2 text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
+        >
+          Logout
+        </button>
+
+      </div>
+    ) : (
+      <button
+        onClick={() => (window.location.href = "/login")}
+        className="rounded-lg bg-emerald-500 px-5 py-2 font-medium text-black hover:bg-emerald-400"
+      >
+        Login
+      </button>
+    )}
 
   </div>
-) : (
-          <button
-            onClick={() => (window.location.href = "/login")}
-            className="px-5 py-2 bg-emerald-500 text-black rounded-lg"
-          >
-            Login
-          </button>
-        )}
-      </div>
-    </nav>
+</nav>
   );
 }
