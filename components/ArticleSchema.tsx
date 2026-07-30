@@ -42,7 +42,14 @@ export default function ArticleSchema({
       },
     },
 
-    image: "https://goalsense.live/og-image.jpg",
+    image: [
+  {
+    "@type": "ImageObject",
+    url: "https://goalsense.live/og-image.jpg",
+    width: 1200,
+    height: 630,
+  },
+],
 
     datePublished,
 
