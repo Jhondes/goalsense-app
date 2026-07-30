@@ -4,6 +4,7 @@ import { UserProvider } from "@/context/UserContext";
 import OrganizationSchema from "./organization-schema";
 import WebsiteSchema from "./website-schema";
 import WebApplicationSchema from "./webapplication-schema";
+import AppLoader from "@/components/AppLoader";
 
 export const metadata: Metadata = {
   title: "GoalSense | Smart Football Prediction Generator",
@@ -65,6 +66,7 @@ export default function RootLayout({
         <OrganizationSchema />
         <WebsiteSchema />
         <WebApplicationSchema />
+        <AppLoader />
 
         <UserProvider>
           {children}
