@@ -19,21 +19,22 @@ export default function Navbar() {
     <nav className="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
       
       {/* Logo */}
-      <Link href="/#generator" className="flex items-center gap-3">
-        <Image
-          src="/logo.png"
-          alt="GoalSense Logo"
-          width={40}
-          height={40}
-          className="drop-shadow-[0_0_10px_rgba(16,185,129,0.7)]"
-          priority
-        />
-        <span className="font-bold text-lg bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-          GoalSense.
-        </span>
-      </Link>
+      <Link href="/#generator" className="flex items-center gap-2">
+  <Image
+    src="/logomain.png"
+    alt="GoalSense"
+    width={46}
+    height={46}
+    className="h-[46px] w-[46px] object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.35)]"
+    priority
+  />
 
-      {/* Menu */}
+  <span className="text-xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+    GoalSense.
+  </span>
+</Link>
+
+      {/* Menu */}        
       <div className="flex items-center gap-4">
         {user ? (
   <div className="flex items-center gap-3">
