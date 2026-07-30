@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { UserProvider } from "@/context/UserContext";
 import OrganizationSchema from "./organization-schema";
 import WebsiteSchema from "./website-schema";
+import WebApplicationSchema from "./webapplication-schema";
 
 export const metadata: Metadata = {
   title: "GoalSense | Smart Football Prediction Generator",
@@ -63,6 +64,7 @@ export default function RootLayout({
       <body className="bg-black text-white antialiased">
         <OrganizationSchema />
         <WebsiteSchema />
+        <WebApplicationSchema />
 
         <UserProvider>
           {children}

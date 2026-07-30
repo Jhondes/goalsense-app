@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ArticleSchema from "@/components/ArticleSchema";
 
 export const metadata: Metadata = {
   title: "Over 2.5 Predictions Today | GoalSense",
@@ -21,6 +23,27 @@ export const metadata: Metadata = {
 
 export default function Over25Predictions() {
   return (
+    <>
+    <BreadcrumbSchema
+  items={[
+    {
+      name: "Home",
+      url: "https://goalsense.live",
+    },
+    {
+      name: "Over 2.5 Predictions",
+      url: "https://goalsense.live/over-2.5-predictions",
+    },
+  ]}
+/>
+
+<ArticleSchema
+  headline="Over 2.5 Goals Predictions"
+  description="Generate Over 2.5 Goals football predictions, accumulator tips and high-scoring match selections using GoalSense."
+  url="https://goalsense.live/over-2.5-predictions"
+  datePublished="2026-07-30"
+  dateModified="2026-07-30"
+/>
     <main className="max-w-5xl mx-auto px-6 py-16">
 
       <h1 className="text-4xl md:text-5xl font-bold mb-8">
@@ -188,5 +211,6 @@ export default function Over25Predictions() {
       </div>
 
     </main>
+    </>
   );
 }

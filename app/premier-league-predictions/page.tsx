@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ArticleSchema from "@/components/ArticleSchema";
 
 export const metadata: Metadata = {
   title: "Premier League Predictions Today | GoalSense",
@@ -21,6 +23,27 @@ export const metadata: Metadata = {
 
 export default function PremierLeaguePredictions() {
   return (
+    <>
+    <BreadcrumbSchema
+  items={[
+    {
+      name: "Home",
+      url: "https://goalsense.live",
+    },
+    {
+      name: "Premier League Predictions",
+      url: "https://goalsense.live/premier-league-predictions",
+    },
+  ]}
+/>
+
+<ArticleSchema
+  headline="Premier League Predictions Today"
+  description="Generate Premier League predictions, accumulator tips, Over 2.5 Goals, BTTS and Match Winner selections using GoalSense."
+  url="https://goalsense.live/premier-league-predictions"
+  datePublished="2026-07-30"
+  dateModified="2026-07-30"
+/>
     <main className="max-w-5xl mx-auto px-6 py-16">
 
       <h1 className="text-4xl font-bold mb-6">
@@ -169,5 +192,6 @@ export default function PremierLeaguePredictions() {
       </div>
 
     </main>
+    </>
   );
 }

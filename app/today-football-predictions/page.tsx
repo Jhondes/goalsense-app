@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ArticleSchema from "@/components/ArticleSchema";
+
+
 
 export const metadata: Metadata = {
   title: "Today's Football Predictions & Accumulator Tips | GoalSense",
@@ -24,7 +28,29 @@ export const metadata: Metadata = {
 
 export default function TodayFootballPredictions() {
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16">
+    <>
+      <BreadcrumbSchema
+        items={[
+          {
+            name: "Home",
+            url: "https://goalsense.live",
+          },
+          {
+            name: "Today's Football Predictions",
+            url: "https://goalsense.live/today-football-predictions",
+          },
+        ]}
+      />
+
+      <ArticleSchema
+  headline="Today's Football Predictions"
+  description="Generate today's football predictions, accumulator tips, Over 2.5 Goals, BTTS and Match Winner selections instantly with GoalSense."
+  url="https://goalsense.live/today-football-predictions"
+  datePublished="2026-07-30"
+  dateModified="2026-07-30"
+/>
+
+      <main className="max-w-5xl mx-auto px-6 py-16">
 
       <h1 className="text-4xl font-bold mb-6">
         Today's Football Predictions
@@ -192,6 +218,7 @@ export default function TodayFootballPredictions() {
 
       </section>
 
-    </main>
+          </main>
+    </>
   );
 }

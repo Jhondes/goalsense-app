@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ArticleSchema from "@/components/ArticleSchema";
 
 export const metadata: Metadata = {
   title: "BTTS Predictions Today | GoalSense",
@@ -21,6 +23,27 @@ export const metadata: Metadata = {
 
 export default function BTTSPredictions() {
   return (
+    <>
+    <BreadcrumbSchema
+  items={[
+    {
+      name: "Home",
+      url: "https://goalsense.live",
+    },
+    {
+      name: "BTTS Predictions",
+      url: "https://goalsense.live/btts-predictions",
+    },
+  ]}
+/>
+
+<ArticleSchema
+  headline="BTTS Predictions Today"
+  description="Generate Both Teams To Score predictions, football betting tips and accumulator selections using GoalSense."
+  url="https://goalsense.live/btts-predictions"
+  datePublished="2026-07-30"
+  dateModified="2026-07-30"
+/>
     <main className="max-w-5xl mx-auto px-6 py-16">
 
       <h1 className="text-4xl md:text-5xl font-bold mb-8">
@@ -192,5 +215,6 @@ export default function BTTSPredictions() {
       </div>
 
     </main>
+    </>
   );
 }
