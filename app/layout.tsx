@@ -66,11 +66,12 @@ export default function RootLayout({
         <OrganizationSchema />
         <WebsiteSchema />
         <WebApplicationSchema />
-        <AppLoader />
 
-        <UserProvider>
-          {children}
-        </UserProvider>
+       <AppLoader>
+  <UserProvider>
+    {children}
+  </UserProvider>
+</AppLoader>
       </body>
     </html>
   );

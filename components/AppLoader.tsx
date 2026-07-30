@@ -3,23 +3,31 @@
 import { useEffect, useState } from "react";
 import SplashScreen from "./SplashScreen";
 
-export default function AppLoader() {
-  const [showSplash, setShowSplash] = useState(false);
+export default function AppLoader({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [showSplash, setShowSplash] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !sessionStorage.getItem("gs-splash");
+  });
 
   useEffect(() => {
-    // Only show once per browser tab
-    if (sessionStorage.getItem("gs-splash")) return;
+    if (!showSplash) return;
 
     sessionStorage.setItem("gs-splash", "true");
-
-    setShowSplash(true);
 
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 950);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [showSplash]);
 
-  return <SplashScreen show={showSplash} />;
+  if (showSplash) {
+    return <SplashScreen show={true} />;
+  }
+
+  return <>{children}</>;
 }
