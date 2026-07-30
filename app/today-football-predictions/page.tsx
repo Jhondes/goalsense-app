@@ -3,6 +3,7 @@ import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import ArticleSchema from "@/components/ArticleSchema";
+import Breadcrumb from "@/components/Breadcrumb";
 
 
 
@@ -51,6 +52,18 @@ export default function TodayFootballPredictions() {
 />
 
       <main className="max-w-5xl mx-auto px-6 py-16">
+
+      <Breadcrumb
+  items={[
+    {
+      name: "Home",
+      href: "/",
+    },
+    {
+      name: "Today's Football Predictions",
+    },
+  ]}
+/>
 
       <h1 className="text-4xl font-bold mb-6">
         Today's Football Predictions

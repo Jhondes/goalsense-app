@@ -3,6 +3,7 @@ import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import ArticleSchema from "@/components/ArticleSchema";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "BTTS Predictions Today | GoalSense",
@@ -45,6 +46,18 @@ export default function BTTSPredictions() {
   dateModified="2026-07-30"
 />
     <main className="max-w-5xl mx-auto px-6 py-16">
+
+    <Breadcrumb
+  items={[
+    {
+        name: "Home",
+        href: "/",
+    },
+    {
+        name: "BTTS Predictions",
+    },
+  ]}
+/>
 
       <h1 className="text-4xl md:text-5xl font-bold mb-8">
         Today's BTTS Predictions
