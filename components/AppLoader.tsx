@@ -16,7 +16,7 @@ export default function AppLoader() {
 
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 650);
+    }, 950);
 
     return () => clearTimeout(timer);
   }, []);
