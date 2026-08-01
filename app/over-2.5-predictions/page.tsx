@@ -106,6 +106,18 @@ export default function Over25Predictions() {
       </p>
 
       <h2 className="text-3xl font-bold mt-16 mb-5">
+  How to Use GoalSense
+</h2>
+
+<ol className="space-y-4 list-decimal pl-6 text-gray-300 leading-8 mb-10">
+  <li>Select today's football fixtures.</li>
+  <li>Choose <strong>Over 2.5 Goals</strong> as your preferred market.</li>
+  <li>Pick the number of selections you want.</li>
+  <li>Generate your prediction slip instantly.</li>
+  <li>Copy, lock or share your accumulator.</li>
+</ol>
+
+      <h2 className="text-3xl font-bold mt-16 mb-5">
         Tips for Betting Over 2.5 Goals
       </h2>
 
@@ -146,9 +158,18 @@ export default function Over25Predictions() {
 
       </div>
 
+      
+
       <h2 className="text-3xl font-bold mt-16 mb-5">
-        Why Choose GoalSense?
-      </h2>
+  Why Football Bettors Choose GoalSense
+</h2>
+
+<p className="text-gray-300 leading-8 mb-8">
+GoalSense helps users save time by organizing today's football fixtures into
+easy-to-build prediction slips. Instead of manually checking dozens of matches,
+users can generate football selections within seconds while filtering leagues,
+markets and the number of picks they prefer.
+</p>
 
       <ul className="space-y-3 list-disc pl-6 text-gray-300">
         <li>Generate Over 2.5 predictions in seconds.</li>
@@ -177,6 +198,48 @@ export default function Over25Predictions() {
         </Link>
 
       </div>
+
+      <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
+
+<h2 className="text-3xl font-bold mb-6">
+Explore More Football Predictions
+</h2>
+
+<p className="text-gray-400 mb-6">
+Looking for different football markets? Explore more prediction pages below.
+</p>
+
+<div className="flex flex-col gap-3">
+
+<Link
+href="/today-football-predictions"
+className="text-green-400 hover:text-green-300"
+>
+Today's Football Predictions →
+</Link>
+
+<Link
+href="/btts-predictions"
+className="text-green-400 hover:text-green-300"
+>
+BTTS Predictions →
+</Link>
+
+<Link
+href="/premier-league-predictions"
+className="text-green-400 hover:text-green-300"
+>
+Premier League Predictions →
+</Link>
+
+</div>
+
+</div>
+
+<p className="text-gray-300 leading-8 mb-8">
+Below are answers to some of the most common questions about Over 2.5 Goals betting
+and how GoalSense helps users generate football predictions and accumulator slips.
+</p>
 
       <h2 className="text-3xl font-bold mt-20 mb-6">
         Frequently Asked Questions

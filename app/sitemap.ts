@@ -15,11 +15,6 @@ const pages = [
     priority: 0.9,
   },
 
-  {
-    path: "/login",
-    changeFrequency: "monthly",
-    priority: 0.5,
-  },
 
   {
     path: "/contact",
