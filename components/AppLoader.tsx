@@ -8,14 +8,18 @@ export default function AppLoader({
 }: {
   children: React.ReactNode;
 }) {
-  const [showSplash, setShowSplash] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return !sessionStorage.getItem("gs-splash");
-  });
+  // null = we haven't checked sessionStorage yet
+  const [showSplash, setShowSplash] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!showSplash) return;
+    const seenSplash = sessionStorage.getItem("gs-splash");
 
+    if (seenSplash) {
+      setShowSplash(false);
+      return;
+    }
+
+    setShowSplash(true);
     sessionStorage.setItem("gs-splash", "true");
 
     const timer = setTimeout(() => {
@@ -23,7 +27,12 @@ export default function AppLoader({
     }, 950);
 
     return () => clearTimeout(timer);
-  }, [showSplash]);
+  }, []);
+
+  // Wait until the client has checked sessionStorage
+  if (showSplash === null) {
+    return null;
+  }
 
   if (showSplash) {
     return <SplashScreen show={true} />;

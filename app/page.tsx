@@ -10,6 +10,7 @@ import ResponsibleGamingBanner from "@/components/ResponsibleGamingBanner";
 import WhyChooseGoalSense from "@/components/WhyChooseGoalSense";
 import FAQ from "@/components/FAQ";
 import AboutSection from "@/components/AboutSection";
+import VaultStats from "@/components/VaultStats";
 
 
 
@@ -44,6 +45,13 @@ export default function Home() {
             >
               Start Generating
             </a>
+          </section>
+
+          {/* ===========================
+              GOALSENSE VAULT
+          ============================ */}
+          <section className="relative z-10">
+            <VaultStats />
           </section>
 
           {/* GENERATOR SECTION */}

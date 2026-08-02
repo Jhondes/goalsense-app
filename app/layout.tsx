@@ -7,6 +7,7 @@ import WebApplicationSchema from "./webapplication-schema";
 import AppLoader from "@/components/AppLoader";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
+
 export const metadata: Metadata = {
   title: "GoalSense | Smart Football Prediction Generator",
   description:

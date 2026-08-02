@@ -73,3 +73,60 @@ html {
 .animate-shake {
   animation: shake 0.3s ease;
 }
+
+
+/* ===========================
+   GOALSENSE VAULT PROGRESS
+=========================== */
+
+@keyframes vaultGlow {
+  0% {
+    box-shadow:
+      0 0 6px rgba(16,185,129,.45),
+      0 0 12px rgba(16,185,129,.35);
+  }
+
+  50% {
+    box-shadow:
+      0 0 18px rgba(16,185,129,.9),
+      0 0 36px rgba(16,185,129,.7),
+      0 0 60px rgba(16,185,129,.45);
+  }
+
+  100% {
+    box-shadow:
+      0 0 6px rgba(16,185,129,.45),
+      0 0 12px rgba(16,185,129,.35);
+  }
+}
+
+@keyframes vaultShimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.vault-progress {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+  animation: vaultGlow 2.2s ease-in-out infinite;
+}
+
+.vault-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255,255,255,.45) 50%,
+    transparent 80%
+  );
+
+  animation: vaultShimmer 2.6s linear infinite;
+}
