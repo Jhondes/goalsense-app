@@ -9,6 +9,7 @@ import PredictionLinks from "@/components/PredictionLinks";
 import ResponsibleGamingBanner from "@/components/ResponsibleGamingBanner";
 import WhyChooseGoalSense from "@/components/WhyChooseGoalSense";
 import FAQ from "@/components/FAQ";
+import AboutSection from "@/components/AboutSection";
 
 
 
@@ -33,8 +34,7 @@ export default function Home() {
             </h1>
 
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Generate intelligent football markets using advanced filters,
-              league selection.
+              Generate smarter football predictions using advanced data analysis, powerful filters, and intelligent league selection.
             </p>
 
             {/* Anchor scroll (no JS needed) */}
@@ -66,18 +66,24 @@ export default function Home() {
   <FAQ />
 </section>
 
-          {/* SEO CONTENT */}
-          <SeoContent />
+
+
+{/* SEO CONTENT */}
+<SeoContent />
 
         </main>
-      </div>
+            </div>
 
-      <section className="max-w-4xl mx-auto px-6 py-12">
-  <PredictionLinks />
+      {/* ABOUT GOALSENSE */}
+<section className="relative z-10 py-16">
+  <AboutSection />
 </section>
 
+      <section className="max-w-4xl mx-auto px-6 py-12">
+        <PredictionLinks />
+      </section>
 
-<Footer />
+      <Footer />
     </>
   );
 }
