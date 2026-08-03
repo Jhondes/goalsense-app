@@ -113,7 +113,7 @@ export default function VaultStats() {
   }, []);
 
   const progress = useMemo(() => {
-    const goal = 100;
+    const goal = 500;
 
     return Math.min((stats.totalMatches / goal) * 100, 100);
   }, [stats.totalMatches]);
