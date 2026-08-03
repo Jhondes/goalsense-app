@@ -159,12 +159,10 @@ export default function VaultStats() {
             <div className="mt-3 flex flex-wrap items-center gap-3">
 
               <p className="text-gray-400">
-                Matches Available Right Now
+                Matches in the Vault
               </p>
 
-              <span className="rounded-full border border-green-500/30 bg-green-500/20 px-3 py-1 text-xs font-bold text-green-300">
-                LIVE
-              </span>
+              
 
             </div>
 
@@ -181,7 +179,7 @@ export default function VaultStats() {
   </div>
 
   <span className="font-semibold tracking-wide text-green-300">
-    SYSTEM ONLINE
+    Vault Active
   </span>
 
 </div>
@@ -213,7 +211,7 @@ export default function VaultStats() {
 
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
 
           <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
 
@@ -239,21 +237,11 @@ export default function VaultStats() {
 
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
-
-            <p className="text-sm text-gray-400">
-              🕒 Last Update
-            </p>
-
-            <p className="mt-2 font-semibold text-white">
-              {lastUpdated}
-            </p>
-
-          </div>
+          
 
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8">
 
   {/* Vault Status */}
   <div
@@ -288,7 +276,7 @@ export default function VaultStats() {
   <div className="flex items-center justify-between">
 
     <span className="text-gray-400">
-      Last Sync
+      Vault Updated
     </span>
 
     <span
@@ -322,18 +310,7 @@ export default function VaultStats() {
 
   </div>
 
-  {/* GoalSense Intelligence */}
-  <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-5">
-
-    <h3 className="font-bold text-cyan-300">
-      GoalSense Intelligence
-    </h3>
-
-    <p className="mt-3 text-gray-300">
-      Every uploaded match is analysed before becoming available inside the GoalSense generator.
-    </p>
-
-  </div>
+  
 
 </div>
 
