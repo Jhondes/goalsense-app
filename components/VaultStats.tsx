@@ -24,6 +24,10 @@ export default function VaultStats() {
   const [showNewBadge, setShowNewBadge] = useState(false);
   const [newMatches, setNewMatches] = useState(0);
 
+  const [vaultStatus, setVaultStatus] = useState(
+  "Monitoring active. Waiting for new uploads..."
+);
+
   const badgeTimer = useRef<NodeJS.Timeout | null>(null);
 
   async function loadStats() {
@@ -39,19 +43,24 @@ export default function VaultStats() {
       setStats(data);
 
       if (previousCount !== 0 && data.totalMatches > previousCount) {
-        const added = data.totalMatches - previousCount;
+  const added = data.totalMatches - previousCount;
 
-        setNewMatches(added);
-        setShowNewBadge(true);
+  setNewMatches(added);
+  setShowNewBadge(true);
 
-        if (badgeTimer.current) {
-          clearTimeout(badgeTimer.current);
-        }
+  setVaultStatus(
+    `${added} new match${added > 1 ? "es" : ""} successfully added to the GoalSense Vault.`
+  );
 
-        badgeTimer.current = setTimeout(() => {
-          setShowNewBadge(false);
-        }, 6000);
-      }
+  if (badgeTimer.current) {
+    clearTimeout(badgeTimer.current);
+  }
+
+  badgeTimer.current = setTimeout(() => {
+    setShowNewBadge(false);
+    setVaultStatus("Monitoring active. Waiting for new uploads...");
+  }, 6000);
+}
 
       setPreviousCount(data.totalMatches);
     } catch (err) {
@@ -246,37 +255,87 @@ export default function VaultStats() {
 
         <div className="mt-8 grid gap-4 md:grid-cols-2">
 
-          <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-5">
+  {/* Vault Status */}
+  <div
+  className={`rounded-2xl border p-5 transition-all duration-500 ${
+  showNewBadge
+    ? "border-yellow-400/50 bg-yellow-500/10 shadow-lg shadow-yellow-500/20"
+    : "border-green-500/20 bg-green-500/10"
+}`}
+>
 
-            <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3">
 
-              <span className="h-3 w-3 animate-pulse rounded-full bg-green-400" />
+      <span
+        className={`h-3 w-3 rounded-full animate-pulse ${
+          showNewBadge ? "bg-yellow-400" : "bg-green-400"
+        }`}
+      />
 
-              <h3 className="font-bold text-green-300">
-                Vault Status
-              </h3>
+      <h3 className="font-bold text-green-300">
+        {showNewBadge ? "NEW DATA DETECTED" : "Vault Status"}
+      </h3>
 
-            </div>
+    </div>
 
-            <p className="mt-3 text-gray-300">
-              Live monitoring active. New football fixtures appear here automatically as soon as they are uploaded.
-            </p>
+    <p className="mt-3 text-gray-300">
+      {vaultStatus}
+    </p>
 
-          </div>
+    <div className="mt-5 border-t border-green-500/20 pt-4 text-sm">
 
-          <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-5">
+  {/* Last Sync */}
+  <div className="flex items-center justify-between">
 
-            <h3 className="font-bold text-cyan-300">
-              GoalSense Intelligence
-            </h3>
+    <span className="text-gray-400">
+      Last Sync
+    </span>
 
-            <p className="mt-3 text-gray-300">
-              Every uploaded match is analysed before becoming available inside the GoalSense generator.
-            </p>
+    <span
+      className={`font-medium ${
+        showNewBadge ? "text-green-300" : "text-white"
+      }`}
+    >
+      {lastUpdated}
+    </span>
 
-          </div>
+  </div>
 
-        </div>
+  {/* Live Feed */}
+  <div className="mt-4 flex items-center justify-between">
+
+    <span className="text-gray-400">
+      Live Feed
+    </span>
+
+    <span
+      className={`font-medium ${
+        showNewBadge ? "text-green-300 animate-pulse" : "text-green-400"
+      }`}
+    >
+      {showNewBadge ? "Receiving Updates..." : "Listening..."}
+    </span>
+
+  </div>
+
+</div>
+
+  </div>
+
+  {/* GoalSense Intelligence */}
+  <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-5">
+
+    <h3 className="font-bold text-cyan-300">
+      GoalSense Intelligence
+    </h3>
+
+    <p className="mt-3 text-gray-300">
+      Every uploaded match is analysed before becoming available inside the GoalSense generator.
+    </p>
+
+  </div>
+
+</div>
 
       </div>
 
