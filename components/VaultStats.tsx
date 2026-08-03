@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type VaultStatsResponse = {
   totalMatches: number;
@@ -20,15 +20,40 @@ export default function VaultStats() {
   const [displayCount, setDisplayCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const [previousCount, setPreviousCount] = useState(0);
+  const [showNewBadge, setShowNewBadge] = useState(false);
+  const [newMatches, setNewMatches] = useState(0);
+
+  const badgeTimer = useRef<NodeJS.Timeout | null>(null);
+
   async function loadStats() {
     try {
       const res = await fetch("/api/vault/stats", {
         cache: "no-store",
       });
 
-      const data = await res.json();
+      if (!res.ok) return;
+
+      const data: VaultStatsResponse = await res.json();
 
       setStats(data);
+
+      if (previousCount !== 0 && data.totalMatches > previousCount) {
+        const added = data.totalMatches - previousCount;
+
+        setNewMatches(added);
+        setShowNewBadge(true);
+
+        if (badgeTimer.current) {
+          clearTimeout(badgeTimer.current);
+        }
+
+        badgeTimer.current = setTimeout(() => {
+          setShowNewBadge(false);
+        }, 6000);
+      }
+
+      setPreviousCount(data.totalMatches);
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,14 +64,11 @@ export default function VaultStats() {
   useEffect(() => {
     loadStats();
 
-    // Refresh every minute so users
-    // automatically see new uploads.
     const interval = setInterval(loadStats, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Animated counter
   useEffect(() => {
     const target = stats.totalMatches;
 
@@ -73,9 +95,16 @@ export default function VaultStats() {
     return () => clearInterval(timer);
   }, [stats.totalMatches]);
 
-  // Progress bar
+  useEffect(() => {
+    return () => {
+      if (badgeTimer.current) {
+        clearTimeout(badgeTimer.current);
+      }
+    };
+  }, []);
+
   const progress = useMemo(() => {
-    const goal = 1000;
+    const goal = 100;
 
     return Math.min((stats.totalMatches / goal) * 100, 100);
   }, [stats.totalMatches]);
@@ -92,12 +121,11 @@ export default function VaultStats() {
   return (
     <section className="relative overflow-hidden rounded-3xl border border-green-500/20 bg-gradient-to-br from-[#0b1220] via-[#10161f] to-[#0c1117] p-8 shadow-2xl">
 
-      {/* Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.18),transparent_45%)]" />
 
       <div className="relative">
 
-        <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
 
           <div>
 
@@ -105,35 +133,57 @@ export default function VaultStats() {
               GoalSense Vault
             </p>
 
-            <h2 className="mt-3 text-3xl md:text-5xl font-black text-white">
-              {loading ? "..." : displayCount.toLocaleString()}
-            </h2>
+            <div className="mt-3 flex flex-wrap items-center gap-4">
 
-            <p className="mt-2 text-gray-400">
-              Matches Available Right Now
-            </p>
+              <h2 className="text-3xl font-black text-white md:text-5xl">
+                {loading ? "..." : displayCount.toLocaleString()}
+              </h2>
+
+              {showNewBadge && (
+                <span className="animate-bounce rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-lg shadow-green-500/40">
+                  +{newMatches} NEW MATCH{newMatches > 1 ? "ES" : ""}
+                </span>
+              )}
+
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+
+              <p className="text-gray-400">
+                Matches Available Right Now
+              </p>
+
+              <span className="rounded-full border border-green-500/30 bg-green-500/20 px-3 py-1 text-xs font-bold text-green-300">
+                LIVE
+              </span>
+
+            </div>
 
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2">
+          <div className="relative flex items-center gap-3 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-2 shadow-lg shadow-green-500/10">
 
-            <span className="h-3 w-3 rounded-full bg-green-400 animate-pulse" />
+  <div className="relative flex h-3 w-3 items-center justify-center">
 
-            <span className="text-green-300 font-semibold">
-              LIVE DATABASE
-            </span>
+    <span className="absolute h-3 w-3 rounded-full bg-green-400 animate-ping" />
 
-          </div>
+    <span className="relative h-3 w-3 rounded-full bg-green-400" />
+
+  </div>
+
+  <span className="font-semibold tracking-wide text-green-300">
+    SYSTEM ONLINE
+  </span>
+
+</div>
 
         </div>
-
-        {/* Progress */}
 
         <div className="mt-8">
 
           <div className="mb-2 flex justify-between text-sm text-gray-400">
 
-            <span>GOALSENSE VAULT</span>
+            <span>Today's Vault Coverage</span>
 
             <span>{progress.toFixed(0)}%</span>
 
@@ -142,47 +192,45 @@ export default function VaultStats() {
           <div className="h-4 overflow-hidden rounded-full bg-[#202630]">
 
             <div
-  className="vault-progress relative h-full rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 transition-all duration-700"
-  style={{
-    width: `${progress}%`,
-  }}
->
-  <span className="vault-shimmer" />
-</div>
+              className="vault-progress relative h-full rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 transition-all duration-700"
+              style={{
+                width: `${progress}%`,
+              }}
+            >
+              <span className="vault-shimmer" />
+            </div>
 
           </div>
 
         </div>
 
-        {/* Cards */}
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-
-          <div className="rounded-2xl border border-white/5 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
 
             <p className="text-sm text-gray-400">
               🌍 Leagues
             </p>
 
-            <h3 className="mt-2 text-3xl font-bold text-white">
+            <h3 className="mt-2 text-3xl font-black text-white">
               {stats.leagues}
             </h3>
 
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
 
             <p className="text-sm text-gray-400">
               🎯 Markets
             </p>
 
-            <h3 className="mt-2 text-3xl font-bold text-white">
+            <h3 className="mt-2 text-3xl font-black text-white">
               {stats.markets}
             </h3>
 
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
 
             <p className="text-sm text-gray-400">
               🕒 Last Update
@@ -196,12 +244,37 @@ export default function VaultStats() {
 
         </div>
 
-        <div className="mt-8 rounded-xl border border-green-500/20 bg-green-500/10 p-4">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
 
-          <p className="text-green-300 font-semibold">
-            📦 Fresh football matches are uploaded regularly.
-            Visit often so you never miss newly available fixtures.
-          </p>
+          <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-5">
+
+            <div className="flex items-center gap-3">
+
+              <span className="h-3 w-3 animate-pulse rounded-full bg-green-400" />
+
+              <h3 className="font-bold text-green-300">
+                Vault Status
+              </h3>
+
+            </div>
+
+            <p className="mt-3 text-gray-300">
+              Live monitoring active. New football fixtures appear here automatically as soon as they are uploaded.
+            </p>
+
+          </div>
+
+          <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-5">
+
+            <h3 className="font-bold text-cyan-300">
+              GoalSense Intelligence
+            </h3>
+
+            <p className="mt-3 text-gray-300">
+              Every uploaded match is analysed before becoming available inside the GoalSense generator.
+            </p>
+
+          </div>
 
         </div>
 

@@ -1,78 +1,48 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-console.log("SUPABASE URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log(
-  "SERVICE ROLE EXISTS:",
-  !!process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.SUPABASE_SERVICE_ROLE_KEY as string
 );
 
 export async function GET() {
   try {
-    // Total matches currently available
-    const { count: totalMatches, error: matchesError } = await supabase
+    const { data, error } = await supabase
       .from("matches")
-      .select("*", {
-        count: "exact",
-        head: true,
-      });
+      .select("league, market, created_at");
 
-    if (matchesError) throw matchesError;
+    if (error) throw error;
 
-    // Get leagues
-    const { data: leaguesData, error: leaguesError } = await supabase
-      .from("matches")
-      .select("league");
+    const matches = data ?? [];
 
-    if (leaguesError) throw leaguesError;
+    const leagues = new Set(
+      matches
+        .map((m) => m.league)
+        .filter(Boolean)
+    ).size;
 
-    // Get markets
-    const { data: marketsData, error: marketsError } = await supabase
-      .from("matches")
-      .select("market");
+    const markets = new Set(
+      matches
+        .map((m) => m.market)
+        .filter(Boolean)
+    ).size;
 
-    if (marketsError) throw marketsError;
-
-    // Latest uploaded match
-    const { data: latestMatch, error: latestError } = await supabase
-      .from("matches")
-      .select("created_at")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .single();
-
-    if (latestError && latestError.code !== "PGRST116") {
-      throw latestError;
-    }
-
-    // Count unique leagues
-    const leagues = [
-      ...new Set(
-        (leaguesData ?? [])
-          .map((item) => item.league)
-          .filter(Boolean)
-      ),
-    ].length;
-
-    // Count unique markets
-    const markets = [
-      ...new Set(
-        (marketsData ?? [])
-          .map((item) => item.market)
-          .filter(Boolean)
-      ),
-    ].length;
+    const lastUpdated =
+      matches.length > 0
+        ? matches
+            .sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+            )[0].created_at
+        : null;
 
     return NextResponse.json({
-      totalMatches: totalMatches ?? 0,
+      totalMatches: matches.length,
       leagues,
       markets,
-      lastUpdated: latestMatch?.created_at ?? null,
+      lastUpdated,
     });
   } catch (error) {
     console.error("Vault Stats Error:", error);
@@ -84,9 +54,7 @@ export async function GET() {
         markets: 0,
         lastUpdated: null,
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }

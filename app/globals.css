@@ -130,3 +130,25 @@ html {
 
   animation: vaultShimmer 2.6s linear infinite;
 }
+
+.vault-radar{
+    position:absolute;
+    inset:0;
+    border-radius:9999px;
+    background:conic-gradient(
+        transparent 0deg,
+        rgba(34,197,94,.85) 35deg,
+        transparent 70deg
+    );
+
+    animation:radarRotate 4s linear infinite;
+}
+
+@keyframes radarRotate{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
