@@ -63,6 +63,9 @@ export default function VaultStats() {
 }
 
       setPreviousCount(data.totalMatches);
+      if (data.totalMatches > 0 && previousCount === 0) {
+  setVaultStatus("Vault active. Monitoring for new uploads...");
+}
     } catch (err) {
       console.error(err);
     } finally {
@@ -192,7 +195,7 @@ export default function VaultStats() {
 
             <span>Today's Vault Coverage</span>
 
-            <span>{progress.toFixed(0)}%</span>
+            <span>{Math.round(progress)}%</span>
 
           </div>
 
