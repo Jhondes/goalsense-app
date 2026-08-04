@@ -11,6 +11,7 @@ import WhyChooseGoalSense from "@/components/WhyChooseGoalSense";
 import FAQ from "@/components/FAQ";
 import AboutSection from "@/components/AboutSection";
 import VaultStats from "@/components/VaultStats";
+import VaultVideo from "@/components/VaultVideo";
 
 
 
@@ -54,14 +55,24 @@ export default function Home() {
             <VaultStats />
           </section>
 
+
+          
+
           {/* GENERATOR SECTION */}
           <section id="generator" className="relative z-20 scroll-mt-32">
             <GeneratorForm />
           </section>
 
+          
+
           {/* HOW IT WORKS */}
           <section className="relative z-10">
             <HowItWorks />
+          </section>
+
+          {/* HOW TO USE GOALSENSE VIDEO */}
+          <section className="relative z-10">
+            <VaultVideo />
           </section>
 
           {/* WHY CHOOSE GOALSENSE */}

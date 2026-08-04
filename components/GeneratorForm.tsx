@@ -51,6 +51,7 @@ const risk = getRiskLevel(filters.count);
 const [showAdvanced, setShowAdvanced] = useState(false);
 const [showPremiumModal, setShowPremiumModal] = useState(false);
 const resultsRef = useRef<HTMLDivElement | null>(null);
+const generatorRef = useRef<HTMLDivElement>(null);
 const [justGenerated, setJustGenerated] = useState(false);
 const [premiumReason, setPremiumReason] = useState<"locks" | "advanced" | null>(null);
 
@@ -146,8 +147,9 @@ return (
 
 {/* Generator Panel */}
 <div
-id="generator"
-className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] transition space-y-4"
+  id="generator"
+  ref={generatorRef}
+  className="relative z-10 mt-10 bg-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] transition space-y-4"
 >
 
 <Filters
@@ -440,34 +442,31 @@ Generate a slip targeting a specific total odds
 
 
 {results.length === 0 && !loading && (
-  <div className="mx-auto max-w-2xl rounded-3xl border border-gray-700 bg-gradient-to-b from-gray-900 to-gray-950 px-6 py-10 sm:px-10 text-center shadow-xl">
-
-    {/* Icon */}
-    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
-      <SparklesIcon className="h-8 w-8 text-green-400" />
+  <div className="relative mt-8 overflow-hidden rounded-2xl border border-green-500/20 bg-green-500/5 px-5 py-4">
+    
+    {/* Animated background glow */}
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-green-500/20 blur-3xl animate-pulse" />
+      <div
+        className="absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-emerald-400/20 blur-3xl animate-pulse"
+        style={{ animationDelay: "1.2s" }}
+      />
+      <div
+        className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-3xl animate-pulse"
+        style={{ animationDelay: "2.2s" }}
+      />
     </div>
 
-    {/* Badge */}
-    <div className="mt-6 inline-flex items-center rounded-full border border-green-500/20 bg-green-500/10 px-5 py-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.35em] text-green-400">
-        Ready to Win
-      </span>
+    {/* Content */}
+    <div className="relative z-10">
+      <h3 className="font-bold text-white">
+        Ready to get started?
+      </h3>
+
+      <p className="mt-1 text-sm text-gray-400">
+        Generate your picks and see what GoalSense finds.
+      </p>
     </div>
-
-    {/* Heading */}
-    <h3 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
-      Create Your Smart Slip
-    </h3>
-
-    {/* Description */}
-    <p className="mx-auto mt-5 max-w-xl text-base sm:text-lg leading-8 text-gray-400">
-      Choose your filters, select the number of picks, and let{" "}
-      <span className="font-semibold text-green-400">
-        GoalSense
-      </span>{" "}
-      instantly generate intelligent football predictions powered by today's
-      fixtures.
-    </p>
 
   </div>
 )}
