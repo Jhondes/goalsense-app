@@ -293,21 +293,29 @@ export default function VaultStats() {
   </div>
 
   {/* Live Feed */}
-  <div className="mt-4 flex items-center justify-between">
+<div className="mt-4 flex items-center justify-between">
 
-    <span className="text-gray-400">
-      Live Feed
+  <span className="text-gray-400">
+    Live Feed
+  </span>
+
+  <div className="flex items-center gap-2">
+
+    <span className="text-green-400 animate-pulse">
+      ◉
     </span>
 
     <span
       className={`font-medium ${
-        showNewBadge ? "text-green-300 animate-pulse" : "text-green-400"
+        showNewBadge ? "text-green-300" : "text-green-400"
       }`}
     >
       {showNewBadge ? "Receiving Updates..." : "Listening..."}
     </span>
 
   </div>
+
+</div>
 
 </div>
 
