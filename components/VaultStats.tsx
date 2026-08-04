@@ -193,7 +193,7 @@ export default function VaultStats() {
 
           <div className="mb-2 flex justify-between text-sm text-gray-400">
 
-            <span>Today's Vault Coverage</span>
+            <span>Vault Coverage</span>
 
             <span>{Math.round(progress)}%</span>
 
