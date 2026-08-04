@@ -56,23 +56,23 @@ export default function VaultVideo() {
 
       {/* Text */}
       <div>
-        <p className="font-bold text-white">
-          New to GoalSense?
-        </p>
+  <p className="text-sm font-bold text-white sm:text-base">
+    New to GoalSense?
+  </p>
 
-        <p className="text-sm text-gray-400">
-          Watch our quick tutorial to see how it works.
-        </p>
-      </div>
+  <p className="mt-1 max-w-[170px] text-xs leading-5 text-gray-400 sm:text-sm">
+    Watch our quick tutorial to see how it works.
+  </p>
+</div>
 
     </div>
 
     {/* Watch button */}
     <button
-      type="button"
-      onClick={() => setPlaying(true)}
-      className="group relative flex shrink-0 items-center gap-2.5 overflow-hidden rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-2.5 text-sm font-bold text-white shadow-[0_0_18px_rgba(34,197,94,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300/60 hover:bg-green-500/20 hover:shadow-[0_0_25px_rgba(34,197,94,0.25)]"
-    >
+  type="button"
+  onClick={() => setPlaying(true)}
+  className="group relative flex shrink-0 items-center gap-2 overflow-hidden rounded-xl border border-green-400/30 bg-green-500/10 px-3 py-2 text-xs font-bold text-white shadow-[0_0_18px_rgba(34,197,94,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300/60 hover:bg-green-500/20 hover:shadow-[0_0_25px_rgba(34,197,94,0.25)] sm:px-4 sm:py-2.5 sm:text-sm"
+>
 
       {/* Button glow */}
       <span className="absolute inset-0 bg-gradient-to-r from-green-400/0 via-green-400/10 to-green-400/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
