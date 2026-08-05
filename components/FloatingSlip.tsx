@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 import { saveSlip } from "@/lib/saveSlip";
 
 export default function FloatingSlip({ results, totalOdds }: any) {
-
   const [saved, setSaved] = useState(false);
 
-  // ✅ Reset whenever a new slip is generated
+  // Reset whenever a new slip is generated
   useEffect(() => {
     setSaved(false);
   }, [results]);
@@ -15,7 +14,10 @@ export default function FloatingSlip({ results, totalOdds }: any) {
   if (!results.length) return null;
 
   const slipText = results
-    .map((r: any) => `${r.home} vs ${r.away} — ${r.market} (${r.odds})`)
+    .map(
+      (r: any) =>
+        `${r.home} vs ${r.away} — ${r.market} (${r.odds})`
+    )
     .join("\n");
 
   const text = `GoalSense Bet Slip
@@ -27,106 +29,137 @@ Total Odds: ${totalOdds}
 Generated with GoalSense.live`;
 
   const copySlip = async () => {
-  if (!saved) {
-    await saveSlip(results, totalOdds);
-    setSaved(true);
-  }
+    if (!saved) {
+      await saveSlip(results, totalOdds);
+      setSaved(true);
+    }
 
-  await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text);
 
-  alert("Slip copied!");
-};
+    alert("Slip copied!");
+  };
 
   const shareSlip = async () => {
-  if (!saved) {
-    await saveSlip(results, totalOdds);
-    setSaved(true);
-  }
-
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "GoalSense Bet Slip",
-        text,
-      });
-    } catch {
-      console.log("Share cancelled");
+    if (!saved) {
+      await saveSlip(results, totalOdds);
+      setSaved(true);
     }
-  } else {
-    await navigator.clipboard.writeText(text);
-    alert("Sharing not supported. Slip copied instead.");
-  }
-};
 
-  return (
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "GoalSense Bet Slip",
+          text,
+        });
+      } catch {
+        console.log("Share cancelled");
+      }
+    } else {
+      await navigator.clipboard.writeText(text);
+      alert("Sharing not supported. Slip copied instead.");
+    }
+  };
+
+return (
   <div
     className="
-fixed bottom-6 left-1/2 -translate-x-1/2
-bg-gray-900 border border-green-500
-rounded-xl px-4 py-3
-flex flex-wrap items-center justify-center gap-2 sm:gap-4
-w-[95%] max-w-xl
-shadow-[0_0_25px_rgba(34,197,94,0.4)]
-backdrop-blur
-z-50
-"
+      mt-3
+      w-full
+      flex
+      items-center
+      justify-center
+    "
   >
-
-      <div className="text-sm">
-        <span className="text-green-400 font-semibold">
-          ⚽ {results.length} Picks
-        </span>
-      </div>
-
-      <div className="flex flex-col items-center">
-  <span className="text-xs text-gray-400">
-    Total Odds
-  </span>
-
-  <span className="text-lg font-bold text-green-400">
-    {totalOdds}
-  </span>
-</div>
-
-      {/* Copy Button */}
-      <button
-        onClick={copySlip}
-        className="
-          bg-green-600 px-4 py-1 rounded-lg
-          hover:bg-green-500 transition
-        "
-      >
-        Copy Slip
-      </button>
-
-      {/* Share Button */}
-      <button
-        onClick={shareSlip}
-        className="
-          bg-emerald-500 px-4 py-1 rounded-lg
-          hover:bg-emerald-400 transition
-        "
-      >
-        Share Slip
-      </button>
-
-      <button
+    {/* Filters */}
+    <button
   onClick={() =>
     document
       .getElementById("generator")
       ?.scrollIntoView({ behavior: "smooth" })
   }
   className="
-bg-slate-700
-hover:bg-slate-600
-px-4 py-1
-rounded-lg
-transition
+  group relative
+  flex items-center justify-center gap-2
+  rounded-xl
+  border border-green-500/40
+  bg-gradient-to-r from-green-500/10 via-emerald-500/5 to-green-500/10
+  px-6 py-2.5
+  text-sm font-bold text-green-400
+  shadow-[0_0_12px_rgba(34,197,94,0.12)]
+  backdrop-blur-sm
+  transition-all duration-300
+  hover:border-green-400
+  hover:bg-green-500/15
+  hover:text-green-300
+  hover:shadow-[0_0_22px_rgba(34,197,94,0.3)]
+  active:scale-95
+  outline-none
+  ring-0
+  focus:outline-none
+  focus:ring-0
+  focus-visible:outline-none
+  focus-visible:ring-0
 "
 >
-  ⚙️ Filters
-</button>
+  {/* Subtle animated glow */}
+  <span
+    className="
+      pointer-events-none absolute inset-0
+      rounded-xl
+      bg-gradient-to-r
+      from-transparent
+      via-green-400/10
+      to-transparent
+      opacity-0
+      transition-opacity duration-300
+      group-hover:opacity-100
+    "
+  />
 
-    </div>
-  );
+  {/* Filter icon */}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="
+      relative z-10
+      h-4.5 w-4.5
+      transition-transform duration-300
+      group-hover:rotate-90
+    "
+  >
+    <path d="M4 6h16" />
+    <path d="M7 12h10" />
+    <path d="M10 18h4" />
+  </svg>
+
+  <span className="relative z-10">
+    Filters
+  </span>
+
+  {/* Small premium chevron */}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    className="
+      relative z-10
+      h-4 w-4
+      opacity-60
+      transition-all duration-300
+      group-hover:translate-x-1
+      group-hover:opacity-100
+    "
+  >
+    <path
+      fillRule="evenodd"
+      d="M7.21 14.77a.75.75 0 0 1 .02-1.06L10.94 10 7.23 6.29a.75.75 0 1 1 1.06-1.06l4.24 4.24a.75.75 0 0 1 0 1.06l-4.24 4.24a.75.75 0 0 1-1.06-.02Z"
+      clipRule="evenodd"
+    />
+  </svg>
+</button>
+  </div>
+);      
 }
