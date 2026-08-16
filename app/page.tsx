@@ -12,6 +12,7 @@ import FAQ from "@/components/FAQ";
 import AboutSection from "@/components/AboutSection";
 import VaultStats from "@/components/VaultStats";
 import VaultVideo from "@/components/VaultVideo";
+import PremiumSlip from "@/components/PremiumSlip";
 
 
 
@@ -63,7 +64,10 @@ export default function Home() {
             <GeneratorForm />
           </section>
 
-          
+          {/* PREMIUM SLIP OF THE DAY */}
+<section className="relative z-10">
+  <PremiumSlip />
+</section>
 
           {/* HOW IT WORKS */}
           <section className="relative z-10">

@@ -15,6 +15,22 @@ type Match = {
   date: string;
 };
 
+type PremiumSlip = {
+  id: string;
+  slip_date: string;
+  title: string;
+  booking_code: string | null;
+  matches: {
+    home: string;
+    away: string;
+    market: string;
+    odds: number;
+  }[];
+  total_odds: number;
+  is_active: boolean;
+  created_at?: string;
+};
+
 export default function AdminPage() {
   const [form, setForm] = useState({
     home: "",
@@ -47,6 +63,36 @@ const [premiumUsers, setPremiumUsers] = useState(0);
 
 const [generatedSlips, setGeneratedSlips] = useState(0);
 
+// ================= PREMIUM SLIP =================
+
+const [premiumSlipTitle, setPremiumSlipTitle] = useState("");
+const [premiumSlipDate, setPremiumSlipDate] = useState("");
+const [premiumBookingCode, setPremiumBookingCode] = useState("");
+
+const [editingPremiumSlipId, setEditingPremiumSlipId] = useState<string | null>(null);
+
+const [premiumMatches, setPremiumMatches] = useState<
+  {
+    home: string;
+    away: string;
+    market: string;
+    odds: string;
+  }[]
+>([
+  {
+    home: "",
+    away: "",
+    market: "",
+    odds: "",
+  },
+]);
+
+const [premiumSlipLoading, setPremiumSlipLoading] = useState(false);
+
+const [premiumSlips, setPremiumSlips] = useState<PremiumSlip[]>([]);
+const [premiumSlipsLoading, setPremiumSlipsLoading] = useState(false);
+
+
 
 const [stats, setStats] = useState({
   totalPremiumUsers: 0,
@@ -65,6 +111,7 @@ const [stats, setStats] = useState({
   useEffect(() => {
   fetchMatches();
   loadDashboardStats();
+  fetchPremiumSlips();
 }, []);
 
 
@@ -108,27 +155,46 @@ const today =
 
   // ✅ FIXED: Properly closed function
   async function fetchMatches() {
-    const { data, error } = await supabase
-      .from("matches")
-      .select("*")
-      .order("created_at", { ascending: false });
+  const { data, error } = await supabase
+    .from("matches")
+    .select(`
+      id,
+      home_team,
+      away_team,
+      league,
+      market,
+      odds,
+      match_date
+    `)
+    .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Fetch error:", error);
-    } else {
-      setMatches(
-        (data || []).map((m: any) => ({
-          id: m.id,
-          home: m.home_team,
-          away: m.away_team,
-          league: m.league,
-          market: m.market,
-          odds: m.odds,
-          date: m.match_date ? String(m.match_date).split("T")[0] : "",
-        }))
-      );
-    }
+  if (error) {
+    console.error("FETCH MATCHES ERROR");
+    console.error("Message:", error.message);
+    console.error("Details:", error.details);
+    console.error("Hint:", error.hint);
+    console.error("Code:", error.code);
+
+    alert(`Fetch error: ${error.message}`);
+    return;
   }
+
+  console.log("MATCHES FROM DATABASE:", data);
+
+  setMatches(
+    (data || []).map((m: any) => ({
+      id: m.id,
+      home: m.home_team,
+      away: m.away_team,
+      league: m.league,
+      market: m.market,
+      odds: m.odds,
+      date: m.match_date
+        ? String(m.match_date).split("T")[0]
+        : "",
+    }))
+  );
+}
 
   // ✅ MOVED OUTSIDE (FIX)
   async function testDB() {
@@ -374,6 +440,250 @@ async function grantPremium() {
   } catch (err) {
     console.error(err);
     alert("Something went wrong ❌");
+  }
+}
+
+// ================= PREMIUM SLIP FUNCTIONS =================
+async function fetchPremiumSlips() {
+  setPremiumSlipsLoading(true);
+
+  try {
+    const response = await fetch(
+      "/api/admin/publish-premium-slip"
+    );
+
+    const result = await response.json();
+
+    console.log("Premium slips:", result);
+
+    if (!response.ok) {
+      console.error("Premium slips fetch failed:", result);
+      return;
+    }
+
+    setPremiumSlips(result.data || []);
+  } catch (error) {
+    console.error("Fetch premium slips error:", error);
+  } finally {
+    setPremiumSlipsLoading(false);
+  }
+}
+
+function addPremiumMatch() {
+  setPremiumMatches((prev) => [
+    ...prev,
+    {
+      home: "",
+      away: "",
+      market: "",
+      odds: "",
+    },
+  ]);
+}
+
+function removePremiumMatch(index: number) {
+  setPremiumMatches((prev) =>
+    prev.filter((_, i) => i !== index)
+  );
+}
+
+function updatePremiumMatch(
+  index: number,
+  field: "home" | "away" | "market" | "odds",
+  value: string
+) {
+  setPremiumMatches((prev) =>
+    prev.map((match, i) =>
+      i === index
+        ? {
+            ...match,
+            [field]: value,
+          }
+        : match
+    )
+  );
+}
+
+function calculatePremiumTotalOdds() {
+  return premiumMatches.reduce((total, match) => {
+    const odds = Number(match.odds);
+
+    if (!odds || odds <= 0) {
+      return total;
+    }
+
+    return total * odds;
+  }, 1);
+}
+
+function editPremiumSlip(slip: PremiumSlip) {
+  setEditingPremiumSlipId(slip.id);
+
+  setPremiumSlipDate(slip.slip_date);
+  setPremiumSlipTitle(slip.title);
+  setPremiumBookingCode(slip.booking_code || "");
+
+  setPremiumMatches(
+    slip.matches.map((match) => ({
+      home: match.home,
+      away: match.away,
+      market: match.market,
+      odds: String(match.odds),
+    }))
+  );
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+async function deletePremiumSlip(id: string) {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this Premium Slip?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const response = await fetch(
+      "/api/admin/publish-premium-slip",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.error || "Could not delete Premium Slip ❌");
+      return;
+    }
+
+    alert("Premium Slip deleted successfully ✅");
+
+    // If we were editing this slip, cancel edit mode
+    if (editingPremiumSlipId === id) {
+      setEditingPremiumSlipId(null);
+      setPremiumSlipDate("");
+      setPremiumSlipTitle("");
+      setPremiumBookingCode("");
+
+      setPremiumMatches([
+        {
+          home: "",
+          away: "",
+          market: "",
+          odds: "",
+        },
+      ]);
+    }
+
+    await fetchPremiumSlips();
+  } catch (error) {
+    console.error("Delete premium slip error:", error);
+    alert("Something went wrong ❌");
+  }
+}
+
+
+async function publishPremiumSlip() {
+  if (!premiumSlipDate) {
+    alert("Please select a date ❌");
+    return;
+  }
+
+  if (!premiumSlipTitle.trim()) {
+    alert("Please enter a slip title ❌");
+    return;
+  }
+
+  const validMatches = premiumMatches.filter(
+    (match) =>
+      match.home.trim() &&
+      match.away.trim() &&
+      match.market.trim() &&
+      Number(match.odds) > 0
+  );
+
+  if (validMatches.length === 0) {
+    alert("Please add at least one valid match ❌");
+    return;
+  }
+
+  setPremiumSlipLoading(true);
+
+  try {
+    const totalOdds = validMatches.reduce(
+      (total, match) => total * Number(match.odds),
+      1
+    );
+
+    const response = await fetch("/api/admin/publish-premium-slip", {
+  method: editingPremiumSlipId ? "PATCH" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+  ...(editingPremiumSlipId
+    ? { id: editingPremiumSlipId }
+    : {}),
+  slip_date: premiumSlipDate,
+        title: premiumSlipTitle.trim(),
+        booking_code: premiumBookingCode.trim() || null,
+        matches: validMatches.map((match) => ({
+          home: match.home.trim(),
+          away: match.away.trim(),
+          market: match.market.trim(),
+          odds: Number(match.odds),
+        })),
+        total_odds: Number(totalOdds.toFixed(2)),
+      }),
+    });
+
+    const result = await response.json();
+
+    console.log("Premium slip publish status:", response.status);
+    console.log("Premium slip publish result:", result);
+
+    if (!response.ok) {
+      alert(result.error || "Could not publish Premium Slip ❌");
+      return;
+    }
+
+   alert(
+  editingPremiumSlipId
+    ? "Premium Slip updated successfully ✅"
+    : "Premium Slip published successfully ✅"
+);
+
+// Reset form
+setEditingPremiumSlipId(null);
+setPremiumSlipDate("");
+setPremiumSlipTitle("");
+setPremiumBookingCode("");
+
+setPremiumMatches([
+  {
+    home: "",
+    away: "",
+    market: "",
+    odds: "",
+  },
+]);
+
+await fetchPremiumSlips();
+  } catch (error) {
+    console.error("Premium slip error:", error);
+    alert("Something went wrong ❌");
+  } finally {
+    setPremiumSlipLoading(false);
   }
 }
 
@@ -652,6 +962,521 @@ if (!authorized) {
         </button>
       </div>
 
+{/* ================= PREMIUM SLIP ================= */}
+
+<div
+  style={{
+    width: "100%",
+    maxWidth: "500px",
+    marginTop: "20px",
+    padding: "20px",
+    backgroundColor: "#2a2a2a",
+    borderRadius: "10px",
+  }}
+>
+  <h2
+    style={{
+      marginBottom: "5px",
+      fontSize: "22px",
+      fontWeight: "bold",
+      color: "#facc15",
+    }}
+  >
+    Premium Slip
+  </h2>
+
+  <p
+    style={{
+      color: "#999",
+      fontSize: "13px",
+      marginBottom: "20px",
+    }}
+  >
+    Publish today's exclusive Premium accumulator.
+  </p>
+
+  {/* DATE */}
+
+  <label
+    style={{
+      display: "block",
+      marginBottom: "5px",
+      color: "#ccc",
+      fontSize: "14px",
+    }}
+  >
+    Slip Date
+  </label>
+
+  <input
+    type="date"
+    value={premiumSlipDate}
+    onChange={(e) => setPremiumSlipDate(e.target.value)}
+    style={inputStyle}
+  />
+
+  {/* TITLE */}
+
+  <label
+    style={{
+      display: "block",
+      marginTop: "12px",
+      marginBottom: "5px",
+      color: "#ccc",
+      fontSize: "14px",
+    }}
+  >
+    Slip Title
+  </label>
+
+  <input
+    type="text"
+    placeholder="e.g. Today's Premium Accumulator"
+    value={premiumSlipTitle}
+    onChange={(e) => setPremiumSlipTitle(e.target.value)}
+    style={inputStyle}
+  />
+
+  {/* BOOKING CODE */}
+
+  <label
+    style={{
+      display: "block",
+      marginTop: "12px",
+      marginBottom: "5px",
+      color: "#ccc",
+      fontSize: "14px",
+    }}
+  >
+    Booking Code
+  </label>
+
+  <input
+    type="text"
+    placeholder="Optional"
+    value={premiumBookingCode}
+    onChange={(e) =>
+      setPremiumBookingCode(e.target.value)
+    }
+    style={inputStyle}
+  />
+
+  {/* MATCHES */}
+
+  <div style={{ marginTop: "20px" }}>
+
+    <h3
+      style={{
+        fontSize: "16px",
+        fontWeight: "bold",
+        marginBottom: "10px",
+        color: "white",
+      }}
+    >
+      Matches
+    </h3>
+
+    {premiumMatches.map((match, index) => (
+      <div
+        key={index}
+        style={{
+          backgroundColor: "#1e1e1e",
+          padding: "15px",
+          borderRadius: "8px",
+          marginBottom: "12px",
+          border: "1px solid #444",
+        }}
+      >
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "8px",
+          }}
+        >
+          <span
+            style={{
+              color: "#facc15",
+              fontWeight: "bold",
+            }}
+          >
+            Match {index + 1}
+          </span>
+
+          {premiumMatches.length > 1 && (
+            <button
+              type="button"
+              onClick={() =>
+                removePremiumMatch(index)
+              }
+              style={{
+                backgroundColor: "#f44336",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                padding: "5px 8px",
+                cursor: "pointer",
+                fontSize: "12px",
+              }}
+            >
+              Remove
+            </button>
+          )}
+        </div>
+
+        {/* HOME */}
+
+        <input
+          type="text"
+          placeholder="Home Team"
+          value={match.home}
+          onChange={(e) =>
+            updatePremiumMatch(
+              index,
+              "home",
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
+        {/* AWAY */}
+
+        <input
+          type="text"
+          placeholder="Away Team"
+          value={match.away}
+          onChange={(e) =>
+            updatePremiumMatch(
+              index,
+              "away",
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
+        {/* MARKET */}
+
+        <input
+          type="text"
+          placeholder="Market e.g. Over 1.5"
+          value={match.market}
+          onChange={(e) =>
+            updatePremiumMatch(
+              index,
+              "market",
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
+        {/* ODDS */}
+
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Odds"
+          value={match.odds}
+          onChange={(e) =>
+            updatePremiumMatch(
+              index,
+              "odds",
+              e.target.value
+            )
+          }
+          style={inputStyle}
+        />
+
+      </div>
+    ))}
+
+    {/* ADD MATCH */}
+
+    <button
+      type="button"
+      onClick={addPremiumMatch}
+      style={{
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#444",
+        color: "white",
+        border: "1px solid #666",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      + Add Another Match
+    </button>
+
+  </div>
+
+  {/* TOTAL ODDS PREVIEW */}
+
+  <div
+    style={{
+      marginTop: "15px",
+      padding: "15px",
+      backgroundColor: "#151515",
+      borderRadius: "8px",
+      border: "1px solid #444",
+      textAlign: "center",
+    }}
+  >
+    <p
+      style={{
+        color: "#999",
+        fontSize: "13px",
+        marginBottom: "5px",
+      }}
+    >
+      Total Odds
+    </p>
+
+    <p
+      style={{
+        fontSize: "28px",
+        fontWeight: "bold",
+        color: "#4caf50",
+      }}
+    >
+      {calculatePremiumTotalOdds().toFixed(2)}
+    </p>
+  </div>
+
+  {/* PUBLISH */}
+
+  {editingPremiumSlipId && (
+  <button
+    type="button"
+    onClick={() => {
+      setEditingPremiumSlipId(null);
+      setPremiumSlipDate("");
+      setPremiumSlipTitle("");
+      setPremiumBookingCode("");
+
+      setPremiumMatches([
+        {
+          home: "",
+          away: "",
+          market: "",
+          odds: "",
+        },
+      ]);
+    }}
+    style={{
+      width: "100%",
+      marginTop: "10px",
+      padding: "10px",
+      backgroundColor: "#555",
+      color: "white",
+      border: "none",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+    }}
+  >
+    Cancel Edit
+  </button>
+)}
+
+  <button
+    type="button"
+    onClick={publishPremiumSlip}
+    disabled={premiumSlipLoading}
+    style={{
+      width: "100%",
+      marginTop: "15px",
+      padding: "13px",
+      backgroundColor: premiumSlipLoading
+        ? "#555"
+        : "#facc15",
+      color: "black",
+      border: "none",
+      borderRadius: "6px",
+      cursor: premiumSlipLoading
+        ? "not-allowed"
+        : "pointer",
+      fontWeight: "bold",
+      fontSize: "15px",
+    }}
+  >
+    {premiumSlipLoading
+  ? editingPremiumSlipId
+    ? "Updating..."
+    : "Publishing..."
+  : editingPremiumSlipId
+  ? "Update Premium Slip"
+  : "Publish Premium Slip"}
+  </button>
+
+</div>
+
+{/* ================= EXISTING PREMIUM SLIPS ================= */}
+
+<div
+  style={{
+    width: "100%",
+    maxWidth: "500px",
+    marginTop: "20px",
+    padding: "20px",
+    backgroundColor: "#2a2a2a",
+    borderRadius: "10px",
+  }}
+>
+  <h2
+    style={{
+      marginBottom: "15px",
+      fontSize: "20px",
+      fontWeight: "bold",
+      color: "#facc15",
+    }}
+  >
+    Existing Premium Slips
+  </h2>
+
+  {premiumSlipsLoading ? (
+    <p style={{ color: "#999" }}>
+      Loading Premium Slips...
+    </p>
+  ) : premiumSlips.length === 0 ? (
+    <p style={{ color: "#999" }}>
+      No Premium Slips found.
+    </p>
+  ) : (
+    premiumSlips.map((slip) => (
+      <div
+        key={slip.id}
+        style={{
+          backgroundColor: "#1e1e1e",
+          padding: "15px",
+          borderRadius: "8px",
+          marginBottom: "12px",
+          border: slip.is_active
+            ? "1px solid #facc15"
+            : "1px solid #444",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "8px",
+          }}
+        >
+          <strong
+            style={{
+              color: "#facc15",
+              fontSize: "16px",
+            }}
+          >
+            {slip.title}
+          </strong>
+
+          <span
+            style={{
+              fontSize: "12px",
+              color: slip.is_active
+                ? "#4caf50"
+                : "#777",
+            }}
+          >
+            {slip.is_active ? "ACTIVE" : "INACTIVE"}
+          </span>
+        </div>
+
+        <p
+          style={{
+            color: "#aaa",
+            fontSize: "13px",
+            marginBottom: "5px",
+          }}
+        >
+          Date: {slip.slip_date}
+        </p>
+
+        <p
+          style={{
+            color: "#4caf50",
+            fontWeight: "bold",
+            marginBottom: "5px",
+          }}
+        >
+          Total Odds: {Number(slip.total_odds).toFixed(2)}
+        </p>
+
+        {slip.booking_code && (
+          <p
+            style={{
+              color: "#aaa",
+              fontSize: "13px",
+              marginBottom: "10px",
+            }}
+          >
+            Booking Code: {slip.booking_code}
+          </p>
+        )}
+
+        <p
+          style={{
+            color: "#aaa",
+            fontSize: "13px",
+            marginBottom: "12px",
+          }}
+        >
+          {slip.matches.length} match
+          {slip.matches.length !== 1 ? "es" : ""}
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => editPremiumSlip(slip)}
+            style={{
+              flex: 1,
+              padding: "9px",
+              backgroundColor: "#2196f3",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            onClick={() => deletePremiumSlip(slip.id)}
+            style={{
+              flex: 1,
+              padding: "9px",
+              backgroundColor: "#f44336",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ))
+  )}
+</div>
 
       {/* USER UPGRADE SECTION */}
 <div
