@@ -919,23 +919,7 @@ if (!authorized) {
 
 
 
-   {/* Generated Slips */}
-  <div
-    style={{
-      background: "#2a2a2a",
-      padding: "20px",
-      borderRadius: "10px",
-      textAlign: "center",
-    }}
-  >
-    <p style={{ color: "#aaa", marginBottom: "8px" }}>
-      Saved Slips
-    </p>
-
-    <h2 style={{ fontSize: "32px", color: "#f59e0b" }}>
-      {generatedSlips}
-    </h2>
-  </div>
+   
 </div>
 
 
