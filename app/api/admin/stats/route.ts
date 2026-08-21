@@ -7,37 +7,122 @@ export async function GET() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Total subscriptions ever
-  const { count: totalSubscriptions } = await supabase
+  // =====================================================
+  // GET ALL SUBSCRIPTIONS
+  // =====================================================
+
+  const { data: subscriptions, error } = await supabase
     .from("subscriptions")
-    .select("*", { count: "exact", head: true });
+    .select(`
+      id,
+      user_id,
+      amount,
+      started_at,
+      expires_at,
+      created_at
+    `)
+    .order("created_at", { ascending: true });
 
-  // Unique premium users (first-time subscribers)
-  const { data: users } = await supabase
-    .from("subscriptions")
-    .select("user_id");
+  if (error) {
+    console.error("SUBSCRIPTIONS FETCH ERROR:", error);
 
-  const uniqueUsers = new Set(users?.map((u) => u.user_id) ?? []);
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
+  }
 
-  // Returning subscriptions
-  const renewals =
-    (totalSubscriptions ?? 0) - uniqueUsers.size;
+  const allSubscriptions = subscriptions ?? [];
 
-  // Revenue
-  const { data: revenueRows } = await supabase
-    .from("subscriptions")
-    .select("amount");
+  // =====================================================
+  // TOTAL SUBSCRIPTIONS
+  // =====================================================
 
-  const totalRevenue =
-    revenueRows?.reduce(
-      (sum, row) => sum + Number(row.amount),
-      0
-    ) ?? 0;
+  const totalSubscriptions = allSubscriptions.length;
+
+  // =====================================================
+  // UNIQUE USERS
+  // =====================================================
+
+  const uniqueUsers = new Set(
+    allSubscriptions.map((subscription) => subscription.user_id)
+  );
+
+  const totalUniqueUsers = uniqueUsers.size;
+
+  // =====================================================
+  // RENEWALS
+  // =====================================================
+
+  // Every subscription after a user's first subscription
+  // counts as a renewal.
+
+  const renewalSubscriptions =
+    totalSubscriptions - totalUniqueUsers;
+
+  // =====================================================
+  // FIND LATEST SUBSCRIPTION FOR EACH USER
+  // =====================================================
+
+  const latestSubscriptionByUser =
+    new Map<string, (typeof allSubscriptions)[number]>();
+
+  for (const subscription of allSubscriptions) {
+    const existing = latestSubscriptionByUser.get(
+      subscription.user_id
+    );
+
+    if (
+      !existing ||
+      new Date(subscription.created_at).getTime() >
+        new Date(existing.created_at).getTime()
+    ) {
+      latestSubscriptionByUser.set(
+        subscription.user_id,
+        subscription
+      );
+    }
+  }
+
+  // =====================================================
+  // EXPIRED USERS
+  // =====================================================
+
+  const now = new Date();
+
+  let expiredSubscribers = 0;
+
+  for (const subscription of latestSubscriptionByUser.values()) {
+    if (!subscription.expires_at) {
+      continue;
+    }
+
+    const expiresAt = new Date(subscription.expires_at);
+
+    if (expiresAt.getTime() < now.getTime()) {
+      expiredSubscribers++;
+    }
+  }
+
+  // =====================================================
+  // REVENUE
+  // =====================================================
+
+  const totalRevenue = allSubscriptions.reduce(
+    (sum, subscription) =>
+      sum + Number(subscription.amount || 0),
+    0
+  );
+
+  // =====================================================
+  // RESPONSE
+  // =====================================================
 
   return NextResponse.json({
-    totalPremiumUsers: uniqueUsers.size,
-    firstTimeSubscribers: uniqueUsers.size,
-    renewalSubscriptions: renewals,
+    totalPremiumUsers: totalUniqueUsers,
+    firstTimeSubscribers: totalUniqueUsers,
+    renewalSubscriptions,
+    expiredSubscribers,
     totalSubscriptions,
     totalRevenue,
   });

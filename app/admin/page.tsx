@@ -98,6 +98,7 @@ const [stats, setStats] = useState({
   totalPremiumUsers: 0,
   firstTimeSubscribers: 0,
   renewalSubscriptions: 0,
+  expiredSubscribers: 0,
   totalSubscriptions: 0,
   totalRevenue: 0,
 });
@@ -829,6 +830,37 @@ if (!authorized) {
     </h2>
   </div>
 
+    {/* EXPIRED */}
+  <div
+    style={{
+      background: "#2a2a2a",
+      padding: "20px",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ color: "#aaa" }}>Expired</p>
+
+    <h2
+      style={{
+        color: "#f44336",
+        fontSize: "30px",
+      }}
+    >
+      {stats.expiredSubscribers}
+    </h2>
+
+    <p
+      style={{
+        color: "#777",
+        fontSize: "12px",
+        marginTop: "5px",
+      }}
+    >
+      Not Renewed
+    </p>
+  </div>
+
   <div
     style={{
       background: "#2a2a2a",
@@ -857,6 +889,8 @@ if (!authorized) {
     </h2>
   </div>
 </div>
+
+
 
         <div
   style={{
