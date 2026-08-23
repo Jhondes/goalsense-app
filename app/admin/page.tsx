@@ -104,6 +104,14 @@ const [stats, setStats] = useState({
 });
 
 
+const [premiumPerformance, setPremiumPerformance] = useState<
+  {
+    slip_date: string;
+    status: "pending" | "won" | "lost";
+  }[]
+>([]);
+
+const [performanceLoading, setPerformanceLoading] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -112,7 +120,13 @@ const [stats, setStats] = useState({
   useEffect(() => {
   fetchMatches();
   loadDashboardStats();
-  fetchPremiumSlips();
+
+  const loadPremiumData = async () => {
+    await fetchPremiumSlips();
+    await fetchPremiumPerformance();
+  };
+
+  loadPremiumData();
 }, []);
 
 
@@ -154,6 +168,115 @@ const today =
   setGeneratedSlips(slipsCount ?? 0);
 }
 
+
+const fetchPremiumPerformance = async () => {
+  try {
+    // Get performance records
+    const performanceResponse = await fetch(
+      "/api/admin/premium-performance"
+    );
+
+    const performanceResult =
+      await performanceResponse.json();
+
+    if (!performanceResponse.ok) {
+      throw new Error(
+        performanceResult.error ||
+          "Failed to fetch performance"
+      );
+    }
+
+    // Get currently existing Premium Slips
+    const slipsResponse = await fetch(
+      "/api/admin/publish-premium-slip"
+    );
+
+    const slipsResult = await slipsResponse.json();
+
+    if (!slipsResponse.ok) {
+      throw new Error(
+        slipsResult.error ||
+          "Failed to fetch Premium Slips"
+      );
+    }
+
+    // Dates of Premium Slips that actually exist
+    const activeSlipDates = new Set(
+      (slipsResult.data || []).map(
+        (slip: PremiumSlip) => slip.slip_date
+      )
+    );
+
+    // Keep only performance records that still
+    // belong to an existing Premium Slip
+    const recentPerformance = (
+      performanceResult.data || []
+    )
+      .filter((performance: any) =>
+        activeSlipDates.has(performance.slip_date)
+      )
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.slip_date).getTime() -
+          new Date(b.slip_date).getTime()
+      )
+      .slice(-5);
+
+    setPremiumPerformance(recentPerformance);
+  } catch (error) {
+    console.error(
+      "Fetch premium performance error:",
+      error
+    );
+  }
+};
+
+const updatePremiumPerformance = async (
+  slipDate: string,
+  status: "pending" | "won" | "lost"
+) => {
+  try {
+    setPerformanceLoading(true);
+
+    const response = await fetch(
+      "/api/admin/premium-performance",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          slip_date: slipDate,
+          status,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.error || "Failed to update performance"
+      );
+    }
+
+    await fetchPremiumPerformance();
+
+  } catch (error) {
+    console.error(
+      "Update premium performance error:",
+      error
+    );
+
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Failed to update performance"
+    );
+  } finally {
+    setPerformanceLoading(false);
+  }
+};
   // ✅ FIXED: Properly closed function
   async function fetchMatches() {
   const { data, error } = await supabase
@@ -663,6 +786,41 @@ async function publishPremiumSlip() {
     ? "Premium Slip updated successfully ✅"
     : "Premium Slip published successfully ✅"
 );
+
+   if (!editingPremiumSlipId) {
+  try {
+    const performanceResponse = await fetch(
+      "/api/admin/premium-performance",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          slip_date: premiumSlipDate,
+          status: "pending",
+        }),
+      }
+    );
+
+    const performanceResult =
+      await performanceResponse.json();
+
+    if (!performanceResponse.ok) {
+      console.error(
+        "Failed to create Premium Slip performance:",
+        performanceResult
+      );
+    } else {
+      await fetchPremiumPerformance();
+    }
+  } catch (error) {
+    console.error(
+      "Premium Slip performance creation error:",
+      error
+    );
+  }
+}
 
 // Reset form
 setEditingPremiumSlipId(null);
@@ -1335,6 +1493,267 @@ if (!authorized) {
 </div>
 
 {/* ================= EXISTING PREMIUM SLIPS ================= */}
+
+{/* ================= PREMIUM SLIP PERFORMANCE ================= */}
+
+<div
+  style={{
+    width: "100%",
+    maxWidth: "700px",
+    marginTop: "25px",
+    padding: "20px",
+    backgroundColor: "#2a2a2a",
+    borderRadius: "10px",
+    border: "1px solid #3a3a3a",
+  }}
+>
+  <h2
+    style={{
+      marginBottom: "5px",
+      fontSize: "22px",
+      fontWeight: "bold",
+      color: "#facc15",
+    }}
+  >
+    Premium Slip Performance
+  </h2>
+
+  <p
+    style={{
+      color: "#999",
+      fontSize: "13px",
+      marginBottom: "20px",
+    }}
+  >
+    Mark the result of each Premium accumulator.
+  </p>
+
+  {premiumPerformance.length === 0 ? (
+    <div
+      style={{
+        padding: "20px",
+        backgroundColor: "#1e1e1e",
+        borderRadius: "8px",
+        textAlign: "center",
+        color: "#888",
+      }}
+    >
+      No Premium Slip performance recorded yet.
+    </div>
+  ) : (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${Math.min(
+          premiumPerformance.length,
+          5
+        )}, minmax(0, 1fr))`,
+        gap: "8px",
+        width: "100%",
+      }}
+    >
+      {premiumPerformance.map((performance) => {
+        const date = new Date(
+          `${performance.slip_date}T00:00:00`
+        );
+
+        const formattedDate = date.toLocaleDateString(
+          "en-GB",
+          {
+            day: "2-digit",
+            month: "short",
+          }
+        );
+
+        return (
+          <div
+            key={performance.slip_date}
+            style={{
+              minWidth: 0,
+              padding: "12px 6px",
+              backgroundColor: "#1e1e1e",
+              borderRadius: "8px",
+              border: "1px solid #3d3d3d",
+              textAlign: "center",
+            }}
+          >
+            {/* DATE */}
+
+            <div
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "13px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {formattedDate}
+            </div>
+
+            {/* PREMIUM SLIP */}
+
+            <div
+              style={{
+                color: "#777",
+                fontSize: "10px",
+                marginTop: "3px",
+                marginBottom: "10px",
+              }}
+            >
+              Premium Slip
+            </div>
+
+            {/* CURRENT STATUS */}
+
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: "bold",
+                marginBottom: "9px",
+                color:
+                  performance.status === "won"
+                    ? "#4ade80"
+                    : performance.status === "lost"
+                    ? "#f87171"
+                    : "#facc15",
+              }}
+            >
+              {performance.status === "won"
+                ? "🟢 WON"
+                : performance.status === "lost"
+                ? "🔴 LOST"
+                : "🟡 PENDING"}
+            </div>
+
+            {/* STATUS BUTTONS */}
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+              }}
+            >
+              {/* PENDING */}
+
+              <button
+                type="button"
+                onClick={() =>
+                  updatePremiumPerformance(
+                    performance.slip_date,
+                    "pending"
+                  )
+                }
+                disabled={performanceLoading}
+                style={{
+                  width: "100%",
+                  padding: "6px 4px",
+                  borderRadius: "5px",
+                  border:
+                    performance.status === "pending"
+                      ? "1px solid #eab308"
+                      : "1px solid #444",
+                  cursor: performanceLoading
+                    ? "not-allowed"
+                    : "pointer",
+                  fontWeight: "bold",
+                  fontSize: "10px",
+                  backgroundColor:
+                    performance.status === "pending"
+                      ? "#eab308"
+                      : "#292929",
+                  color:
+                    performance.status === "pending"
+                      ? "#000"
+                      : "#999",
+                  opacity: performanceLoading ? 0.6 : 1,
+                }}
+              >
+                🟡 Pending
+              </button>
+
+              {/* WON */}
+
+              <button
+                type="button"
+                onClick={() =>
+                  updatePremiumPerformance(
+                    performance.slip_date,
+                    "won"
+                  )
+                }
+                disabled={performanceLoading}
+                style={{
+                  width: "100%",
+                  padding: "6px 4px",
+                  borderRadius: "5px",
+                  border:
+                    performance.status === "won"
+                      ? "1px solid #22c55e"
+                      : "1px solid #444",
+                  cursor: performanceLoading
+                    ? "not-allowed"
+                    : "pointer",
+                  fontWeight: "bold",
+                  fontSize: "10px",
+                  backgroundColor:
+                    performance.status === "won"
+                      ? "#22c55e"
+                      : "#292929",
+                  color:
+                    performance.status === "won"
+                      ? "#fff"
+                      : "#999",
+                  opacity: performanceLoading ? 0.6 : 1,
+                }}
+              >
+                🟢 Won
+              </button>
+
+              {/* LOST */}
+
+              <button
+                type="button"
+                onClick={() =>
+                  updatePremiumPerformance(
+                    performance.slip_date,
+                    "lost"
+                  )
+                }
+                disabled={performanceLoading}
+                style={{
+                  width: "100%",
+                  padding: "6px 4px",
+                  borderRadius: "5px",
+                  border:
+                    performance.status === "lost"
+                      ? "1px solid #ef4444"
+                      : "1px solid #444",
+                  cursor: performanceLoading
+                    ? "not-allowed"
+                    : "pointer",
+                  fontWeight: "bold",
+                  fontSize: "10px",
+                  backgroundColor:
+                    performance.status === "lost"
+                      ? "#ef4444"
+                      : "#292929",
+                  color:
+                    performance.status === "lost"
+                      ? "#fff"
+                      : "#999",
+                  opacity: performanceLoading ? 0.6 : 1,
+                }}
+              >
+                🔴 Lost
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</div>
 
 <div
   style={{
