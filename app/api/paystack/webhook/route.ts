@@ -134,13 +134,17 @@ export async function POST(req: NextRequest) {
     if (data && data.length > 0) {
       const profile = data[0];
 
+      const startedAt = new Date().toISOString();
+
       const { error: subscriptionError } = await supabase
-        .from("subscriptions")
-        .insert({
-          user_id: profile.id,
-          amount: event.data.amount / 100,
-          expires_at: expiry,
-        });
+  .from("subscriptions")
+  .insert({
+    user_id: profile.id,
+    email: email,
+    amount: event.data.amount / 100,
+    started_at: startedAt,
+    expires_at: expiry,
+  });
 
       console.log(
         "SUBSCRIPTION ERROR:",
