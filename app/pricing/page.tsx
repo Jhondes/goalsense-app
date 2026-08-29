@@ -71,10 +71,10 @@ export default function PricingPage() {
     Premium ⭐
   </h2>
 
-  <p className="text-3xl font-bold">₦2,500 / month</p>
+  <p className="text-3xl font-bold">₦3,000 / month</p>
 
   <p className="text-sm text-green-400 font-medium">
-  ≈ ₦83/day — cheaper than daily data 😅
+  ≈ ₦100/day — Premium Slip included 🎯
 </p>
 
   <ul className="space-y-3 text-sm">

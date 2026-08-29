@@ -18,7 +18,7 @@ export default function UpgradeModal({ open, onClose }: any) {
   }
 
   // ✅ Logged in → send to Paystack WITH email
-  window.location.href = `https://paystack.shop/pay/goalsense-premium?email=${user.email}`;
+  window.location.href = `https://paystack.shop/pay/goalsense-premium-1-month?email=${user.email}`;
 };
 
   return (
