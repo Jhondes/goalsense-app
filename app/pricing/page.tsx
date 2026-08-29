@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import UpgradeModal from "@/components/UpgradeModal";
-
 import { Check } from "lucide-react";
-
-
 
 export default function PricingPage() {
   const [open, setOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-950 text-white px-4 py-10">
       <div className="max-w-5xl mx-auto space-y-10">
@@ -18,6 +16,7 @@ export default function PricingPage() {
           <h1 className="text-3xl font-bold">
             Upgrade to Premium 🚀
           </h1>
+
           <p className="text-gray-400 text-sm">
             Unlock smarter predictions and advanced betting tools
           </p>
@@ -33,26 +32,34 @@ export default function PricingPage() {
             <p className="text-3xl font-bold">₦0</p>
 
             <ul className="space-y-3 text-sm text-gray-300">
-  <li className="flex items-center gap-2">
-    <Check size={16} /> Basic predictions
-  </li>
-  <li className="flex items-center gap-2">
-    <Check size={16} /> Limited markets
-  </li>
-  <li className="flex items-center gap-2">
-    <Check size={16} /> Lock up to 2 picks 🔒
-  </li>
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Basic predictions
+              </li>
 
-  <li className="flex items-center gap-2 text-gray-500 line-through">
-    Lucky Slip
-  </li>
-  <li className="flex items-center gap-2 text-gray-500 line-through">
-    Mixed Markets
-  </li>
-  <li className="flex items-center gap-2 text-gray-500 line-through">
-    Target Odds
-  </li>
-</ul>
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Limited markets
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Lock up to 2 picks 🔒
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-500 line-through">
+                Lucky Slip
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-500 line-through">
+                Mixed Markets
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-500 line-through">
+                Target Odds
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-500 line-through">
+                Premium Slip 🎯
+              </li>
+            </ul>
 
             <button className="w-full py-2 rounded-lg border border-gray-600 text-gray-400 cursor-not-allowed">
               Current Plan
@@ -60,67 +67,118 @@ export default function PricingPage() {
           </div>
 
           {/* PREMIUM PLAN */}
-<div className="relative border border-yellow-500 rounded-xl p-6 space-y-5 bg-yellow-500/5 shadow-[0_0_30px_rgba(234,179,8,0.3)] scale-105">
+          <div className="relative border border-yellow-500 rounded-xl p-6 space-y-5 bg-yellow-500/5 shadow-[0_0_30px_rgba(234,179,8,0.3)] scale-105">
 
-  {/* ⭐ BADGE */}
-  <div className="absolute -top-3 right-4 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-    ⭐ Recommended
-  </div>
+            {/* ⭐ BADGE */}
+            <div className="absolute -top-3 right-4 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
+              ⭐ Recommended
+            </div>
 
-  <h2 className="text-xl font-semibold text-yellow-400">
-    Premium ⭐
-  </h2>
+            <h2 className="text-xl font-semibold text-yellow-400">
+              Premium ⭐
+            </h2>
 
-  <p className="text-3xl font-bold">₦3,000 / month</p>
+            <p className="text-3xl font-bold">From ₦3,000</p>
 
-  <p className="text-sm text-green-400 font-medium">
-  ≈ ₦100/day — Premium Slip included 🎯
-</p>
+            <p className="text-sm text-green-400 font-medium">
+              Premium Slip included 🎯
+            </p>
 
-  <ul className="space-y-3 text-sm">
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Unlimited pick locks 🔒
-    </li>
-    
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Lucky Slip 🎰
-    </li>
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Mixed Markets 🎲
-    </li>
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Target Odds 🎯
-    </li>
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Premium markets access 🔒
-    </li>
-    <li className="flex items-center gap-2">
-      <Check size={16} /> Faster generation ⚡
-    </li>
-  </ul>
+            {/* PLANS */}
+            <div className="space-y-3 pt-2">
 
-  <button
-  onClick={() => setOpen(true)}
-  className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
->
-  🚀 Upgrade & Unlock All Features
-</button>
+              <div className="border border-gray-700 rounded-lg p-3 bg-gray-900/60">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold">1 Month</span>
+                  <span className="text-yellow-400 font-bold">₦3,000</span>
+                </div>
 
-  <UpgradeModal open={open} onClose={() => setOpen(false)} />
+                <p className="text-xs text-gray-400 mt-1">
+                  30 days of Premium access
+                </p>
+              </div>
 
-</div>
+              <div className="border border-yellow-500/50 rounded-lg p-3 bg-yellow-500/10">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold">3 Months</span>
+                  <span className="text-yellow-400 font-bold">₦7,500</span>
+                </div>
 
+                <p className="text-xs text-green-400 mt-1">
+                  Save ₦1,500 • 90 days
+                </p>
+              </div>
+
+              <div className="border border-yellow-500/50 rounded-lg p-3 bg-yellow-500/10">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold">6 Months</span>
+                  <span className="text-yellow-400 font-bold">₦13,500</span>
+                </div>
+
+                <p className="text-xs text-green-400 mt-1">
+                  Save ₦4,500 • 180 days
+                </p>
+              </div>
+
+            </div>
+
+            <ul className="space-y-3 text-sm pt-2">
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Unlimited pick locks 🔒
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Lucky Slip 🎰
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Mixed Markets 🎲
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Target Odds 🎯
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Premium markets access 🔒
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Premium Slip 🎯
+              </li>
+
+              <li className="flex items-center gap-2">
+                <Check size={16} /> Faster generation ⚡
+              </li>
+            </ul>
+
+            <button
+              onClick={() => setOpen(true)}
+              className="w-full py-2 rounded-lg bg-yellow-500 text-black font-semibold hover:bg-yellow-400 transition hover:scale-105"
+            >
+              🚀 Choose Premium Plan
+            </button>
+
+            <UpgradeModal
+              open={open}
+              onClose={() => setOpen(false)}
+            />
+
+          </div>
         </div>
 
         {/* FEATURE COMPARISON */}
         <div className="border border-gray-800 rounded-xl p-6 bg-gray-900">
-          <h3 className="text-lg font-semibold mb-4">Why go Premium?</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Why go Premium?
+          </h3>
 
           <div className="space-y-3 text-sm text-gray-300">
             <p>✔ Higher accuracy predictions</p>
             <p>✔ Access to powerful betting strategies</p>
             <p>✔ Save time with smarter slips</p>
             <p>✔ Unlock hidden markets</p>
+            <p>✔ Access to Premium Slip 🎯</p>
           </div>
         </div>
 
