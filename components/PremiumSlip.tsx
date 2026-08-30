@@ -87,14 +87,14 @@ export default function PremiumSlip() {
       }
 
       const recentPerformances = (
-        result.data || []
-      )
-        .sort(
-  (a: { slip_date: string }, b: { slip_date: string }) =>
-    new Date(a.slip_date).getTime() -
-    new Date(b.slip_date).getTime()
+  result.data || []
 )
-        .slice(0, 4);
+  .sort(
+    (a: { slip_date: string }, b: { slip_date: string }) =>
+      new Date(a.slip_date).getTime() -
+      new Date(b.slip_date).getTime()
+  )
+  .slice(-5);
 
       setPerformance(recentPerformances);
     } catch (error) {
@@ -205,133 +205,137 @@ export default function PremiumSlip() {
    */
 
   const publicPerformance = (
-    <section className="mb-4 overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 via-gray-900 to-gray-950 px-4 py-4 shadow-[0_0_25px_rgba(234,179,8,0.05)]">
+  <section className="mb-4 overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 via-gray-900 to-gray-950 px-3 py-4 sm:px-4 shadow-[0_0_25px_rgba(234,179,8,0.05)]">
 
-      {/* Header */}
+    {/* Header */}
+    <div className="mb-3 flex items-center justify-between">
 
-      <div className="mb-3 flex items-center justify-between">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-yellow-400">
+          Premium Slip Performance
+        </p>
 
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-yellow-400">
-            Premium Slip Performance
-          </p>
-
-          <p className="mt-0.5 text-xs text-gray-500">
-            Recent Results
-          </p>
-        </div>
-
-        <div className="text-lg">
-          🏆
-        </div>
-
+        <p className="mt-0.5 text-xs text-gray-500">
+          Recent Results
+        </p>
       </div>
 
-      {/* Loading */}
+      <div className="text-lg">
+        🏆
+      </div>
 
-      {performanceLoading ? (
-        <div className="grid grid-cols-4 gap-2">
+    </div>
 
-          {Array.from({ length: 4 }).map(
-            (_, index) => (
-              <div
-                key={index}
-                className="text-center"
-              >
-                <div className="mx-auto h-3 w-12 animate-pulse rounded bg-gray-800" />
+    {/* Loading */}
+    {performanceLoading ? (
+      <div className="grid grid-cols-5 gap-1 sm:gap-2">
 
-                <div className="mx-auto mt-2 h-3 w-14 animate-pulse rounded bg-gray-800" />
-              </div>
-            )
-          )}
+        {Array.from({ length: 5 }).map(
+          (_, index) => (
+            <div
+              key={index}
+              className="min-w-0 text-center"
+            >
+              <div className="mx-auto h-3 w-10 sm:w-12 animate-pulse rounded bg-gray-800" />
 
-        </div>
-      ) : performance.length > 0 ? (
-        <div
-          className={`grid gap-1 ${
-            performance.length === 1
-              ? "grid-cols-1"
-              : performance.length === 2
-              ? "grid-cols-2"
-              : performance.length === 3
-              ? "grid-cols-3"
-              : "grid-cols-4"
-          }`}
-        >
+              <div className="mx-auto mt-2 h-3 w-11 sm:w-14 animate-pulse rounded bg-gray-800" />
+            </div>
+          )
+        )}
 
-          {performance.map((item) => {
+      </div>
+    ) : performance.length > 0 ? (
+      <div
+        className={`grid gap-1 ${
+          performance.length === 1
+            ? "grid-cols-1"
+            : performance.length === 2
+            ? "grid-cols-2"
+            : performance.length === 3
+            ? "grid-cols-3"
+            : performance.length === 4
+            ? "grid-cols-4"
+            : "grid-cols-5"
+        }`}
+      >
 
-            const date = new Date(
-              `${item.slip_date}T00:00:00`
+        {performance.map((item) => {
+
+          const date = new Date(
+            `${item.slip_date}T00:00:00`
+          );
+
+          const formattedDate =
+            date.toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+              }
             );
 
-            const formattedDate =
-              date.toLocaleDateString(
-                "en-GB",
-                {
-                  day: "2-digit",
-                  month: "short",
-                }
-              );
+          const statusText =
+            item.status === "won"
+              ? "WON"
+              : item.status === "lost"
+              ? "LOST"
+              : "PENDING";
 
-            const statusText =
-              item.status === "won"
-                ? "WON"
-                : item.status === "lost"
-                ? "LOST"
-                : "PENDING";
+          const statusColor =
+            item.status === "won"
+              ? "text-green-400"
+              : item.status === "lost"
+              ? "text-red-400"
+              : "text-yellow-400";
 
-            const statusColor =
-              item.status === "won"
-                ? "text-green-400"
-                : item.status === "lost"
-                ? "text-red-400"
-                : "text-yellow-400";
+          const statusIcon =
+            item.status === "won"
+              ? "🟢"
+              : item.status === "lost"
+              ? "🔴"
+              : "🟡";
 
-            const statusIcon =
-              item.status === "won"
-                ? "🟢"
-                : item.status === "lost"
-                ? "🔴"
-                : "🟡";
+          return (
+            <div
+              key={item.slip_date}
+              className="min-w-0 rounded-lg px-0.5 py-1.5 text-center transition hover:bg-white/[0.03] sm:px-1"
+            >
 
-            return (
-              <div
-                key={item.slip_date}
-                className="rounded-xl px-1 py-1.5 text-center transition hover:bg-white/[0.03]"
+              {/* DATE */}
+              <p className="truncate text-[10px] font-semibold text-gray-400 sm:text-[11px]">
+                {formattedDate}
+              </p>
+
+              {/* STATUS */}
+              <p
+                className={`mt-1 flex items-center justify-center gap-0.5 text-[9px] font-bold sm:text-[11px] ${statusColor}`}
               >
+                <span className="text-[9px] sm:text-[10px]">
+                  {statusIcon}
+                </span>
 
-                {/* DATE */}
+                <span>
+                  {statusText}
+                </span>
+              </p>
 
-                <p className="text-[11px] font-semibold text-gray-400">
-                  {formattedDate}
-                </p>
+            </div>
+          );
+        })}
 
-                {/* STATUS */}
+      </div>
+    ) : (
+      <div className="py-2 text-center">
 
-                <p
-                  className={`mt-1 text-[11px] font-bold ${statusColor}`}
-                >
-                  {statusIcon} {statusText}
-                </p>
+        <p className="text-xs text-gray-500">
+          No Premium results recorded yet.
+        </p>
 
-              </div>
-            );
-          })}
+      </div>
+    )}
 
-        </div>
-      ) : (
-        <div className="py-2 text-center">
-
-          <p className="text-xs text-gray-500">
-            No Premium results recorded yet.
-          </p>
-
-        </div>
-      )}
-
-    </section>
-  );
+  </section>
+);
 
   /*
    * -----------------------------------------
