@@ -13,6 +13,7 @@ import AboutSection from "@/components/AboutSection";
 import VaultStats from "@/components/VaultStats";
 import VaultVideo from "@/components/VaultVideo";
 import PremiumSlip from "@/components/PremiumSlip";
+import AdBanner from "@/components/AdBanner";
 
 
 
@@ -68,6 +69,9 @@ export default function Home() {
 <section className="relative z-10">
   <PremiumSlip />
 </section>
+
+{/* GOKA SPORTS */}
+<AdBanner />
 
           {/* HOW IT WORKS */}
           <section className="relative z-10">
