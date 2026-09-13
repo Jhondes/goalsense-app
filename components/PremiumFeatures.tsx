@@ -118,9 +118,9 @@ export default function PremiumFeatures() {
   };
 
   return (
-    <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-8 sm:py-10">
+    <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-3 sm:py-5">
       {/* Heading */}
-      <div className="mb-5 flex items-end justify-between gap-4">
+      <div className="mb-3 flex items-end justify-between gap-4">
         <div>
           <div className="mb-2 flex items-center gap-2">
             <span className="h-px w-5 bg-emerald-400" />
@@ -260,7 +260,7 @@ export default function PremiumFeatures() {
       </div>
 
       {/* Dots */}
-      <div className="mt-4 flex justify-center gap-1.5">
+      <div className="mt-2 flex justify-center gap-1.5">
         {features.map((feature, index) => (
           <button
             key={feature.title}

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function AdBanner() {
   return (
-    <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-5">
+    <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-3">
       <a
   href="https://www.goka.ng/?aff=11525"
   target="_blank"
