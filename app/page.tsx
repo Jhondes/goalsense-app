@@ -14,6 +14,7 @@ import VaultStats from "@/components/VaultStats";
 import VaultVideo from "@/components/VaultVideo";
 import PremiumSlip from "@/components/PremiumSlip";
 import AdBanner from "@/components/AdBanner";
+import PremiumFeatures from "@/components/PremiumFeatures";
 
 
 
@@ -69,6 +70,9 @@ export default function Home() {
 <section className="relative z-10">
   <PremiumSlip />
 </section>
+
+{/* PREMIUM FEATURES */}
+<PremiumFeatures />
 
 {/* GOKA SPORTS */}
 <AdBanner />
