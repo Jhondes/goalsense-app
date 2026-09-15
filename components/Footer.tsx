@@ -38,6 +38,22 @@ export default function Footer() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 text-xs tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.3)]">
             ✔ Advanced Market Logic
           </div>
+
+          {/* Social */}
+<a
+  href="https://x.com/GoalSenseApp"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition duration-300 group"
+>
+  <span className="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/5 group-hover:border-emerald-400/40 group-hover:bg-emerald-400/10 transition duration-300">
+    𝕏
+  </span>
+
+  <span className="group-hover:text-emerald-400 transition duration-300">
+    Follow GoalSense on X
+  </span>
+</a>
         </div>
 
         {/* Platform */}
