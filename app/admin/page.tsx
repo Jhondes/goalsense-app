@@ -13,6 +13,7 @@ type Match = {
   market: string;
   odds: string;
   date: string;
+  modelPercentage?: number | null;
 };
 
 type PremiumSlip = {
@@ -33,13 +34,14 @@ type PremiumSlip = {
 
 export default function AdminPage() {
   const [form, setForm] = useState({
-    home: "",
-    away: "",
-    league: "",
-    market: "",
-    odds: "",
-    date: "",
-  });
+  home: "",
+  away: "",
+  league: "",
+  market: "",
+  odds: "",
+  date: "",
+  modelPercentage: "",
+});
 
   const [authorized, setAuthorized] = useState(false);
   const [password, setPassword] = useState("");
@@ -282,14 +284,15 @@ const updatePremiumPerformance = async (
   const { data, error } = await supabase
     .from("matches")
     .select(`
-      id,
-      home_team,
-      away_team,
-      league,
-      market,
-      odds,
-      match_date
-    `)
+  id,
+  home_team,
+  away_team,
+  league,
+  market,
+  odds,
+  match_date,
+  model_percentage
+`)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -306,18 +309,19 @@ const updatePremiumPerformance = async (
   console.log("MATCHES FROM DATABASE:", data);
 
   setMatches(
-    (data || []).map((m: any) => ({
-      id: m.id,
-      home: m.home_team,
-      away: m.away_team,
-      league: m.league,
-      market: m.market,
-      odds: m.odds,
-      date: m.match_date
-        ? String(m.match_date).split("T")[0]
-        : "",
-    }))
-  );
+  (data || []).map((m: any) => ({
+    id: m.id,
+    home: m.home_team,
+    away: m.away_team,
+    league: m.league,
+    market: m.market,
+    odds: m.odds,
+    date: m.match_date
+      ? String(m.match_date).split("T")[0]
+      : "",
+    modelPercentage: m.model_percentage,
+  }))
+);
 }
 
   // ✅ MOVED OUTSIDE (FIX)
@@ -336,16 +340,20 @@ const updatePremiumPerformance = async (
 
   // ✅ MOVED OUTSIDE (FIX)
   async function handleAddMatch() {
-    const { error } = await supabase.from("matches").insert([
-      {
-        home_team: form.home,
-        away_team: form.away,
-        league: form.league,
-        market: form.market,
-        odds: Number(form.odds),
-        match_date: form.date,
-      },
-    ]);
+  const { error } = await supabase.from("matches").insert([
+    {
+      home_team: form.home,
+      away_team: form.away,
+      league: form.league,
+      market: form.market,
+      odds: Number(form.odds),
+      match_date: form.date,
+      model_percentage:
+        form.modelPercentage === ""
+          ? null
+          : Number(form.modelPercentage),
+    },
+  ]);
 
     if (error) {
       alert(error.message);
@@ -383,13 +391,19 @@ async function handleUpdate(id: string) {
   const { data, error } = await supabase
     .from("matches")
     .update({
-      home_team: editForm.home,
-      away_team: editForm.away,
-      league: editForm.league,
-      market: editForm.market,
-      odds: Number(editForm.odds),
-      match_date: editForm.date,
-    })
+  home_team: editForm.home,
+  away_team: editForm.away,
+  league: editForm.league,
+  market: editForm.market,
+  odds: Number(editForm.odds),
+  match_date: editForm.date,
+  model_percentage:
+    editForm.modelPercentage === "" ||
+    editForm.modelPercentage === null ||
+    editForm.modelPercentage === undefined
+      ? null
+      : Number(editForm.modelPercentage),
+})
     .eq("id", id)
     .select();
 
@@ -1091,7 +1105,15 @@ if (!authorized) {
         Logout
       </button>
 
-        {["home", "away", "league", "market", "odds", "date"].map((field) => (
+        {[
+  "home",
+  "away",
+  "league",
+  "market",
+  "odds",
+  "date",
+  "modelPercentage",
+].map((field) => (
           <input
             key={field}
             name={field}
@@ -2025,7 +2047,16 @@ if (!authorized) {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid #555" }}>
-              {["Home", "Away", "League", "Market", "Odds", "Date", "Actions"].map((h) => (
+              {[
+  "Home",
+  "Away",
+  "League",
+  "Market",
+  "Odds",
+  "Model %",
+  "Date",
+  "Actions",
+].map((h) => (
                 <th key={h} style={{ padding: "10px", textAlign: "left" }}>
                   {h}
                 </th>
@@ -2111,6 +2142,29 @@ if (!authorized) {
           m.odds
         )}
       </td>
+
+      {/* MODEL PERCENTAGE */}
+<td style={{ padding: "8px" }}>
+  {editingId === m.id ? (
+    <input
+      type="number"
+      min="0"
+      max="100"
+      value={editForm.modelPercentage ?? ""}
+      onChange={(e) =>
+        setEditForm({
+          ...editForm,
+          modelPercentage: e.target.value,
+        })
+      }
+      style={inputStyle}
+    />
+  ) : (
+    m.modelPercentage != null
+      ? `${m.modelPercentage}%`
+      : "—"
+  )}
+</td>
 
       {/* DATE */}
       <td style={{ padding: "8px" }}>

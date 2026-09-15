@@ -137,6 +137,7 @@ const picks = selected.map((match) => ({
   away: match.away,
   market: match.market,
   odds: match.odds,
+  modelPercentage: match.modelPercentage,
 }));
 
   // ✅ Calculate total odds

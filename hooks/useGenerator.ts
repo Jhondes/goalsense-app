@@ -89,16 +89,17 @@ export function useGenerator() {
       }
 
       const formatted = (data || []).map((m: any) => ({
-        id: m.id,
-        home: m.home_team,
-        away: m.away_team,
-        league: m.league,
-        market: m.market,
-        odds: Number(m.odds),
-        date: m.match_date
-          ? String(m.match_date).split("T")[0]
-          : "",
-      }));
+  id: m.id,
+  home: m.home_team,
+  away: m.away_team,
+  league: m.league,
+  market: m.market,
+  odds: Number(m.odds),
+  date: m.match_date
+    ? String(m.match_date).split("T")[0]
+    : "",
+  modelPercentage: m.model_percentage,
+}));
 
       setMatches(formatted);
     } catch (err) {
@@ -162,7 +163,9 @@ export function useGenerator() {
 
       const data = generatePredictions(filters, filteredMatches);
 
-      await new Promise((res) => setTimeout(res, 1200));
+
+
+await new Promise((res) => setTimeout(res, 1200));
 
       const filtered = data.picks.filter(
         (r: any) =>
