@@ -542,9 +542,33 @@ async function findUser() {
   setUserLoading(false);
 }
 
-// 💎 Grant premium
+ // 💎 Grant premium
 async function grantPremium() {
   if (!userData) return;
+
+  const plan = window.prompt(
+    "Choose Premium plan:\n\n" +
+      "1 = 1 Month — ₦3,000\n" +
+      "2 = 3 Months — ₦7,500\n" +
+      "3 = 6 Months — ₦13,500\n\n" +
+      "Enter 1, 2 or 3:"
+  );
+
+  if (!plan) return;
+
+  let planMonths = 1;
+  let amount = 3000;
+
+  if (plan === "2") {
+    planMonths = 3;
+    amount = 7500;
+  } else if (plan === "3") {
+    planMonths = 6;
+    amount = 13500;
+  } else if (plan !== "1") {
+    alert("Invalid plan selection ❌");
+    return;
+  }
 
   try {
     const res = await fetch("/api/admin/grant-premium", {
@@ -554,6 +578,8 @@ async function grantPremium() {
       },
       body: JSON.stringify({
         userId: userData.id,
+        planMonths,
+        amount,
       }),
     });
 
@@ -563,10 +589,10 @@ async function grantPremium() {
     console.log("RESULT:", result);
 
     if (!res.ok) {
-  console.log("BACKEND ERROR:", result);
-  alert(result.error || "Upgrade failed ❌");
-  return;
-}
+      console.log("BACKEND ERROR:", result);
+      alert(result.error || "Upgrade failed ❌");
+      return;
+    }
 
     alert("User upgraded 🚀");
 
@@ -574,6 +600,7 @@ async function grantPremium() {
       ...userData,
       is_premium: true,
     });
+
     loadDashboardStats();
   } catch (err) {
     console.error(err);
