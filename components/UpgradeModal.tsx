@@ -35,18 +35,18 @@ export default function UpgradeModal({ open, onClose }: any) {
     window.location.href = paymentUrl + "?email=" + email;
   };
 
-  const handleManualPayment = async () => {
-    const { data } = await supabase.auth.getSession();
-    const user = data?.session?.user;
+ const handleManualPayment = async () => {
+  const { data } = await supabase.auth.getSession();
+  const user = data?.session?.user;
 
-    if (!user) {
-      localStorage.setItem("after_login_redirect", "/pricing");
-      window.location.href = "/login";
-      return;
-    }
+  if (!user) {
+    localStorage.setItem("after_login_redirect", "/pricing");
+    window.location.href = "/login";
+    return;
+  }
 
-    setShowManualPayments(true);
-  };
+  setShowManualPayments((prev) => !prev);
+};
 
   const contactWhatsApp = async () => {
     const { data } = await supabase.auth.getSession();
