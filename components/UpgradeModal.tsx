@@ -1,31 +1,96 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function UpgradeModal({ open, onClose }: any) {
+  const [showManualPayments, setShowManualPayments] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+  if (!open) return;
+
+  const loadUserEmail = async () => {
+    const { data } = await supabase.auth.getSession();
+    const email = data?.session?.user?.email || "";
+    setUserEmail(email);
+  };
+
+  loadUserEmail();
+}, [open]);
+
   if (!open) return null;
 
   const handleUpgrade = async (paymentUrl: string) => {
     const { data } = await supabase.auth.getSession();
     const user = data?.session?.user;
 
-    // 🚨 Not logged in → save intent + redirect
     if (!user) {
       localStorage.setItem("after_login_redirect", "/pricing");
       window.location.href = "/login";
       return;
     }
 
-    // ✅ Logged in → send to selected Paystack page WITH email
-    window.location.href = `${paymentUrl}?email=${encodeURIComponent(
-      user.email || ""
-    )}`;
+    const email = encodeURIComponent(user.email || "");
+    window.location.href = paymentUrl + "?email=" + email;
+  };
+
+  const handleManualPayment = async () => {
+    const { data } = await supabase.auth.getSession();
+    const user = data?.session?.user;
+
+    if (!user) {
+      localStorage.setItem("after_login_redirect", "/pricing");
+      window.location.href = "/login";
+      return;
+    }
+
+    setShowManualPayments(true);
+  };
+
+  const contactWhatsApp = async () => {
+    const { data } = await supabase.auth.getSession();
+    const user = data?.session?.user;
+
+    if (!user) {
+      localStorage.setItem("after_login_redirect", "/pricing");
+      window.location.href = "/login";
+      return;
+    }
+
+    const email = user.email || "";
+
+    const message =
+      "Hello GoalSense 👋 " +
+      "I want to subscribe to GoalSense Premium. " +
+      "My GoalSense email: " +
+      email +
+      " Please send me the available manual payment options and instructions.";
+
+    const whatsappNumber = "2348054549670";
+
+    window.open(
+      "https://wa.me/" +
+        whatsappNumber +
+        "?text=" +
+        encodeURIComponent(message),
+      "_blank"
+    );
+  };
+
+  const copyEmail = async () => {
+    const { data } = await supabase.auth.getSession();
+    const user = data?.session?.user;
+
+    if (user?.email) {
+      await navigator.clipboard.writeText(user.email);
+      alert("Your GoalSense email has been copied.");
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-[#0f172a] text-white rounded-2xl p-6 w-[90%] max-w-md shadow-xl">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4 overflow-y-auto">
+      <div className="bg-[#0f172a] text-white rounded-2xl p-6 w-[90%] max-w-md shadow-xl my-6">
 
         <h2 className="text-xl font-bold mb-4">
           🚀 Choose Your Premium Plan
@@ -61,7 +126,7 @@ export default function UpgradeModal({ open, onClose }: any) {
 
         </div>
 
-        {/* PAYMENT OPTIONS */}
+        {/* PAYSTACK PAYMENT OPTIONS */}
         <div className="mt-6 space-y-3">
 
           {/* 1 MONTH */}
@@ -109,6 +174,150 @@ export default function UpgradeModal({ open, onClose }: any) {
             </span>
           </button>
 
+          {/* OTHER PAYMENT METHODS */}
+          <div className="border border-gray-700 rounded-xl mt-5 overflow-hidden">
+
+            <button
+              onClick={handleManualPayment}
+              className="w-full px-4 py-3 flex items-center justify-between bg-[#172033] hover:bg-[#1d293d] transition"
+            >
+              <span className="font-semibold">
+                🌍 Other Payment Methods
+              </span>
+
+              <span className="text-gray-400">
+                {showManualPayments ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {showManualPayments && (
+              <div className="p-4 space-y-4 bg-[#111827]">
+
+                <p className="text-sm text-gray-300">
+                  Prefer another payment method? Contact us and we will
+                  help you complete your Premium subscription manually.
+                </p>
+
+                {/* USER EMAIL */}
+                <div className="bg-[#0f172a] border border-gray-700 rounded-lg p-3">
+                  <p className="text-xs text-gray-400 mb-1">
+                    Your GoalSense account email
+                  </p>
+
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium break-all flex-1">
+  {userEmail || "Account email"}
+</p>
+
+                    <button
+                      onClick={copyEmail}
+                      className="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-md"
+                    >
+                      Copy
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-green-400 mt-2">
+                    Use your GoalSense account email when sending payment
+                    proof.
+                  </p>
+                </div>
+
+                {/* WHATSAPP */}
+                <div className="bg-[#0f172a] rounded-lg p-3">
+                  <p className="font-semibold">
+                    💬 WhatsApp
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Contact us, choose your plan and send your payment
+                    confirmation.
+                  </p>
+
+                  <button
+                    onClick={contactWhatsApp}
+                    className="w-full mt-3 bg-green-600 hover:bg-green-700 py-2 rounded-lg text-sm font-semibold"
+                  >
+                    Contact on WhatsApp
+                  </button>
+                </div>
+
+                {/* BANK TRANSFER */}
+                <div className="bg-[#0f172a] rounded-lg p-3">
+                  <p className="font-semibold">
+                    🏦 Bank Transfer
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Contact us for bank transfer details and send your
+                    payment receipt after payment.
+                  </p>
+                </div>
+
+                {/* PAYPAL */}
+                <div className="bg-[#0f172a] rounded-lg p-3">
+                  <p className="font-semibold">
+                    💳 PayPal
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Contact us for PayPal payment details and send your
+                    confirmation after payment.
+                  </p>
+                </div>
+
+                {/* MOBILE MONEY */}
+                <div className="bg-[#0f172a] rounded-lg p-3">
+                  <p className="font-semibold">
+                    📱 Mobile Money
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Available for supported countries. Contact us for
+                    payment instructions.
+                  </p>
+                </div>
+
+                {/* CRYPTO */}
+                <div className="bg-[#0f172a] rounded-lg p-3">
+                  <p className="font-semibold">
+                    ₮ USDT / Crypto
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Contact us for supported wallet and payment
+                    instructions.
+                  </p>
+                </div>
+
+                {/* MANUAL PROCESS */}
+                <div className="border-t border-gray-700 pt-4">
+
+                  <p className="text-sm font-semibold mb-2">
+                    How manual payment works
+                  </p>
+
+                  <ol className="text-xs text-gray-400 space-y-2">
+                    <li>1️⃣ Choose a payment method.</li>
+                    <li>2️⃣ Contact GoalSense for payment details.</li>
+                    <li>3️⃣ Select your Premium duration.</li>
+                    <li>4️⃣ Complete the payment.</li>
+                    <li>5️⃣ Send your payment confirmation.</li>
+                    <li>6️⃣ We verify the payment and activate Premium.</li>
+                  </ol>
+
+                </div>
+
+                <p className="text-xs text-yellow-400 text-center">
+                  ⚡ Manual payments are verified before Premium is activated.
+                </p>
+
+              </div>
+            )}
+
+          </div>
+
+          {/* CLOSE */}
           <button
             onClick={onClose}
             className="w-full bg-gray-700 hover:bg-gray-800 py-2 rounded-lg"
@@ -119,10 +328,12 @@ export default function UpgradeModal({ open, onClose }: any) {
         </div>
 
         <p className="text-xs text-blue-400 text-center mt-4">
-          After payment, your account will be upgraded automatically.
+          Paystack payments upgrade your account automatically.
+          Manual payments are activated after verification.
         </p>
 
       </div>
     </div>
   );
 }
+
