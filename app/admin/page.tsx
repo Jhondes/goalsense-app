@@ -1138,8 +1138,8 @@ if (!authorized) {
   "league",
   "market",
   "odds",
-  "date",
   "modelPercentage",
+  "date",
 ].map((field) => (
           <input
             key={field}
