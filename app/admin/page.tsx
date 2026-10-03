@@ -2003,11 +2003,28 @@ if (!authorized) {
     <div style={{ marginTop: "15px" }}>
       <p><strong>Email:</strong> {userData.email}</p>
       <p>
-        <strong>Status:</strong>{" "}
-        {userData.is_premium ? "Premium ✅" : "Free ❌"}
-      </p>
+  <strong>Status:</strong>{" "}
+  {userData.is_premium === true &&
+  userData.premium_expires_at &&
+  new Date(userData.premium_expires_at) > new Date()
+    ? "Premium ✅"
+    : "Expired ❌"}
+</p>
 
-      {!userData.is_premium && (
+{userData.premium_expires_at && (
+  <p>
+    <strong>Expires:</strong>{" "}
+    {new Date(
+      userData.premium_expires_at
+    ).toLocaleDateString()}
+  </p>
+)}
+
+      {!(
+  userData.is_premium === true &&
+  userData.premium_expires_at &&
+  new Date(userData.premium_expires_at) > new Date()
+) && (
         <button
           onClick={grantPremium}
           style={{

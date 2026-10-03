@@ -11,6 +11,10 @@ export async function POST(req: NextRequest) {
     const planMonths = Number(body.planMonths);
     const amount = Number(body.amount);
 
+    // --------------------------------------------------
+    // Validate user
+    // --------------------------------------------------
+
     if (!userId) {
       return NextResponse.json(
         { error: "User ID is required" },
@@ -18,7 +22,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate manual Premium plans
+    // --------------------------------------------------
+    // Valid manual Premium plans
+    // --------------------------------------------------
+
     const validPlans: Record<number, number> = {
       1: 3000,
       3: 7500,
@@ -35,13 +42,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // --------------------------------------------------
+    // Environment variables
+    // --------------------------------------------------
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceRoleKey) {
       return NextResponse.json(
         {
-          error: "Missing env variables",
+          error: "Missing Supabase environment variables",
           supabaseUrl: !!supabaseUrl,
           serviceRoleKey: !!serviceRoleKey,
         },
@@ -49,57 +60,101 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // --------------------------------------------------
+    // Supabase admin client
+    // --------------------------------------------------
+
     const supabaseAdmin = createClient(
       supabaseUrl,
       serviceRoleKey
     );
 
-    // Get user's email
+    // --------------------------------------------------
+    // Get current profile
+    // IMPORTANT: We get the existing expiry so renewals
+    // can extend correctly.
+    // --------------------------------------------------
+
     const { data: profile, error: profileError } =
       await supabaseAdmin
         .from("profiles")
-        .select("email")
+        .select(
+          "id, email, is_premium, premium_expires_at"
+        )
         .eq("id", userId)
         .single();
 
-    if (profileError) {
+    if (profileError || !profile) {
       return NextResponse.json(
         {
           error: "Could not find user profile",
-          details: profileError.message,
+          details: profileError?.message || "Profile not found",
         },
         { status: 404 }
       );
     }
 
-    const startedAt = new Date();
+    // --------------------------------------------------
+    // Determine subscription start date
+    // --------------------------------------------------
 
-    // Calculate expiry using calendar months
+    const now = new Date();
+
+    let startedAt = new Date(now);
+
+    // If the user is STILL premium and has a future expiry,
+    // extend from that expiry.
+    //
+    // If the subscription has expired, start from NOW.
+    if (
+      profile.premium_expires_at &&
+      new Date(profile.premium_expires_at) > now
+    ) {
+      startedAt = new Date(profile.premium_expires_at);
+    }
+
+    // --------------------------------------------------
+    // Calculate new expiry using calendar months
+    // --------------------------------------------------
+
     const expiry = new Date(startedAt);
-    expiry.setMonth(expiry.getMonth() + planMonths);
 
-    // Activate Premium
-    const { data, error } = await supabaseAdmin
-      .from("profiles")
-      .update({
-        is_premium: true,
-        premium_expires: expiry.toISOString(),
-      })
-      .eq("id", userId)
-      .select();
+    expiry.setMonth(
+      expiry.getMonth() + planMonths
+    );
 
-    if (error) {
+    // --------------------------------------------------
+    // Update Premium profile
+    // IMPORTANT:
+    // Use premium_expires_at, NOT premium_expires
+    // --------------------------------------------------
+
+    const { data: updatedProfile, error: updateError } =
+      await supabaseAdmin
+        .from("profiles")
+        .update({
+          is_premium: true,
+          premium_expires_at: expiry.toISOString(),
+        })
+        .eq("id", userId)
+        .select()
+        .single();
+
+    if (updateError) {
       return NextResponse.json(
         {
-          error: error.message,
-          details: error,
+          error: "Could not activate Premium",
+          details: updateError.message,
         },
         { status: 500 }
       );
     }
 
+    // --------------------------------------------------
     // Record manual subscription
-    const { error: subscriptionError } =
+    // --------------------------------------------------
+
+    const { data: subscription, error: subscriptionError } =
       await supabaseAdmin
         .from("subscriptions")
         .insert({
@@ -108,37 +163,50 @@ export async function POST(req: NextRequest) {
           started_at: startedAt.toISOString(),
           expires_at: expiry.toISOString(),
           email: profile.email,
-        });
+        })
+        .select()
+        .single();
 
     if (subscriptionError) {
       return NextResponse.json(
         {
           error:
-            "Premium activated, but subscription record could not be created.",
+            "Premium was activated, but the subscription record could not be created.",
           details: subscriptionError.message,
-          premiumData: data,
+          premiumData: updatedProfile,
         },
         { status: 500 }
       );
     }
 
+    // --------------------------------------------------
+    // Success
+    // --------------------------------------------------
+
     return NextResponse.json({
       success: true,
-      data,
+
+      message: "Manual Premium upgrade successful",
+
+      data: updatedProfile,
+
       subscription: {
-        user_id: userId,
-        amount: amount,
-        started_at: startedAt.toISOString(),
-        expires_at: expiry.toISOString(),
-        email: profile.email,
+        ...subscription,
         plan_months: planMonths,
       },
     });
 
   } catch (err: any) {
+    console.error(
+      "Grant Premium Error:",
+      err
+    );
+
     return NextResponse.json(
       {
-        error: err?.message || "Server error",
+        error:
+          err?.message ||
+          "Server error while granting Premium",
       },
       { status: 500 }
     );
