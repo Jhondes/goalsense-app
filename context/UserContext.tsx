@@ -17,6 +17,22 @@ export function UserProvider({ children }: any) {
   const [loading, setLoading] = useState(true);
 
   // ==========================================
+  // GET PREMIUM EXPIRY
+  // ==========================================
+
+  const getPremiumExpiry = (profileData: any) => {
+    if (!profileData) return null;
+
+    // New manual upgrades use premium_expires_at.
+    // Existing Paystack subscribers use premium_expires.
+    return (
+      profileData.premium_expires_at ||
+      profileData.premium_expires ||
+      null
+    );
+  };
+
+  // ==========================================
   // REFRESH PROFILE
   // ==========================================
 
@@ -64,7 +80,10 @@ export function UserProvider({ children }: any) {
 
       setUser(authUser);
 
-      const { data: profileData, error } = await supabase
+      const {
+        data: profileData,
+        error,
+      } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", authUser.id)
@@ -77,7 +96,6 @@ export function UserProvider({ children }: any) {
       console.log("PROFILE LOADED:", profileData);
 
       setProfile(profileData);
-
       setLoading(false);
     } catch (error) {
       console.error("Fetch user error:", error);
@@ -132,25 +150,29 @@ export function UserProvider({ children }: any) {
   }, [user]);
 
   // ==========================================
+  // PREMIUM EXPIRY
+  // ==========================================
+
+  const premiumExpiry = getPremiumExpiry(profile);
+
+  // ==========================================
   // PREMIUM STATUS
   // ==========================================
 
   const hasPremium =
     profile?.is_premium === true &&
-    profile?.premium_expires_at &&
-    new Date(profile.premium_expires_at) > new Date();
+    premiumExpiry &&
+    new Date(premiumExpiry) > new Date();
 
   // ==========================================
   // PREMIUM EXPIRY TEXT
   // ==========================================
 
-  const premiumExpiryText = profile?.premium_expires_at
+  const premiumExpiryText = premiumExpiry
     ? (() => {
         const now = new Date();
 
-        const expiry = new Date(
-          profile.premium_expires_at
-        );
+        const expiry = new Date(premiumExpiry);
 
         const diff =
           expiry.getTime() - now.getTime();
