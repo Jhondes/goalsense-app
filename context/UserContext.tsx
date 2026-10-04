@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
 import { supabase } from "@/lib/supabaseClient";
 
 const UserContext = createContext<any>(null);
@@ -10,7 +16,10 @@ export function UserProvider({ children }: any) {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ EXISTING (unchanged)
+  // ==========================================
+  // REFRESH PROFILE
+  // ==========================================
+
   const refreshProfile = async () => {
     if (!user?.id) return null;
 
@@ -20,43 +29,72 @@ export function UserProvider({ children }: any) {
       .eq("id", user.id)
       .single();
 
-    if (!error && data) {
+    if (error) {
+      console.error("Profile refresh error:", error);
+      return null;
+    }
+
+    if (data) {
+      console.log("UPDATED PROFILE:", data);
+
       setProfile(data);
+
       return data;
     }
 
     return null;
   };
 
-  // ✅ MODIFIED (IMPORTANT IMPROVEMENT)
+  // ==========================================
+  // FETCH USER
+  // ==========================================
+
   const fetchUser = async () => {
-    const { data } = await supabase.auth.getSession();
-    const authUser = data?.session?.user;
+    try {
+      const { data } = await supabase.auth.getSession();
 
-    if (!authUser) {
-      setUser(null);
-      setProfile(null);
+      const authUser = data?.session?.user;
+
+      if (!authUser) {
+        setUser(null);
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      setUser(authUser);
+
+      const { data: profileData, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+
+      if (error) {
+        console.error("Profile fetch error:", error);
+      }
+
+      console.log("PROFILE LOADED:", profileData);
+
+      setProfile(profileData);
+
       setLoading(false);
-      return;
+    } catch (error) {
+      console.error("Fetch user error:", error);
+      setLoading(false);
     }
-
-    setUser(authUser);
-
-    const { data: profileData } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", authUser.id)
-      .single();
-
-    setProfile(profileData);
-    setLoading(false);
   };
 
-  // ✅ EXISTING AUTH LISTENER (unchanged)
+  // ==========================================
+  // AUTH LISTENER
+  // ==========================================
+
   useEffect(() => {
     fetchUser();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+    const {
+      data: listener,
+    } = supabase.auth.onAuthStateChange(() => {
       fetchUser();
     });
 
@@ -65,55 +103,77 @@ export function UserProvider({ children }: any) {
     };
   }, []);
 
-  // ==============================
-  // 🔥 NEW FIX #1: WINDOW FOCUS REFRESH
-  // ==============================
+  // ==========================================
+  // REFRESH WHEN WINDOW GETS FOCUS
+  // ==========================================
+
   useEffect(() => {
     const handleFocus = () => {
       if (user?.id) {
-        refreshProfile(); // re-check premium after payment redirect
+        refreshProfile();
       }
     };
 
     window.addEventListener("focus", handleFocus);
 
-    return () => window.removeEventListener("focus", handleFocus);
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+    };
   }, [user]);
 
-  // ==============================
-  // 🔥 NEW FIX #2: AUTO PROFILE SYNC ON USER CHANGE
-  // ==============================
+  // ==========================================
+  // REFRESH WHEN USER CHANGES
+  // ==========================================
+
   useEffect(() => {
     if (user?.id) {
       refreshProfile();
     }
   }, [user]);
 
+  // ==========================================
+  // PREMIUM STATUS
+  // ==========================================
+
   const hasPremium =
-    profile?.is_premium &&
-    profile?.premium_expires &&
-    new Date(profile.premium_expires) > new Date();
+    profile?.is_premium === true &&
+    profile?.premium_expires_at &&
+    new Date(profile.premium_expires_at) > new Date();
 
-    const premiumExpiryText = profile?.premium_expires
-  ? (() => {
-      const now = new Date();
-      const expiry = new Date(profile.premium_expires);
+  // ==========================================
+  // PREMIUM EXPIRY TEXT
+  // ==========================================
 
-      const diff = expiry.getTime() - now.getTime();
+  const premiumExpiryText = profile?.premium_expires_at
+    ? (() => {
+        const now = new Date();
 
-      if (diff <= 0) {
-        return "Expired";
-      }
+        const expiry = new Date(
+          profile.premium_expires_at
+        );
 
-      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        const diff =
+          expiry.getTime() - now.getTime();
 
-      if (days === 1) {
-        return "1 day left";
-      }
+        if (diff <= 0) {
+          return "Expired";
+        }
 
-      return `${days} days left`;
-    })()
-  : null;
+        const days = Math.ceil(
+          diff / (1000 * 60 * 60 * 24)
+        );
+
+        if (days === 1) {
+          return "1 day left";
+        }
+
+        return `${days} days left`;
+      })()
+    : null;
+
+  // ==========================================
+  // PROVIDER
+  // ==========================================
 
   return (
     <UserContext.Provider
@@ -124,10 +184,7 @@ export function UserProvider({ children }: any) {
         premiumExpiryText,
         loading,
 
-        // existing
         refresh: fetchUser,
-
-        // important new addition
         refreshProfile,
       }}
     >
@@ -136,4 +193,9 @@ export function UserProvider({ children }: any) {
   );
 }
 
-export const useUser = () => useContext(UserContext);
+// ==========================================
+// HOOK
+// ==========================================
+
+export const useUser = () =>
+  useContext(UserContext);
