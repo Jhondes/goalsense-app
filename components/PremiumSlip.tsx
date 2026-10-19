@@ -34,6 +34,9 @@ export default function PremiumSlip() {
     PremiumPerformance[]
   >([]);
 
+  const [showAllPerformance, setShowAllPerformance] =
+  useState(false);
+
   const [slipLoading, setSlipLoading] = useState(true);
   const [performanceLoading, setPerformanceLoading] =
     useState(true);
@@ -86,17 +89,18 @@ export default function PremiumSlip() {
         return;
       }
 
-      const recentPerformances = (
-  result.data || []
-)
-  .sort(
-    (a: { slip_date: string }, b: { slip_date: string }) =>
-      new Date(a.slip_date).getTime() -
-      new Date(b.slip_date).getTime()
-  )
-  .slice(-5);
+     
+const allPerformances: PremiumPerformance[] = (
+  (result.data || []) as PremiumPerformance[]
+).sort(
+  (a: PremiumPerformance, b: PremiumPerformance) =>
+    new Date(a.slip_date).getTime() -
+    new Date(b.slip_date).getTime()
+);
 
-      setPerformance(recentPerformances);
+
+setPerformance(allPerformances);
+setShowAllPerformance(false);
     } catch (error) {
       console.error(
         "Failed to fetch premium performance:",
@@ -203,7 +207,9 @@ export default function PremiumSlip() {
    * WON      LOST     WON      PENDING
    * -----------------------------------------
    */
-
+const visiblePerformance = showAllPerformance
+  ? performance
+  : performance.slice(-5);
   const publicPerformance = (
   <section className="mb-4 overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 via-gray-900 to-gray-950 px-3 py-4 sm:px-4 shadow-[0_0_25px_rgba(234,179,8,0.05)]">
 
@@ -244,22 +250,23 @@ export default function PremiumSlip() {
         )}
 
       </div>
-    ) : performance.length > 0 ? (
-      <div
-        className={`grid gap-1 ${
-          performance.length === 1
-            ? "grid-cols-1"
-            : performance.length === 2
-            ? "grid-cols-2"
-            : performance.length === 3
-            ? "grid-cols-3"
-            : performance.length === 4
-            ? "grid-cols-4"
-            : "grid-cols-5"
-        }`}
-      >
+    ) : visiblePerformance.length > 0 ? (
+  <>
+    <div
+      className={`grid gap-1 ${
+        visiblePerformance.length === 1
+          ? "grid-cols-1"
+          : visiblePerformance.length === 2
+          ? "grid-cols-2"
+          : visiblePerformance.length === 3
+          ? "grid-cols-3"
+          : visiblePerformance.length === 4
+          ? "grid-cols-4"
+          : "grid-cols-5"
+      }`}
+    >
 
-        {performance.map((item) => {
+        {visiblePerformance.map((item) => {
 
           const date = new Date(
             `${item.slip_date}T00:00:00`
@@ -324,6 +331,30 @@ export default function PremiumSlip() {
         })}
 
       </div>
+
+      {performance.length > 5 && (
+        <div className="mt-3 border-t border-yellow-500/10 pt-3 text-center">
+          <button
+            type="button"
+            onClick={() =>
+              setShowAllPerformance((previous) => !previous)
+            }
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-2 text-xs font-semibold text-yellow-400 transition hover:border-yellow-500/60 hover:bg-yellow-500/10"
+          >
+            {showAllPerformance ? "View Less" : "View More"}
+            <span aria-hidden="true">
+              {showAllPerformance ? "↑" : "↓"}
+            </span>
+          </button>
+
+          <p className="mt-2 text-[10px] text-gray-500">
+            {showAllPerformance
+              ? `Showing all ${performance.length} results`
+              : `${performance.length - 5} more results available`}
+          </p>
+        </div>
+      )}
+    </>
     ) : (
       <div className="py-2 text-center">
 

@@ -114,6 +114,8 @@ const [premiumPerformance, setPremiumPerformance] = useState<
 >([]);
 
 const [performanceLoading, setPerformanceLoading] = useState(false);
+const [showAllPremiumPerformance, setShowAllPremiumPerformance] =
+  useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -188,43 +190,17 @@ const fetchPremiumPerformance = async () => {
       );
     }
 
-    // Get currently existing Premium Slips
-    const slipsResponse = await fetch(
-      "/api/admin/publish-premium-slip"
-    );
-
-    const slipsResult = await slipsResponse.json();
-
-    if (!slipsResponse.ok) {
-      throw new Error(
-        slipsResult.error ||
-          "Failed to fetch Premium Slips"
-      );
-    }
-
-    // Dates of Premium Slips that actually exist
-    const activeSlipDates = new Set(
-      (slipsResult.data || []).map(
-        (slip: PremiumSlip) => slip.slip_date
-      )
-    );
-
-    // Keep only performance records that still
-    // belong to an existing Premium Slip
-    const recentPerformance = (
+    // Keep all historical performance records.
+    // Do not filter by existing slips or limit to five.
+    const allPerformance = (
       performanceResult.data || []
-    )
-      .filter((performance: any) =>
-        activeSlipDates.has(performance.slip_date)
-      )
-      .sort(
-        (a: any, b: any) =>
-          new Date(a.slip_date).getTime() -
-          new Date(b.slip_date).getTime()
-      )
-      .slice(-5);
+    ).sort(
+      (a: { slip_date: string }, b: { slip_date: string }) =>
+        new Date(a.slip_date).getTime() -
+        new Date(b.slip_date).getTime()
+    );
 
-    setPremiumPerformance(recentPerformance);
+    setPremiumPerformance(allPerformance);
   } catch (error) {
     console.error(
       "Fetch premium performance error:",
@@ -1545,7 +1521,8 @@ if (!authorized) {
 
 {/* ================= PREMIUM SLIP PERFORMANCE ================= */}
 
-<div
+<details
+  open={false}
   style={{
     width: "100%",
     maxWidth: "700px",
@@ -1556,26 +1533,26 @@ if (!authorized) {
     border: "1px solid #3a3a3a",
   }}
 >
-  <h2
+  <summary
     style={{
-      marginBottom: "5px",
-      fontSize: "22px",
-      fontWeight: "bold",
+      cursor: "pointer",
       color: "#facc15",
+      fontSize: "20px",
+      fontWeight: "bold",
     }}
   >
-    Premium Slip Performance
-  </h2>
-
-  <p
-    style={{
-      color: "#999",
-      fontSize: "13px",
-      marginBottom: "20px",
-    }}
-  >
-    Mark the result of each Premium accumulator.
-  </p>
+    Premium Slip Performance ({premiumPerformance.length} results)
+    <p
+      style={{
+        color: "#999",
+        fontSize: "13px",
+        fontWeight: "normal",
+        marginTop: "6px",
+      }}
+    >
+      Click to expand or collapse performance history.
+    </p>
+  </summary>
 
   {premiumPerformance.length === 0 ? (
     <div
@@ -1601,7 +1578,11 @@ if (!authorized) {
         width: "100%",
       }}
     >
-      {premiumPerformance.map((performance) => {
+      {(
+  showAllPremiumPerformance
+    ? premiumPerformance
+    : premiumPerformance.slice(-5)
+).map((performance) => {
         const date = new Date(
           `${performance.slip_date}T00:00:00`
         );
@@ -1802,7 +1783,31 @@ if (!authorized) {
       })}
     </div>
   )}
-</div>
+
+  {premiumPerformance.length > 5 && (
+    <button
+      type="button"
+      onClick={() =>
+        setShowAllPremiumPerformance((previous) => !previous)
+      }
+      style={{
+        width: "100%",
+        marginTop: "15px",
+        padding: "10px",
+        backgroundColor: "#facc15",
+        color: "#000",
+        border: "none",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      {showAllPremiumPerformance
+        ? "Show Latest 5 Results"
+        : `View All History (${premiumPerformance.length} results)`}
+    </button>
+  )}
+</details>
 
 <div
   style={{

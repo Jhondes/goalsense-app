@@ -44,51 +44,20 @@ export async function GET() {
       );
     }
 
-    // Get all active premium slips
-    const { data: activeSlips, error: slipsError } =
-      await supabaseAdmin
-        .from("premium_slips")
-        .select("slip_date")
-        .eq("is_active", true);
-
-    if (slipsError) {
-      console.error(
-        "Premium slips fetch error:",
-        slipsError
-      );
-
-      return NextResponse.json(
-        { error: slipsError.message },
-        { status: 500 }
-      );
-    }
-
-    // Create a list of dates that actually have
-    // an active premium slip.
-    const activeSlipDates = new Set(
-      (activeSlips || []).map((slip) =>
-        String(slip.slip_date).slice(0, 10)
-      )
+   
+    // Keep all historical performance records, even when
+    // their original Premium Slips have been deleted.
+    const allPerformance = (performanceData || []).sort(
+      (a, b) =>
+        new Date(a.slip_date).getTime() -
+        new Date(b.slip_date).getTime()
     );
-
-    // Only keep performance records that have
-    // a corresponding active premium slip.
-    const validPerformance = (performanceData || [])
-      .filter((item) =>
-        activeSlipDates.has(
-          String(item.slip_date).slice(0, 10)
-        )
-      )
-      .sort(
-        (a, b) =>
-          new Date(a.slip_date).getTime() -
-          new Date(b.slip_date).getTime()
-      );
 
     return NextResponse.json({
       success: true,
-      data: validPerformance,
+      data: allPerformance,
     });
+
   } catch (error) {
     console.error(
       "Get premium performance error:",
