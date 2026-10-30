@@ -80,6 +80,10 @@ export default function AdBanner() {
                   aria-label="GoalSense"
                 >
                   <div className="relative overflow-hidden rounded-2xl border border-[#d4a72c]/30 bg-[#090909] shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
+                  {/* Ad disclosure badge */}
+<div className="absolute bottom-3 right-3 z-20 rounded-md border border-white/15 bg-[#333333]/85 px-2 py-1 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
+  Ads
+</div>
                     <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#f5c542] via-[#d4a72c] to-transparent" />
 
                     <div className="grid min-h-[190px] grid-cols-1 md:grid-cols-[1fr_0.85fr]">
