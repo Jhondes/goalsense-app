@@ -81,8 +81,8 @@ export default function AdBanner() {
                 >
                   <div className="relative overflow-hidden rounded-2xl border border-[#d4a72c]/30 bg-[#090909] shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
                   {/* Ad disclosure badge */}
-<div className="absolute bottom-3 right-3 z-20 rounded-md border border-white/15 bg-[#333333]/85 px-2 py-1 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
-  Ads
+<div className="absolute bottom-10 right-3 z-30 rounded-md border border-white/20 bg-[#333333]/95 px-3 py-1.5 text-xs font-medium text-white shadow-md">
+  Ad
 </div>
                     <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#f5c542] via-[#d4a72c] to-transparent" />
 
@@ -129,10 +129,10 @@ export default function AdBanner() {
                   </div>
                 </a>
               ) : (
-                <div className="relative min-h-[240px] overflow-hidden rounded-2xl border border-[#229ED9]/30 bg-gradient-to-br from-[#102b43] to-[#090e19] shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
+                <div className="relative min-h-[452px] md:min-h-[310px] overflow-hidden rounded-2xl border border-[#229ED9]/30 bg-gradient-to-br from-[#102b43] to-[#090e19] shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
                   <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#38bdf8] to-transparent" />
 
-                  <div className="flex min-h-[240px] flex-col justify-center px-7 py-8 sm:px-10">
+                  <div className="flex min-h-[452px] md:min-h-[310px] flex-col justify-center px-7 py-8 sm:px-10">
                     <div className="mb-3 flex items-center gap-2">
                       <span className="h-px w-6 bg-[#38bdf8]" />
                       <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#38bdf8]">
