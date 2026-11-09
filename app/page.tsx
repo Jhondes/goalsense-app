@@ -16,6 +16,7 @@ import PredictionAvailability from "@/components/PredictionAvailability";
 import PremiumSlip from "@/components/PremiumSlip";
 import AdBanner from "@/components/AdBanner";
 import PremiumFeatures from "@/components/PremiumFeatures";
+import ResponsibleGaming from "@/components/ResponsibleGaming";
 
 
 
@@ -114,6 +115,8 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-6 py-12">
         <PredictionLinks />
       </section>
+      
+<ResponsibleGaming />
 
       <Footer />
     </>
