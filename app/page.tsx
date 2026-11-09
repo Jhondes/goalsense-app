@@ -32,7 +32,7 @@ export default function Home() {
         {/* Animated Background */}
         <BackgroundBalls />
 
-        <main className="relative z-10 p-6 max-w-4xl mx-auto space-y-16">
+        <main className="relative z-10 px-4 py-6 sm:p-6 max-w-4xl mx-auto space-y-12 md:space-y-16">
 
           {/* HERO SECTION */}
           <section className="text-center space-y-6 py-20">
@@ -108,13 +108,13 @@ export default function Home() {
             </div>
 
       {/* ABOUT GOALSENSE */}
-<section className="relative z-10 py-16">
+<section className="relative z-10 py-8 md:py-12">
   <AboutSection />
 </section>
 
-      <section className="max-w-4xl mx-auto px-6 py-12">
-        <PredictionLinks />
-      </section>
+      <section className="max-w-4xl mx-auto px-6 py-6 md:py-10">
+  <PredictionLinks />
+</section>
       
 <ResponsibleGaming />
 

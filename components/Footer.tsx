@@ -11,7 +11,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative mt-32 text-gray-400 overflow-hidden">
+    <footer className="relative mt-0 text-gray-400 overflow-hidden">
 
       {/* Animated Top Glow Line */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-pulse" />
@@ -23,7 +23,7 @@ export default function Footer() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-4 gap-16">
+      <div className="max-w-6xl mx-auto px-6 py-12 sm:py-16 md:py-20 grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
 
         {/* Brand */}
         <div className="space-y-6">
