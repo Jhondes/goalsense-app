@@ -33,16 +33,17 @@ const sections = [
 
 export default function ResponsibleGaming() {
   return (
-    <section className="relative isolate overflow-hidden border-y border-green-500/20 bg-[#050807] px-5 py-12 sm:px-8 sm:py-16">
+    <section className="relative isolate overflow-hidden border-y border-emerald-500/20 bg-[#050807] px-5 py-10 sm:px-8 sm:py-14">
 
-      {/* Background effects */}
-      <div className="pointer-events-none absolute -left-32 -top-32 h-64 w-64 rounded-full bg-green-500/10 blur-[100px]" />
-      <div className="pointer-events-none absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-emerald-500/10 blur-[100px]" />
+      {/* Subtle background lighting */}
+      <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-emerald-500/[0.06] blur-[100px]" />
+
+      <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-green-500/[0.06] blur-[100px]" />
 
       <div className="relative mx-auto max-w-7xl">
 
-        {/* Three information sections */}
-        <div className="grid grid-cols-1 gap-9 md:grid-cols-3 md:gap-8">
+        {/* Information sections */}
+        <div className="grid grid-cols-1 gap-7 md:grid-cols-3 md:gap-8">
 
           {sections.map((item, index) => {
             const Icon = item.icon;
@@ -50,48 +51,50 @@ export default function ResponsibleGaming() {
             return (
               <div
                 key={item.title}
-                className={`flex items-start gap-5 ${
+                className={`group flex items-start gap-4 ${
                   index !== 0
-                    ? "border-t border-green-500/20 pt-8 md:border-l md:border-t-0 md:pl-8 md:pt-0"
+                    ? "border-t border-emerald-500/15 pt-7 md:border-l md:border-t-0 md:pl-8 md:pt-0"
                     : ""
                 }`}
               >
-                {/* Icon */}
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-green-500/30 bg-green-500/10">
+
+                {/* Premium icon container */}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] transition duration-300 group-hover:border-emerald-400/50 group-hover:bg-emerald-400/10 sm:h-14 sm:w-14">
                   <Icon
-                    size={30}
-                    strokeWidth={1.8}
-                    className="text-green-400"
+                    size={26}
+                    strokeWidth={1.7}
+                    className="text-emerald-400"
                   />
                 </div>
 
-                {/* Text */}
-                <div>
-                  <h3 className="text-lg font-extrabold leading-tight text-white sm:text-xl">
+                {/* Information */}
+                <div className="min-w-0">
+                  <h3 className="text-base font-bold leading-tight tracking-wide text-white sm:text-lg">
                     {item.title}
-                    <span className="block text-green-400">
+                    <span className="mt-1 block text-emerald-400">
                       {item.highlight}
                     </span>
                   </h3>
 
-                  <p className="mt-3 max-w-sm text-sm leading-7 text-gray-400">
+                  <p className="mt-2 max-w-sm text-sm leading-6 text-gray-400">
                     {item.description}
                   </p>
                 </div>
+
               </div>
             );
           })}
 
         </div>
 
-        {/* Bottom divider */}
-        <div className="my-10 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent" />
+        {/* Elegant divider */}
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent md:my-10" />
 
-        {/* Footer label */}
-        <div className="flex flex-col items-center justify-center gap-4 text-center">
+        {/* Responsible gambling label */}
+        <div className="flex flex-col items-center gap-4 text-center">
 
-          <div className="rounded-full border border-green-500/40 bg-green-500/5 px-7 py-3">
-            <span className="text-xs font-bold tracking-[0.3em] text-green-400 sm:text-sm">
+          <div className="rounded-full border border-emerald-400/30 bg-emerald-400/[0.04] px-5 py-2.5 shadow-[0_0_25px_rgba(16,185,129,0.06)]">
+            <span className="text-[11px] font-bold tracking-[0.25em] text-emerald-400 sm:text-xs">
               RESPONSIBLE GAMBLING
             </span>
           </div>
