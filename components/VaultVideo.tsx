@@ -13,7 +13,7 @@ import {
 const VIDEOS = [
   {
     title: "How GoalSense Works",
-    videoId: "",
+    videoId: "k6iq8jSsHG8",
     number: "01",
   },
   {
