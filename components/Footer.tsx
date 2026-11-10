@@ -72,6 +72,15 @@ export default function Footer() {
                 How It Works
               </a>
             </li>
+
+            <li>
+  <Link
+    href="/ambassadors"
+    className="hover:text-emerald-400 transition duration-300 hover:tracking-wider"
+  >
+    Brand Ambassadors
+  </Link>
+</li>
             
           </ul>
         </div>
