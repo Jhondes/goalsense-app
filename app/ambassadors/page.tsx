@@ -6,10 +6,22 @@ const ambassadors = [
   {
     name: "MULA BETTING",
     title: "Founding Brand Ambassador",
+    badge: "FOUNDING BRAND AMBASSADOR",
     image: "/mula-betting.jpg",
     description:
-      "MULA BETTING is the first personality representing GoalSense, helping introduce the platform through digital content, community engagement and product education.",
-    badge: "FOUNDING AMBASSADOR",
+      "MULA BETTING is the founding personality representing GoalSense, connecting football enthusiasts with the platform through digital content, community engagement and product education.",
+    youtube: "https://www.youtube.com/@MULABETTING",
+    channel: "MULA BETTING",
+  },
+  {
+    name: "GAMELLA",
+    title: "Official Brand Ambassador",
+    badge: "OFFICIAL BRAND AMBASSADOR",
+    image: "/gamella.jpg",
+    description:
+      "Gamella represents the growing GoalSense community, bringing her passion for football content and digital media to the platform's vision of smarter football analysis.",
+    youtube: "https://www.youtube.com/@gamella_tv",
+    channel: "GamellaTV",
   },
 ];
 
@@ -24,13 +36,13 @@ export default function AmbassadorsPage() {
         <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28 text-center">
 
           <span className="inline-flex px-4 py-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 text-emerald-400 text-xs font-bold tracking-widest">
-            THE PEOPLE BEHIND GOALSENSE
+            MEET OUR TEAM
           </span>
 
           <h1 className="mt-6 text-4xl md:text-6xl font-extrabold tracking-tight">
-            Meet Our{" "}
+            The Faces Behind{" "}
             <span className="text-emerald-400">
-              Brand Ambassadors
+              GoalSense
             </span>
           </h1>
 
@@ -52,7 +64,7 @@ export default function AmbassadorsPage() {
           </p>
 
           <h2 className="text-2xl md:text-3xl font-bold mt-3">
-            The Faces of GoalSense
+            Meet Our Brand Ambassadors
           </h2>
         </div>
 
@@ -102,6 +114,25 @@ export default function AmbassadorsPage() {
                 <p className="text-gray-400 text-sm leading-7">
                   {ambassador.description}
                 </p>
+
+                {/* YouTube Channel */}
+                <a
+                  href={ambassador.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 mt-7 w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-bold text-white hover:bg-red-500/20 hover:border-red-400/60 transition duration-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-5 h-5 text-red-500"
+                  >
+                    <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z" />
+                  </svg>
+
+                  Visit {ambassador.channel}
+                </a>
 
               </div>
 
