@@ -58,7 +58,7 @@ export default function VaultVideo() {
   }, [selectedVideo]);
 
   return (
-    <section className="relative">
+    <section id="goalsense-video-vault" className="relative scroll-mt-24">
 
       {/* Background glow */}
       <div className="pointer-events-none absolute -right-10 top-20 h-48 w-48 rounded-full bg-emerald-500/[0.06] blur-[90px]" />
