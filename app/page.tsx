@@ -19,6 +19,7 @@ import PremiumFeatures from "@/components/PremiumFeatures";
 import ResponsibleGaming from "@/components/ResponsibleGaming";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, BookOpen } from "lucide-react";
 
 
 
@@ -54,6 +55,34 @@ export default function Home() {
               Start Generating
             </a>
           </section>
+
+
+{/* COMPACT GOALSENSE INSIGHTS */}
+<section className="relative z-10">
+  <Link
+    href="/insights"
+    className="group flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-[#10251a] to-[#0b110e] px-4 py-4 transition hover:border-emerald-400/50 sm:px-5"
+  >
+    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
+      <BookOpen size={21} />
+    </div>
+
+    <div className="min-w-0 flex-1">
+      <p className="text-sm font-extrabold text-white">
+        GoalSense Insights
+      </p>
+      <p className="mt-1 text-xs leading-5 text-gray-400">
+        Football knowledge, statistics & educational guides.
+      </p>
+    </div>
+
+    <span className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-emerald-400 transition group-hover:translate-x-1">
+      Explore
+      <ArrowRight size={15} />
+    </span>
+  </Link>
+</section>
+
 
           {/* ===========================
               GOALSENSE VAULT

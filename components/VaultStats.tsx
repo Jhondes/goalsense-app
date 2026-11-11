@@ -1,6 +1,17 @@
+
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Activity,
+  ArrowUpRight,
+  BarChart3,
+  Clock3,
+  Database,
+  Globe2,
+  Radio,
+  Target,
+} from "lucide-react";
 
 type VaultStatsResponse = {
   totalMatches: number;
@@ -17,316 +28,212 @@ export default function VaultStats() {
     lastUpdated: null,
   });
 
-  const [displayCount, setDisplayCount] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  const [previousCount, setPreviousCount] = useState(0);
   const [showNewBadge, setShowNewBadge] = useState(false);
   const [newMatches, setNewMatches] = useState(0);
+  const [vaultStatus, setVaultStatus] = useState("Connecting to Vault...");
 
-  const [vaultStatus, setVaultStatus] = useState(
-  "Monitoring active. Waiting for new uploads..."
-);
+  const previousCount = useRef(0);
+  const badgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const badgeTimer = useRef<NodeJS.Timeout | null>(null);
-
-  async function loadStats() {
+  const loadStats = useCallback(async () => {
     try {
       const res = await fetch("/api/vault/stats", {
         cache: "no-store",
       });
 
-      if (!res.ok) return;
+      if (!res.ok) {
+        throw new Error("Unable to retrieve Vault statistics");
+      }
 
       const data: VaultStatsResponse = await res.json();
 
       setStats(data);
 
-      if (previousCount !== 0 && data.totalMatches > previousCount) {
-  const added = data.totalMatches - previousCount;
+      const previous = previousCount.current;
 
-  setNewMatches(added);
-  setShowNewBadge(true);
+      if (previous > 0 && data.totalMatches > previous) {
+        const added = data.totalMatches - previous;
 
-  setVaultStatus(
-    `${added} new match${added > 1 ? "es" : ""} successfully added to the GoalSense Vault.`
-  );
+        setNewMatches(added);
+        setShowNewBadge(true);
+        setVaultStatus(
+          `${added} new match${added > 1 ? "es" : ""} added to the GoalSense Vault.`
+        );
 
-  if (badgeTimer.current) {
-    clearTimeout(badgeTimer.current);
-  }
+        if (badgeTimer.current) {
+          clearTimeout(badgeTimer.current);
+        }
 
-  badgeTimer.current = setTimeout(() => {
-    setShowNewBadge(false);
-    setVaultStatus("Monitoring active. Waiting for new uploads...");
-  }, 6000);
-}
+        badgeTimer.current = setTimeout(() => {
+          setShowNewBadge(false);
+          setVaultStatus("Vault is monitoring for new uploads.");
+        }, 6000);
+      } else if (data.totalMatches > 0 && previous === 0) {
+        setVaultStatus("Vault connected. Monitoring for new uploads.");
+      }
 
-      setPreviousCount(data.totalMatches);
-      if (data.totalMatches > 0 && previousCount === 0) {
-  setVaultStatus("Vault active. Monitoring for new uploads...");
-}
-    } catch (err) {
-      console.error(err);
+      previousCount.current = data.totalMatches;
+    } catch (error) {
+      console.error("Vault statistics error:", error);
+      setVaultStatus("Unable to refresh Vault statistics.");
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     loadStats();
 
     const interval = setInterval(loadStats, 60000);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const target = stats.totalMatches;
-
-    if (target <= 0) {
-      setDisplayCount(0);
-      return;
-    }
-
-    let current = 0;
-
-    const increment = Math.max(1, Math.ceil(target / 60));
-
-    const timer = setInterval(() => {
-      current += increment;
-
-      if (current >= target) {
-        current = target;
-        clearInterval(timer);
-      }
-
-      setDisplayCount(current);
-    }, 20);
-
-    return () => clearInterval(timer);
-  }, [stats.totalMatches]);
-
-  useEffect(() => {
     return () => {
+      clearInterval(interval);
+
       if (badgeTimer.current) {
         clearTimeout(badgeTimer.current);
       }
     };
-  }, []);
+  }, [loadStats]);
 
-  const progress = useMemo(() => {
-    const goal = 500;
-
-    return Math.min((stats.totalMatches / goal) * 100, 100);
-  }, [stats.totalMatches]);
-
-  const lastUpdated = useMemo(() => {
-    if (!stats.lastUpdated) return "Waiting for first upload";
-
-    return new Date(stats.lastUpdated).toLocaleString([], {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  }, [stats.lastUpdated]);
+  const lastUpdated = stats.lastUpdated
+    ? new Date(stats.lastUpdated).toLocaleString([], {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : "Waiting for first upload";
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-green-500/20 bg-gradient-to-br from-[#0b1220] via-[#10161f] to-[#0c1117] p-8 shadow-2xl">
+    <section className="relative overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-[#101a16] via-[#0b110e] to-[#080d0a] p-4 shadow-xl shadow-black/20 sm:p-5">
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.18),transparent_45%)]" />
+      {/* Background glow */}
+      <div className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="relative">
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        {/* Header */}
+        <div className="flex items-center justify-between gap-3">
 
-          <div>
-
-            <p className="text-sm uppercase tracking-[0.35em] text-green-400">
-              GoalSense Vault
-            </p>
-
-            <div className="mt-3 flex flex-wrap items-center gap-4">
-
-              <h2 className="text-3xl font-black text-white md:text-5xl">
-                {loading ? "..." : displayCount.toLocaleString()}
-              </h2>
-
-              {showNewBadge && (
-                <span className="animate-bounce rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-lg shadow-green-500/40">
-                  +{newMatches} NEW MATCH{newMatches > 1 ? "ES" : ""}
-                </span>
-              )}
-
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-400">
+              <Database size={20} />
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="min-w-0">
+              <h2 className="text-sm font-black tracking-wide text-white sm:text-base">
+                GOALSENSE VAULT
+              </h2>
+              <p className="mt-0.5 text-[10px] font-semibold tracking-[0.16em] text-emerald-400">
+                FOOTBALL DATA CENTRE
+              </p>
+            </div>
+          </div>
 
-              <p className="text-gray-400">
-                Matches in the Vault
+          <div className="flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+
+            <span className="text-[10px] font-bold text-emerald-300">
+              {loading ? "CONNECTING" : "ACTIVE"}
+            </span>
+          </div>
+
+        </div>
+
+        {/* Main statistics */}
+        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+
+          {/* Total matches */}
+          <div className="col-span-3 flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] p-4 sm:col-span-1 sm:flex-col sm:items-start sm:justify-center sm:p-4">
+
+            <div>
+              <p className="text-[10px] font-bold tracking-widest text-gray-400">
+                TOTAL MATCHES
               </p>
 
-              
+              <div className="mt-1 flex items-center gap-2">
+                <span className="text-3xl font-black tracking-tight text-white sm:text-3xl">
+                  {loading ? "..." : stats.totalMatches.toLocaleString()}
+                </span>
 
+                {showNewBadge && (
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-[9px] font-bold text-emerald-300">
+                    +{newMatches} NEW
+                  </span>
+                )}
+              </div>
             </div>
 
+            <Database
+              size={25}
+              className="text-emerald-400/60 sm:mt-2"
+            />
           </div>
 
-          <div className="relative flex items-center gap-3 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-2 shadow-lg shadow-green-500/10">
+          {/* Leagues */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-4">
+            <Globe2 size={17} className="text-emerald-400" />
 
-  <div className="relative flex h-3 w-3 items-center justify-center">
-
-    <span className="absolute h-3 w-3 rounded-full bg-green-400 animate-ping" />
-
-    <span className="relative h-3 w-3 rounded-full bg-green-400" />
-
-  </div>
-
-  <span className="font-semibold tracking-wide text-green-300">
-    Vault Active
-  </span>
-
-</div>
-
-        </div>
-
-        <div className="mt-8">
-
-          <div className="mb-2 flex justify-between text-sm text-gray-400">
-
-            <span>Vault Coverage</span>
-
-            <span>{Math.round(progress)}%</span>
-
-          </div>
-
-          <div className="h-4 overflow-hidden rounded-full bg-[#202630]">
-
-            <div
-              className="vault-progress relative h-full rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 transition-all duration-700"
-              style={{
-                width: `${progress}%`,
-              }}
-            >
-              <span className="vault-shimmer" />
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
-
-            <p className="text-sm text-gray-400">
-              🌍 Leagues
+            <p className="mt-3 text-xl font-extrabold text-white sm:text-2xl">
+              {loading ? "..." : stats.leagues.toLocaleString()}
             </p>
 
-            <h3 className="mt-2 text-3xl font-black text-white">
-              {stats.leagues}
-            </h3>
-
+            <p className="mt-1 text-[10px] text-gray-500">
+              Leagues
+            </p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 backdrop-blur-md shadow-xl transition duration-300 hover:-translate-y-1 hover:border-green-400/40 hover:shadow-green-500/20">
+          {/* Markets */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-4">
+            <Target size={17} className="text-emerald-400" />
 
-            <p className="text-sm text-gray-400">
-              🎯 Markets
+            <p className="mt-3 text-xl font-extrabold text-white sm:text-2xl">
+              {loading ? "..." : stats.markets.toLocaleString()}
             </p>
 
-            <h3 className="mt-2 text-3xl font-black text-white">
-              {stats.markets}
-            </h3>
-
+            <p className="mt-1 text-[10px] text-gray-500">
+              Markets
+            </p>
           </div>
-
-          
 
         </div>
 
-        <div className="mt-8">
+        {/* Footer status */}
+        <div className="mt-4 flex flex-col gap-3 border-t border-white/[0.07] pt-4 sm:flex-row sm:items-center sm:justify-between">
 
-  {/* Vault Status */}
-  <div
-  className={`rounded-2xl border p-5 transition-all duration-500 ${
-  showNewBadge
-    ? "border-yellow-400/50 bg-yellow-500/10 shadow-lg shadow-yellow-500/20"
-    : "border-green-500/20 bg-green-500/10"
-}`}
->
+          <div className="flex min-w-0 items-center gap-2">
+            {showNewBadge ? (
+              <Activity size={14} className="shrink-0 text-emerald-400" />
+            ) : (
+              <Radio size={14} className="shrink-0 text-emerald-400" />
+            )}
 
-    <div className="flex items-center gap-3">
+            <p className="text-xs text-gray-400">
+              {vaultStatus}
+            </p>
+          </div>
 
-      <span
-        className={`h-3 w-3 rounded-full animate-pulse ${
-          showNewBadge ? "bg-yellow-400" : "bg-green-400"
-        }`}
-      />
+          <div className="flex shrink-0 items-center gap-2 text-[10px] text-gray-500">
+            <Clock3 size={13} />
+            <span>
+              Updated: {lastUpdated}
+            </span>
+          </div>
 
-      <h3 className="font-bold text-green-300">
-        {showNewBadge ? "NEW DATA DETECTED" : "Vault Status"}
-      </h3>
+        </div>
 
-    </div>
-
-    <p className="mt-3 text-gray-300">
-      {vaultStatus}
-    </p>
-
-    <div className="mt-5 border-t border-green-500/20 pt-4 text-sm">
-
-  {/* Last Sync */}
-  <div className="flex items-center justify-between">
-
-    <span className="text-gray-400">
-      Vault Updated
-    </span>
-
-    <span
-      className={`font-medium ${
-        showNewBadge ? "text-green-300" : "text-white"
-      }`}
-    >
-      {lastUpdated}
-    </span>
-
-  </div>
-
-  {/* Live Feed */}
-<div className="mt-4 flex items-center justify-between">
-
-  <span className="text-gray-400">
-    Live Feed
-  </span>
-
-  <div className="flex items-center gap-2">
-
-    <span className="text-green-400 animate-pulse">
-      ◉
-    </span>
-
-    <span
-      className={`font-medium ${
-        showNewBadge ? "text-green-300" : "text-green-400"
-      }`}
-    >
-      {showNewBadge ? "Receiving Updates..." : "Listening..."}
-    </span>
-
-  </div>
-
-</div>
-
-</div>
-
-  </div>
-
-  
-
-</div>
+        {/* Auto refresh indicator */}
+        <div className="mt-3 flex items-center justify-between text-[10px] text-gray-600">
+          <span>Vault data automatically refreshes every 60 seconds</span>
+          <span className="flex items-center gap-1 text-emerald-500/70">
+            <ArrowUpRight size={12} />
+            GoalSense
+          </span>
+        </div>
 
       </div>
-
     </section>
   );
 }
