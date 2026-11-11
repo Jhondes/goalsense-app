@@ -143,10 +143,10 @@ export default function VaultStats() {
         </div>
 
         {/* Main statistics */}
-        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
 
           {/* Total matches */}
-          <div className="col-span-3 flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] p-4 sm:col-span-1 sm:flex-col sm:items-start sm:justify-center sm:p-4">
+          <div className="col-span-2 flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] p-4 sm:col-span-1 sm:flex-col sm:items-start sm:justify-center sm:p-4">
 
             <div>
               <p className="text-[10px] font-bold tracking-widest text-gray-400">
