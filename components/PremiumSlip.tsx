@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useUser } from "@/context/UserContext";
+import { Trophy, CalendarDays } from "lucide-react";
 
 type PremiumMatch = {
   home: string;
@@ -241,31 +242,46 @@ const visiblePerformance = showAllPerformance
   const publicPerformance = (
   <section className="mb-4 overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 via-gray-900 to-gray-950 px-3 py-4 sm:px-4 shadow-[0_0_25px_rgba(234,179,8,0.05)]">
 
-    {/* Header */}
-    <div className="mb-3 flex items-center justify-between">
+{/* PREMIUM PERFORMANCE HEADER */}
+<div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#111827] via-[#0d1724] to-[#101c29] p-4 sm:p-5">
 
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-yellow-400">
-          Premium Slip Performance
-        </p>
+  <div className="flex items-center justify-between gap-3">
 
-        <p className="mt-0.5 text-xs text-gray-500">
-          Recent Results
-        </p>
+    <div className="flex items-center gap-3">
 
-        <p className="mt-1 flex items-center gap-1 text-[10px] font-medium text-yellow-500/80">
-  <span>📅</span>
-  Showing results from the last 28 days
-</p>
-
-
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10">
+        <Trophy className="h-5 w-5 text-emerald-400" />
       </div>
 
-      <div className="text-lg">
-        🏆
+      <div>
+        <h3 className="text-base font-extrabold tracking-tight text-white sm:text-lg">
+          Premium Slip Performance
+        </h3>
+
+        <p className="mt-0.5 text-xs font-medium text-slate-400">
+          Recent Results
+        </p>
       </div>
 
     </div>
+
+    <span className="shrink-0 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[9px] font-bold tracking-wider text-emerald-400">
+      LIVE TRACKING
+    </span>
+
+  </div>
+
+  <div className="my-4 h-px bg-white/[0.07]" />
+
+  <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+    <CalendarDays className="h-3.5 w-3.5 text-emerald-400" />
+
+    <span>
+      Showing results from the last 28 days
+    </span>
+  </div>
+
+</div>
 
     {/* Loading */}
     {performanceLoading ? (
@@ -384,7 +400,7 @@ const visiblePerformance = showAllPerformance
             </span>
           </button>
 
-          
+
 
           <p className="mt-2 text-[10px] text-gray-500">
             {showAllPerformance
