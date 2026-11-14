@@ -387,32 +387,33 @@ const visiblePerformance = showAllPerformance
 
 
 
-      {last28DaysPerformance.length > 5 && (
-        <div className="mt-3 border-t border-yellow-500/10 pt-3 text-center">
-          <button
-            type="button"
-            onClick={() =>
-              setShowAllPerformance((previous) => !previous)
-            }
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-4 py-2 text-xs font-semibold text-yellow-400 transition hover:border-yellow-500/60 hover:bg-yellow-500/10"
-          >
-            {showAllPerformance ? "View Less" : "View More"}
-            <span aria-hidden="true">
-              {showAllPerformance ? "↑" : "↓"}
-            </span>
-          </button>
+    
+{last28DaysPerformance.length > 5 && (
+  <div className="mt-3 border-t border-yellow-500/10 pt-3 text-center">
 
+    <button
+      type="button"
+      onClick={() =>
+        setShowAllPerformance((previous) => !previous)
+      }
+      className="inline-flex items-center justify-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-5 py-2.5 text-xs font-bold text-yellow-400 transition hover:border-yellow-500/60 hover:bg-yellow-500/10"
+    >
+      {showAllPerformance ? "Show Recent Results" : "View All Results"}
 
+      <span aria-hidden="true">
+        {showAllPerformance ? "↑" : "↓"}
+      </span>
+    </button>
 
-          <p className="mt-2 text-[10px] text-gray-500">
-            {showAllPerformance
-              ? `Showing all ${performance.length} results`
-              : `${performance.length - 5} more results available`}
-          </p>
+    <p className="mt-2 text-[10px] text-gray-500">
+      {showAllPerformance
+        ? `Showing all ${last28DaysPerformance.length} results from the last 28 days`
+        : `Showing ${visiblePerformance.length} latest results`}
+    </p>
 
+  </div>
+)}
 
-        </div>
-      )}
     </>
     ) : (
       <div className="py-2 text-center">
