@@ -207,9 +207,37 @@ setShowAllPerformance(false);
    * WON      LOST     WON      PENDING
    * -----------------------------------------
    */
+const last28DaysPerformance = performance.filter((item) => {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+
+  const cutoff = new Date(today);
+  cutoff.setDate(cutoff.getDate() - 27);
+  cutoff.setHours(0, 0, 0, 0);
+
+  const slipDate = new Date(`${item.slip_date}T00:00:00`);
+
+  return slipDate >= cutoff && slipDate <= today;
+});
+
+// ADD PERFORMANCE STATS HERE
+const performanceStats = {
+  won: last28DaysPerformance.filter(
+    (item) => item.status === "won"
+  ).length,
+
+  lost: last28DaysPerformance.filter(
+    (item) => item.status === "lost"
+  ).length,
+
+  pending: last28DaysPerformance.filter(
+    (item) => item.status === "pending"
+  ).length,
+};
+
 const visiblePerformance = showAllPerformance
-  ? performance
-  : performance.slice(-5);
+  ? last28DaysPerformance
+  : last28DaysPerformance.slice(-5);
   const publicPerformance = (
   <section className="mb-4 overflow-hidden rounded-2xl border border-yellow-500/20 bg-gradient-to-r from-yellow-500/5 via-gray-900 to-gray-950 px-3 py-4 sm:px-4 shadow-[0_0_25px_rgba(234,179,8,0.05)]">
 
@@ -224,6 +252,13 @@ const visiblePerformance = showAllPerformance
         <p className="mt-0.5 text-xs text-gray-500">
           Recent Results
         </p>
+
+        <p className="mt-1 flex items-center gap-1 text-[10px] font-medium text-yellow-500/80">
+  <span>📅</span>
+  Showing results from the last 28 days
+</p>
+
+
       </div>
 
       <div className="text-lg">
@@ -332,7 +367,9 @@ const visiblePerformance = showAllPerformance
 
       </div>
 
-      {performance.length > 5 && (
+
+
+      {last28DaysPerformance.length > 5 && (
         <div className="mt-3 border-t border-yellow-500/10 pt-3 text-center">
           <button
             type="button"
@@ -347,11 +384,15 @@ const visiblePerformance = showAllPerformance
             </span>
           </button>
 
+          
+
           <p className="mt-2 text-[10px] text-gray-500">
             {showAllPerformance
               ? `Showing all ${performance.length} results`
               : `${performance.length - 5} more results available`}
           </p>
+
+
         </div>
       )}
     </>
