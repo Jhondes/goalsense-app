@@ -255,6 +255,39 @@ const updatePremiumPerformance = async (
     setPerformanceLoading(false);
   }
 };
+
+
+// ================= LAST 28 DAYS PERFORMANCE =================
+
+// Use local calendar dates to match the public performance page.
+const today = new Date();
+
+const formatDateKey = (date: Date) =>
+  `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(
+    date.getDate()
+  ).padStart(2, "0")}`;
+
+const todayDateKey = formatDateKey(today);
+
+const cutoffDate = new Date(today);
+cutoffDate.setDate(cutoffDate.getDate() - 27);
+
+const cutoffDateKey = formatDateKey(cutoffDate);
+
+// Keep only records within the last 28 calendar days.
+const last28DaysPremiumPerformance = premiumPerformance.filter(
+  (item) =>
+    item.slip_date >= cutoffDateKey &&
+    item.slip_date <= todayDateKey
+);
+
+// Show the latest five or all 28-day records.
+const visiblePremiumPerformance = showAllPremiumPerformance
+  ? last28DaysPremiumPerformance
+  : last28DaysPremiumPerformance.slice(-5);
+
   // ✅ FIXED: Properly closed function
   async function fetchMatches() {
   const { data, error } = await supabase
@@ -1541,7 +1574,7 @@ if (!authorized) {
       fontWeight: "bold",
     }}
   >
-    Premium Slip Performance ({premiumPerformance.length} results)
+    Premium Slip Performance ({last28DaysPremiumPerformance.length} results · Last 28 days)
     <p
       style={{
         color: "#999",
@@ -1554,7 +1587,7 @@ if (!authorized) {
     </p>
   </summary>
 
-  {premiumPerformance.length === 0 ? (
+  {last28DaysPremiumPerformance.length === 0 ? (
     <div
       style={{
         padding: "20px",
@@ -1564,25 +1597,21 @@ if (!authorized) {
         color: "#888",
       }}
     >
-      No Premium Slip performance recorded yet.
+      No Premium Slip performance recorded in the last 28 days.
     </div>
   ) : (
     <div
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${Math.min(
-          premiumPerformance.length,
-          5
-        )}, minmax(0, 1fr))`,
+  visiblePremiumPerformance.length,
+  5
+)}, minmax(0, 1fr))`,
         gap: "8px",
         width: "100%",
       }}
     >
-      {(
-  showAllPremiumPerformance
-    ? premiumPerformance
-    : premiumPerformance.slice(-5)
-).map((performance) => {
+      {visiblePremiumPerformance.map((performance) => {
         const date = new Date(
           `${performance.slip_date}T00:00:00`
         );
@@ -1784,7 +1813,7 @@ if (!authorized) {
     </div>
   )}
 
-  {premiumPerformance.length > 5 && (
+  {last28DaysPremiumPerformance.length > 5 && (
     <button
       type="button"
       onClick={() =>
@@ -1803,8 +1832,8 @@ if (!authorized) {
       }}
     >
       {showAllPremiumPerformance
-        ? "Show Latest 5 Results"
-        : `View All History (${premiumPerformance.length} results)`}
+  ? "Show Latest 5 Results"
+  : `View All Results (${last28DaysPremiumPerformance.length})`}
     </button>
   )}
 </details>
