@@ -24,6 +24,7 @@ type PremiumSlipData = {
 type PremiumPerformance = {
   slip_date: string;
   status: "pending" | "won" | "lost";
+  total_odds: number | null;
 };
 
 export default function PremiumSlip() {
@@ -366,18 +367,24 @@ const visiblePerformance = showAllPerformance
                 {formattedDate}
               </p>
 
-              {/* STATUS */}
-              <p
-                className={`mt-1 flex items-center justify-center gap-0.5 text-[9px] font-bold sm:text-[11px] ${statusColor}`}
-              >
-                <span className="text-[9px] sm:text-[10px]">
-                  {statusIcon}
-                </span>
+              {/* STATUS + ODDS */}
+<p
+  className={`mt-1 flex flex-wrap items-center justify-center gap-0.5 text-[9px] font-bold sm:text-[11px] ${statusColor}`}
+>
+  <span className="text-[9px] sm:text-[10px]">
+    {statusIcon}
+  </span>
 
-                <span>
-                  {statusText}
-                </span>
-              </p>
+  {item.total_odds != null && (
+    <span>
+      {Number(item.total_odds).toFixed(2)}
+    </span>
+  )}
+
+  <span>
+    {statusText}
+  </span>
+</p>
 
             </div>
           );

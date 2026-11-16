@@ -24,19 +24,17 @@ const supabaseAdmin = createClient(
 // Only return performance for active premium slips
 // ======================================================
 
+
 export async function GET() {
   try {
-    // Get all performance records
+    // Fetch all performance records
     const { data: performanceData, error: performanceError } =
       await supabaseAdmin
         .from("premium_slip_performance")
         .select("*");
 
     if (performanceError) {
-      console.error(
-        "Premium performance fetch error:",
-        performanceError
-      );
+      console.error("Premium performance fetch error:", performanceError);
 
       return NextResponse.json(
         { error: performanceError.message },
@@ -44,14 +42,49 @@ export async function GET() {
       );
     }
 
-   
-    // Keep all historical performance records, even when
-    // their original Premium Slips have been deleted.
-    const allPerformance = (performanceData || []).sort(
-      (a, b) =>
-        new Date(a.slip_date).getTime() -
-        new Date(b.slip_date).getTime()
-    );
+    // Fetch available premium slip odds
+    const { data: slipsData, error: slipsError } =
+      await supabaseAdmin
+        .from("premium_slips")
+        .select("slip_date, total_odds, created_at")
+        .order("created_at", { ascending: false });
+
+    if (slipsError) {
+      console.error("Premium slips odds fetch error:", slipsError);
+
+      return NextResponse.json(
+        { error: slipsError.message },
+        { status: 500 }
+      );
+    }
+
+    // Use the latest slip record for each date
+    const oddsByDate = new Map<string, number>();
+
+    (slipsData || []).forEach((slip) => {
+      if (
+        slip.slip_date &&
+        slip.total_odds != null &&
+        !oddsByDate.has(slip.slip_date)
+      ) {
+        oddsByDate.set(
+          slip.slip_date,
+          Number(slip.total_odds)
+        );
+      }
+    });
+
+    // Attach odds to each performance record
+    const allPerformance = (performanceData || [])
+      .map((item) => ({
+        ...item,
+        total_odds: oddsByDate.get(item.slip_date) ?? null,
+      }))
+      .sort(
+        (a, b) =>
+          new Date(a.slip_date).getTime() -
+          new Date(b.slip_date).getTime()
+      );
 
     return NextResponse.json({
       success: true,
@@ -59,10 +92,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error(
-      "Get premium performance error:",
-      error
-    );
+    console.error("Get premium performance error:", error);
 
     return NextResponse.json(
       { error: "Something went wrong" },
@@ -70,6 +100,7 @@ export async function GET() {
     );
   }
 }
+
 
 // ======================================================
 // CREATE / UPDATE PREMIUM SLIP PERFORMANCE
