@@ -19,7 +19,7 @@ import PremiumFeatures from "@/components/PremiumFeatures";
 import ResponsibleGaming from "@/components/ResponsibleGaming";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Brain } from "lucide-react";
 
 
 
@@ -48,14 +48,29 @@ export default function Home() {
             </p>
 
             {/* Anchor scroll (no JS needed) */}
-            <a
-              href="#generator"
-              className="inline-block px-8 py-3 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 text-black font-semibold hover:scale-105 transition shadow-lg hover:shadow-emerald-500/40"
-            >
-              Start Generating
-            </a>
-          </section>
+            
+<div className="flex flex-wrap items-center justify-center gap-3">
 
+  {/* PRIMARY ACTION */}
+  <a
+    href="#generator"
+    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 px-8 py-3 font-semibold text-black shadow-lg shadow-emerald-500/20 transition hover:scale-105 hover:shadow-emerald-500/40"
+  >
+    Start Generating
+    <ArrowRight size={17} />
+  </a>
+
+  {/* FOOTBALL QUIZ */}
+  <Link
+    href="/insights/football-quiz"
+    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/5 px-6 py-3 font-semibold text-emerald-400 transition hover:border-emerald-400 hover:bg-emerald-400/10"
+  >
+    <Brain size={17} />
+    Football Quiz
+  </Link>
+
+</div>
+</section>
 
 {/* COMPACT GOALSENSE INSIGHTS */}
 <section className="relative z-10">
