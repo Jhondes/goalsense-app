@@ -179,37 +179,66 @@ export default function InsightsPage() {
                 </div>
               </div>
 
-              <div className="mt-9 space-y-3">
-                {[
-  { label: "Football Statistics", icon: BarChart3 },
-  { label: "Market Education", icon: BookOpen },
-  { label: "GoalSense Academy", icon: GraduationCap },
-  { label: "Performance Insights", icon: TrendingUp },
-  { label: "Football Knowledge Quiz", icon: Brain },
-].map((item, index) => {
-                  const Icon = item.icon;
+              
+<div className="mt-9 space-y-3">
+  {[
+    {
+      label: "Football Statistics",
+      icon: BarChart3,
+      href: "/insights/football-statistics",
+    },
+    {
+      label: "Market Education",
+      icon: BookOpen,
+      href: "/insights/market-education",
+    },
+    {
+      label: "GoalSense Academy",
+      icon: GraduationCap,
+      href: "/insights/academy",
+    },
+    {
+      label: "Performance Insights",
+      icon: TrendingUp,
+      href: "#performance-insights",
+    },
+    {
+      label: "Football Knowledge Quiz",
+      icon: Brain,
+      href: "/insights/football-quiz",
+    },
+  ].map((item, index) => {
+    const Icon = item.icon;
 
-                  return (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-4 rounded-xl border border-white/10 bg-black/20 p-4"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-400">
-                        <Icon size={19} />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-gray-200">
-                          {item.label}
-                        </p>
-                        <p className="mt-1 text-[10px] tracking-widest text-gray-500">
-                          EXPLORE SECTION 0{index + 1}
-                        </p>
-                      </div>
-                      <ArrowRight size={16} className="text-gray-500" />
-                    </div>
-                  );
-                })}
-              </div>
+    return (
+      <Link
+        key={item.label}
+        href={item.href}
+        className="group flex items-center gap-4 rounded-xl border border-white/10 bg-black/20 p-4 transition duration-300 hover:border-emerald-400/40 hover:bg-emerald-400/5 active:scale-[0.99]"
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-400 transition group-hover:bg-emerald-400/20">
+          <Icon size={19} />
+        </div>
+
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-gray-200 transition group-hover:text-emerald-400">
+            {item.label}
+          </p>
+          <p className="mt-1 text-[10px] tracking-widest text-gray-500">
+            EXPLORE SECTION 0{index + 1}
+          </p>
+        </div>
+
+        <ArrowRight
+          size={16}
+          className="text-gray-500 transition group-hover:translate-x-1 group-hover:text-emerald-400"
+        />
+      </Link>
+    );
+  })}
+</div>
+
+
 
               <div className="mt-6 border-t border-white/10 pt-5">
                 <p className="text-center text-xs tracking-wider text-gray-500">
