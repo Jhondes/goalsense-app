@@ -61,13 +61,13 @@ export default function Home() {
   </a>
 
   {/* FOOTBALL QUIZ */}
-  <Link
-    href="/insights/football-quiz"
-    className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/5 px-6 py-3 font-semibold text-emerald-400 transition hover:border-emerald-400 hover:bg-emerald-400/10"
-  >
-    <Brain size={17} />
-    Football Quiz
-  </Link>
+<Link
+  href="/insights/football-quiz"
+  className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/5 px-6 py-3 font-semibold text-emerald-400 transition hover:border-emerald-400 hover:bg-emerald-400/10"
+>
+  <Brain size={17} />
+  Play Football Quiz
+</Link>
 
 </div>
 </section>
