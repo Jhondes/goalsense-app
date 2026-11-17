@@ -55,6 +55,11 @@ const pages = [
     priority: 0.9,
   },
   {
+  path: "/insights/football-quiz",
+  changeFrequency: "weekly",
+  priority: 0.8,
+},
+  {
     path: "/insights/academy",
     changeFrequency: "weekly",
     priority: 0.8,

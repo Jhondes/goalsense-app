@@ -12,6 +12,8 @@ import {
   Video,
   Clock,
   Sparkles,
+  Brain,
+  Trophy,
 } from "lucide-react";
 
 const categories = [
@@ -51,6 +53,15 @@ const categories = [
     number: "04",
     href: "#performance-insights",
   },
+  {
+  title: "Football Knowledge Quiz",
+  description:
+    "Challenge yourself with interactive football questions covering history, rules, competitions, tactics and statistics.",
+  icon: Brain,
+  tag: "TEST YOUR KNOWLEDGE",
+  number: "05",
+  href: "/insights/football-quiz",
+},
 ];
 
 const articles = [
@@ -170,10 +181,12 @@ export default function InsightsPage() {
 
               <div className="mt-9 space-y-3">
                 {[
-                  { label: "Football Statistics", icon: BarChart3 },
-                  { label: "Market Education", icon: BookOpen },
-                  { label: "GoalSense Academy", icon: GraduationCap },
-                ].map((item, index) => {
+  { label: "Football Statistics", icon: BarChart3 },
+  { label: "Market Education", icon: BookOpen },
+  { label: "GoalSense Academy", icon: GraduationCap },
+  { label: "Performance Insights", icon: TrendingUp },
+  { label: "Football Knowledge Quiz", icon: Brain },
+].map((item, index) => {
                   const Icon = item.icon;
 
                   return (
@@ -228,7 +241,7 @@ export default function InsightsPage() {
           </div>
 
           <span className="text-xs font-semibold tracking-widest text-gray-600">
-            FOUR LEARNING AREAS
+            FIVE LEARNING AREAS
           </span>
         </div>
 
@@ -274,6 +287,59 @@ export default function InsightsPage() {
           })}
         </div>
       </section>
+
+      
+      {/* FOOTBALL QUIZ FEATURE */}
+      <section className="mx-auto max-w-7xl px-5 pb-20 sm:px-8 sm:pb-24">
+        <div className="relative isolate overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-[#10231a] via-[#0b110e] to-[#070b09] p-8 shadow-2xl shadow-black/20 sm:p-12">
+
+          {/* BACKGROUND DECORATION */}
+          <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full border border-emerald-400/10" />
+          <div className="pointer-events-none absolute -right-8 -top-8 h-56 w-56 rounded-full bg-emerald-400/5 blur-3xl" />
+
+          <div className="relative grid items-center gap-10 md:grid-cols-[1fr_auto]">
+
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-bold tracking-widest text-emerald-400">
+                <Brain size={15} />
+                THE GOALSENSE CHALLENGE
+              </div>
+
+              <h2 className="mt-6 text-3xl font-black leading-tight sm:text-4xl">
+                Think You Know Football?
+                <span className="block text-emerald-400">Prove It.</span>
+              </h2>
+
+              <p className="mt-5 max-w-xl leading-8 text-gray-400">
+                From legendary football moments to tactics, statistics and
+                competitions, put your knowledge to the test with the
+                GoalSense Football Quiz.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-5 text-xs font-semibold text-gray-400">
+                <span>10 QUESTIONS</span>
+                <span>INSTANT RESULTS</span>
+                <span>FREE TO PLAY</span>
+              </div>
+
+              <Link
+                href="/insights/football-quiz"
+                className="mt-9 inline-flex items-center gap-3 rounded-xl bg-emerald-500 px-7 py-4 font-extrabold text-black transition hover:bg-emerald-400"
+              >
+                Take the Challenge
+                <ArrowRight size={19} />
+              </Link>
+            </div>
+
+            <div className="relative mx-auto flex h-40 w-40 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400/5 sm:h-52 sm:w-52">
+              <div className="absolute inset-4 rounded-full border border-emerald-400/10" />
+              <Trophy size={85} strokeWidth={1.2} className="text-emerald-400" />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
 
       {/* FEATURED ARTICLE */}
       <section className="border-y border-white/10 bg-[#080d0a]">
