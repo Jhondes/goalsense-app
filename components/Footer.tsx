@@ -1,152 +1,144 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
-  const [year, setYear] = useState("");
+  const year = new Date().getFullYear();
 
-  useEffect(() => {
-    setYear(new Date().getFullYear().toString());
-  }, []);
+  const platformLinks = [
+    { label: "Generator", href: "#generator" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Brand Ambassadors", href: "/ambassadors" },
+  ];
+
+  const featureLinks = [
+    { label: "Football Statistics", href: "/insights/football-statistics" },
+    { label: "Football Quiz", href: "/insights/football-quiz" },
+    { label: "Football Insights", href: "/insights" },
+  ];
+
+  const legalLinks = [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms & Conditions", href: "/terms" },
+    { label: "Contact Us", href: "/contact" },
+  ];
 
   return (
-    <footer className="relative mt-0 text-gray-400 overflow-hidden">
+    <footer className="relative mt-0 overflow-hidden border-t border-emerald-500/15 bg-[#050807] text-gray-400">
 
-      {/* Animated Top Glow Line */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-pulse" />
+      {/* Subtle top accent */}
+      <div className="absolute left-1/2 top-0 h-px w-1/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
 
-      {/* Moving Light Sweep */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 w-[600px] h-[600px] bg-emerald-500/20 rounded-full blur-3xl animate-spinSlow" />
-        <div className="absolute bottom-0 right-1/3 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-12 sm:py-16 md:py-20 grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-8 px-5 py-8 sm:px-7 md:grid-cols-4 md:gap-8 md:py-10">
 
         {/* Brand */}
-        <div className="space-y-6">
-          <h2 className="text-3xl font-extrabold text-white tracking-wide">
-  GoalSense
-</h2>
-          <p className="text-sm leading-relaxed text-gray-400">
-            Intelligent filtering and probability modeling.
+        <div className="col-span-2 space-y-3 md:col-span-1">
+          <Link href="/" className="inline-block">
+            <h2 className="text-xl font-extrabold tracking-tight text-white">
+              Goal<span className="text-emerald-400">Sense</span>
+              <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            </h2>
+          </Link>
+
+          <p className="max-w-[220px] text-xs leading-5 text-gray-500">
+            Your destination for football fixtures, statistics and insights.
           </p>
 
-          {/* Authority Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-400 text-xs tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-            ✔ Advanced Market Logic
-          </div>
-
-          {/* Social */}
-<a
-  href="https://x.com/GoalSenseApp"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition duration-300 group"
->
-  <span className="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/5 group-hover:border-emerald-400/40 group-hover:bg-emerald-400/10 transition duration-300">
-    𝕏
-  </span>
-
-  <span className="group-hover:text-emerald-400 transition duration-300">
-    Follow GoalSense on X
-  </span>
-</a>
+          <a
+            href="https://x.com/GoalSenseApp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 pt-1 text-xs font-medium text-gray-400 transition-colors hover:text-emerald-400"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-sm transition-colors group-hover:border-emerald-400/30 group-hover:bg-emerald-400/10">
+              𝕏
+            </span>
+            Follow on X
+            <ArrowUpRight size={12} />
+          </a>
         </div>
 
         {/* Platform */}
-        <div className="space-y-6">
-          <h3 className="text-white font-semibold text-lg tracking-wide">
+        <div>
+          <h3 className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white">
             Platform
           </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <a href="#generator" className="hover:text-emerald-400 transition duration-300 hover:tracking-wider">
-                Generator
-              </a>
-            </li>
-            <li>
-              <a href="#how-it-works" className="hover:text-emerald-400 transition duration-300 hover:tracking-wider">
-                How It Works
-              </a>
-            </li>
 
-            <li>
-  <Link
-    href="/ambassadors"
-    className="hover:text-emerald-400 transition duration-300 hover:tracking-wider"
-  >
-    Brand Ambassadors
-  </Link>
-</li>
-            
+          <ul className="space-y-2.5">
+            {platformLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="text-xs text-gray-500 transition-colors hover:text-emerald-400"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Features */}
-        <div className="space-y-5">
-          <h3 className="text-white font-semibold text-lg">Features</h3>
-          <ul className="space-y-3 text-sm">
-            <li>Smart Market Filtering</li>
-            <li>Multi-League Support</li>
-            <li>Confidence Scoring</li>
-            
+        {/* Explore */}
+        <div>
+          <h3 className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white">
+            Explore
+          </h3>
+
+          <ul className="space-y-2.5">
+            {featureLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="text-xs text-gray-500 transition-colors hover:text-emerald-400"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Legal */}
-        <div className="space-y-6">
-  <h3 className="text-white font-semibold text-lg tracking-wide">
-    Support & Legal
-  </h3>
+        {/* Support */}
+        <div>
+          <h3 className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white">
+            Support & Legal
+          </h3>
 
-  <ul className="space-y-3 text-sm">
-    <li>
-      <Link
-        href="/privacy"
-        className="hover:text-emerald-400 transition duration-300"
-      >
-        Privacy Policy
-      </Link>
-    </li>
+          <ul className="space-y-2.5">
+            {legalLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="text-xs text-gray-500 transition-colors hover:text-emerald-400"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-    <li>
-      <Link
-        href="/terms"
-        className="hover:text-emerald-400 transition duration-300"
-      >
-        Terms & Conditions
-      </Link>
-    </li>
-
-    <li>
-      <Link
-        href="/contact"
-        className="hover:text-emerald-400 transition duration-300"
-      >
-        Contact Us
-      </Link>
-    </li>
-  </ul>
-
-  <p className="text-xs opacity-60">
-    18+ Only. For educational purposes.
-  </p>
-</div>
+          <p className="mt-4 text-[10px] leading-4 text-gray-600">
+            Football information for educational purposes.
+          </p>
+        </div>
 
       </div>
 
-      {/* Bottom Bar */}
-      <div className="relative border-t border-white/10 py-8 text-center text-xs text-gray-500">
+      {/* Bottom bar */}
+      <div className="border-t border-white/[0.06] px-5 py-4">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-center sm:flex-row sm:text-left">
+          <p className="text-[10px] text-gray-600">
+            © {year} GoalSense. All rights reserved.
+          </p>
 
-        {/* Neon Pulse Dot */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-2 w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_25px_6px_rgba(16,185,129,0.7)] animate-pulse" />
-
-        © {year} GoalSense. All rights reserved.
-
+          <p className="text-[10px] font-medium tracking-wide text-gray-600">
+            FOOTBALL. DATA. INSIGHTS.
+          </p>
+        </div>
       </div>
+
     </footer>
   );
 }
