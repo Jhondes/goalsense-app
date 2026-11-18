@@ -1,36 +1,85 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  ChartBarIcon,
+  AcademicCapIcon,
+  TrophyIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/outline";
+
 import PredictionLinks from "@/components/PredictionLinks";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import ArticleSchema from "@/components/ArticleSchema";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "BTTS Predictions Today | GoalSense",
+  title: "BTTS Explained: Both Teams To Score | GoalSense",
   description:
-    "Generate today's Both Teams To Score (BTTS) football predictions, accumulator tips and match selections using GoalSense.",
+    "Understand Both Teams To Score (BTTS), football scoring statistics and match analysis with GoalSense.",
   keywords: [
-    "BTTS predictions",
-    "both teams to score predictions",
-    "today BTTS tips",
-    "BTTS accumulator",
-    "football BTTS tips",
-    "goal predictions",
+    "BTTS meaning",
+    "Both Teams To Score explained",
+    "football scoring statistics",
+    "BTTS football terminology",
+    "football match analysis",
+    "GoalSense",
   ],
   alternates: {
     canonical: "https://goalsense.live/btts-predictions",
   },
 };
 
+const features = [
+  {
+    icon: ChartBarIcon,
+    title: "Scoring Statistics",
+    description:
+      "Explore goals scored, goals conceded and historical team records.",
+  },
+  {
+    icon: TrophyIcon,
+    title: "Football Competitions",
+    description:
+      "Discover teams and competitions across different football leagues.",
+  },
+  {
+    icon: AcademicCapIcon,
+    title: "Football Education",
+    description:
+      "Learn football terminology through simple explanations and guides.",
+  },
+];
+
+const faqs = [
+  {
+    question: "What does BTTS mean in football?",
+    answer:
+      "BTTS means Both Teams To Score. It describes a match in which both competing teams score at least one goal.",
+  },
+  {
+    question: "What is a BTTS result?",
+    answer:
+      "A match ending 1–1, 2–1 or 3–2 is an example of a BTTS result because both teams scored.",
+  },
+  {
+    question: "What is a No BTTS result?",
+    answer:
+      "A match ending 1–0, 2–0 or 0–0 is an example of No BTTS because at least one team did not score.",
+  },
+  {
+    question: "Why are BTTS statistics useful?",
+    answer:
+      "They provide historical information about how frequently teams score and concede goals. They do not predict or guarantee future results.",
+  },
+];
+
 export default function BTTSPredictions() {
   return (
     <>
       <BreadcrumbSchema
         items={[
-          {
-            name: "Home",
-            url: "https://goalsense.live",
-          },
+          { name: "Home", url: "https://goalsense.live" },
           {
             name: "BTTS Predictions",
             url: "https://goalsense.live/btts-predictions",
@@ -39,262 +88,191 @@ export default function BTTSPredictions() {
       />
 
       <ArticleSchema
-        headline="BTTS Football Predictions"
-        description="Generate Both Teams To Score football predictions, accumulator tips and goal-based match selections using GoalSense."
+        headline="BTTS Explained: Both Teams To Score"
+        description="Understand Both Teams To Score terminology, football scoring statistics and match analysis."
         url="https://goalsense.live/btts-predictions"
         datePublished="2026-07-30"
         dateModified="2026-07-30"
       />
 
-      <main className="max-w-5xl mx-auto px-6 py-16">
+      <main className="min-h-screen bg-[#080d12] text-white">
+        <div className="mx-auto max-w-5xl px-5 py-7 sm:py-10">
 
-        <Breadcrumb
-          items={[
-            {
-              name: "Home",
-              href: "/",
-            },
-            {
-              name: "BTTS Predictions",
-            },
-          ]}
-        />
+          {/* BREADCRUMB */}
+          <Breadcrumb
+            items={[
+              { name: "Home", href: "/" },
+              { name: "BTTS Predictions" },
+            ]}
+          />
 
-        <h1 className="text-4xl md:text-5xl font-bold mb-8">
-          Today's BTTS Predictions
-        </h1>
+          {/* HERO */}
+          <section className="mb-8 mt-6 rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-[#10201b] via-[#0c1518] to-[#080d12] p-5 sm:p-7">
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400">
+              GOALSENSE FOOTBALL EDUCATION
+            </span>
 
-        <p className="text-lg text-gray-300 leading-8 mb-8">
-          Looking for today's BTTS predictions? GoalSense helps football fans
-          generate intelligent Both Teams To Score selections using today's
-          football fixtures. Whether you're creating a small accumulator or
-          searching for exciting goal-filled matches, GoalSense helps you build
-          prediction slips quickly using smart football filters.
-        </p>
+            <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl md:text-4xl">
+              Both Teams To Score{" "}
+              <span className="text-emerald-400">(BTTS)</span>
+            </h1>
 
-        <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6 mb-12">
-
-          <h2 className="text-2xl font-semibold mb-3">
-            What Does BTTS Mean?
-          </h2>
-
-          <p className="text-gray-300 leading-7">
-            BTTS stands for <strong>Both Teams To Score</strong>. A BTTS bet wins
-            when both teams score at least one goal during normal time,
-            regardless of which team wins the match. For example, scores like
-            1-1, 2-1, 3-2 and 4-1 all qualify as winning BTTS outcomes, while
-            results like 2-0 or 1-0 do not.
-          </p>
-
-        </div>
-
-        <h2 className="text-3xl font-bold mt-14 mb-5">
-          Why BTTS Is So Popular
-        </h2>
-
-        <p className="text-gray-300 leading-8 mb-6">
-          BTTS is one of football's most popular betting markets because it
-          removes the need to predict the winning team. Instead, bettors only
-          need both teams to find the back of the net, making it an exciting
-          market for matches involving attacking football.
-        </p>
-
-        <h2 className="text-3xl font-bold mt-16 mb-5">
-          How GoalSense Finds BTTS Matches
-        </h2>
-
-        <p className="text-gray-300 leading-8 mb-6">
-          GoalSense helps users filter today's football fixtures and instantly
-          generate BTTS selections. Rather than manually checking dozens of
-          matches, the platform organizes fixtures into easy-to-build
-          accumulator slips using intelligent football filters.
-        </p>
-
-        <h2 className="text-3xl font-bold mt-16 mb-5">
-          How to Use GoalSense
-        </h2>
-
-        <ol className="space-y-4 list-decimal pl-6 text-gray-300 leading-8 mb-10">
-          <li>Select today's football fixtures.</li>
-          <li>Choose <strong>BTTS</strong> as your preferred market.</li>
-          <li>Select how many matches you want.</li>
-          <li>Generate your BTTS prediction slip instantly.</li>
-          <li>Copy, lock or share your accumulator.</li>
-        </ol>
-
-        <h2 className="text-3xl font-bold mt-16 mb-5">
-          Tips for Betting BTTS
-        </h2>
-
-        <div className="space-y-6 text-gray-300 leading-8">
-
-          <div>
-            <h3 className="font-semibold text-white mb-2">
-              ⚽ Focus on Attacking Teams
-            </h3>
-
-            <p>
-              Teams with consistent attacking records and regular goals scored
-              are often stronger BTTS candidates.
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
+              Understand BTTS football terminology, scoring patterns,
+              historical team statistics and how to interpret match data.
             </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-white mb-2">
-              📊 Study Recent BTTS Form
-            </h3>
-
-            <p>
-              Check whether both teams have regularly scored and conceded goals
-              in their recent matches.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-white mb-2">
-              🌍 Choose Competitive Leagues
-            </h3>
-
-            <p>
-              Europe's major football leagues often produce consistent BTTS
-              opportunities thanks to their attacking quality.
-            </p>
-          </div>
-
-        </div>
-
-        <h2 className="text-3xl font-bold mt-16 mb-5">
-          Why Football Bettors Choose GoalSense
-        </h2>
-
-        <p className="text-gray-300 leading-8 mb-8">
-          GoalSense saves users valuable research time by organizing today's
-          football fixtures into easy-to-build BTTS prediction slips. Instead of
-          manually checking numerous matches, users can generate predictions
-          within seconds while filtering leagues, markets and the number of
-          selections they want.
-        </p>
-
-        <ul className="space-y-3 list-disc pl-6 text-gray-300">
-          <li>Generate BTTS predictions in seconds.</li>
-          <li>Filter today's fixtures by league.</li>
-          <li>Create football accumulators instantly.</li>
-          <li>Lock your favourite selections.</li>
-          <li>Unlock Premium football prediction features.</li>
-        </ul>
-
-        <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
-
-          <h2 className="text-3xl font-bold mb-4">
-            Generate Today's BTTS Predictions
-          </h2>
-
-          <p className="text-gray-400 leading-7 mb-8">
-            Build today's BTTS accumulator in seconds using GoalSense's
-            intelligent football prediction generator.
-          </p>
-
-          <Link
-            href="/"
-            className="inline-flex items-center rounded-lg bg-green-600 px-6 py-3 font-semibold hover:bg-green-500 transition"
-          >
-            Generate Predictions →
-          </Link>
-
-        </div>
-
-                <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
-
-          <h2 className="text-3xl font-bold mb-6">
-            Explore More Football Predictions
-          </h2>
-
-          <p className="text-gray-400 mb-6">
-            Looking for different football betting markets? Explore more
-            prediction pages below and discover today's football selections.
-          </p>
-
-          <div className="flex flex-col gap-3">
 
             <Link
-              href="/today-football-predictions"
-              className="text-green-400 hover:text-green-300"
+              href="/insights/football-statistics"
+              className="mt-5 inline-flex rounded-lg bg-emerald-500 px-4 py-2.5 text-xs font-bold text-black transition hover:bg-emerald-400"
             >
-              Today's Football Predictions →
+              Explore Football Statistics
             </Link>
+          </section>
 
-            <Link
-              href="/over-2.5-predictions"
-              className="text-green-400 hover:text-green-300"
-            >
-              Over 2.5 Predictions →
-            </Link>
+          {/* BTTS EXPLANATION */}
+          <section className="mb-8 rounded-xl border border-white/[0.07] bg-[#101820] p-5 sm:p-6">
+            <div className="flex items-center gap-2">
+              <AcademicCapIcon className="h-5 w-5 text-emerald-400" />
 
-            <Link
-              href="/premier-league-predictions"
-              className="text-green-400 hover:text-green-300"
-            >
-              Premier League Predictions →
-            </Link>
+              <h2 className="text-base font-bold text-white">
+                What Does BTTS Mean?
+              </h2>
+            </div>
 
-          </div>
+            <p className="mt-3 text-xs leading-6 text-gray-400 sm:text-sm">
+              BTTS stands for <strong className="text-gray-200">Both Teams To Score</strong>.
+              In football, it describes a match in which both competing
+              teams score at least one goal during normal playing time.
+            </p>
+
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-lg border border-emerald-500/15 bg-emerald-500/[0.05] p-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                  BTTS example
+                </span>
+
+                <p className="mt-1 text-lg font-extrabold text-white">
+                  2 – 1
+                </p>
+
+                <p className="text-[10px] text-gray-500">
+                  Both teams scored
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                  No BTTS example
+                </span>
+
+                <p className="mt-1 text-lg font-extrabold text-white">
+                  2 – 0
+                </p>
+
+                <p className="text-[10px] text-gray-500">
+                  Only one team scored
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* STATISTICS */}
+          <section className="mb-8">
+            <div className="mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-400">
+                Football Analysis
+              </span>
+
+              <h2 className="mt-1 text-xl font-extrabold">
+                Understanding Scoring Patterns
+              </h2>
+            </div>
+
+            <p className="mb-4 text-xs leading-6 text-gray-400 sm:text-sm">
+              Historical scoring records can help explain how teams perform
+              in different competitions. Goals scored, goals conceded and
+              previous match results provide useful context when studying
+              football statistics.
+            </p>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {features.map((feature) => {
+                const Icon = feature.icon;
+
+                return (
+                  <div
+                    key={feature.title}
+                    className="rounded-xl border border-white/[0.07] bg-[#101820] p-4"
+                  >
+                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-400/[0.08]">
+                      <Icon className="h-5 w-5 text-emerald-400" />
+                    </div>
+
+                    <h3 className="text-sm font-bold text-white">
+                      {feature.title}
+                    </h3>
+
+                    <p className="mt-1.5 text-xs leading-5 text-gray-500">
+                      {feature.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* EDUCATIONAL NOTE */}
+          <section className="mb-8 flex items-start gap-3 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4">
+            <ShieldCheckIcon className="h-5 w-5 shrink-0 text-emerald-400" />
+
+            <div>
+              <h2 className="text-xs font-bold text-white">
+                Understanding Football Statistics
+              </h2>
+
+              <p className="mt-1 text-xs leading-5 text-gray-400">
+                Historical statistics describe past performances.
+                They cannot guarantee how a future football match will end.
+              </p>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="mb-8 border-t border-white/[0.07] pt-7">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-400">
+              Quick Answers
+            </span>
+
+            <h2 className="mb-4 mt-1 text-xl font-extrabold">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="divide-y divide-white/[0.07]">
+              {faqs.map((faq) => (
+                <div key={faq.question} className="py-3">
+                  <h3 className="text-xs font-bold text-gray-200 sm:text-sm">
+                    {faq.question}
+                  </h3>
+
+                  <p className="mt-1.5 text-xs leading-5 text-gray-500">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* RELATED CONTENT */}
+          <section className="border-t border-white/[0.07] pt-7">
+            <h2 className="mb-4 text-xl font-extrabold">
+              Explore More Football Guides
+            </h2>
+
+            <PredictionLinks />
+          </section>
 
         </div>
-
-        <p className="text-gray-300 leading-8 mt-16 mb-8">
-          Below are answers to some of the most common questions about Both
-          Teams To Score betting and how GoalSense helps users generate BTTS
-          football predictions and accumulator slips.
-        </p>
-
-        <h2 className="text-3xl font-bold mb-6">
-          Frequently Asked Questions
-        </h2>
-
-        <div className="space-y-8">
-
-          <div>
-            <h3 className="font-semibold text-xl mb-2">
-              What does BTTS mean?
-            </h3>
-
-            <p className="text-gray-400 leading-7">
-              BTTS stands for Both Teams To Score. The bet wins if both teams
-              score at least one goal during normal time, regardless of who
-              wins the match.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-xl mb-2">
-              Is BTTS a good accumulator market?
-            </h3>
-
-            <p className="text-gray-400 leading-7">
-              Many football bettors include BTTS selections in accumulators
-              because they only require both teams to score, making them a
-              popular alternative to predicting match winners.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-xl mb-2">
-              Can GoalSense generate BTTS predictions?
-            </h3>
-
-            <p className="text-gray-400 leading-7">
-              Yes. GoalSense allows users to generate BTTS football predictions
-              using today's available fixtures, supported leagues and intelligent
-              football filters.
-            </p>
-          </div>
-
-        </div>
-
-        <div className="mt-20">
-          <PredictionLinks />
-        </div>
-
       </main>
     </>
   );
