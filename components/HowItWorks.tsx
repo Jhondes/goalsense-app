@@ -1,94 +1,114 @@
+
 export default function HowItWorks() {
   const steps = [
     {
       icon: "📅",
-      step: "STEP 1",
+      number: "01",
       title: "Choose Fixtures",
       description:
         "Select the date you want predictions for. GoalSense automatically loads today's available football matches.",
     },
     {
-      icon: "🎯",
-      step: "STEP 2",
+      icon: "📊",
+      number: "02",
       title: "Select Market",
       description:
         "Choose your preferred betting market including Over 1.5, Over 2.5, BTTS or Match Winner.",
     },
     {
-      icon: "⚙️",
-      step: "STEP 3",
+      icon: "💡",
+      number: "03",
       title: "Customize Slip",
       description:
         "Choose your number of picks and use filters like Lucky Slip, Mixed Markets and Target Odds.",
     },
     {
-      icon: "🚀",
-      step: "STEP 4",
-      title: "Generate & Save",
+      icon: "⚽",
+      number: "04",
+      title: "Generate SmartSlip",
       description:
-        "Generate your football predictions instantly, then save, copy or share your accumulator slip anytime.",
+        "Generate your smart football predictions instantly",
     },
   ];
 
   return (
-    <section className="relative z-10 mt-16 mx-auto max-w-6xl rounded-3xl border border-gray-800 bg-gradient-to-b from-gray-900 to-black p-6 md:p-10">
+    <section className="relative z-10 mx-auto mt-12 max-w-6xl rounded-3xl border border-white/[0.07] bg-gradient-to-b from-[#111827] via-[#0d1421] to-[#080d17] px-5 py-8 sm:px-8 sm:py-10 md:mt-16 md:px-10">
 
-      {/* Header */}
-      <div className="mx-auto mb-10 max-w-3xl text-center">
+      {/* HEADER */}
+      <div className="mx-auto mb-8 max-w-2xl text-center md:mb-10">
 
-        <span className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-green-400">
-          ⚡ Quick Start
+        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+          <span>⚡</span>
+          QUICK START
         </span>
 
-        <h2 className="mt-5 text-[1.75rem] sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
-  How GoalSense Works
-</h2>
+        <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl">
+          How GoalSense Works
+        </h2>
 
-        <p className="mt-3 text-sm sm:text-base leading-7 text-gray-400">
-          Generate football predictions in just four simple steps.
-          Choose today's fixtures, customize your betting preferences,
-          and receive your accumulator slip in seconds.
-        </p>
+        
 
       </div>
 
-      {/* Steps */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {/* STEP CARDS */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4">
 
-        {steps.map((step) => (
+        {steps.map((step, index) => (
           <div
-            key={step.step}
-            className="group relative overflow-hidden rounded-2xl border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-900 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-green-500 hover:shadow-xl hover:shadow-green-500/10"
+            key={step.number}
+            className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 transition-all duration-300 hover:border-emerald-500/30 hover:bg-emerald-500/[0.035] sm:p-5"
           >
-            <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-green-500/5 blur-3xl transition-all duration-500 group-hover:bg-green-500/15" />
 
-            <div className="relative flex items-start gap-4">
+            {/* SUBTLE GLOW */}
+            <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-emerald-400/[0.04] blur-3xl transition-all duration-500 group-hover:bg-emerald-400/[0.10]" />
 
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-500/10 text-2xl transition-transform duration-300 group-hover:scale-110">
+            <div className="relative flex items-center gap-3">
+
+              {/* ICON */}
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-emerald-400/10 bg-emerald-400/[0.07] text-xl transition-transform duration-300 group-hover:scale-105">
                 {step.icon}
               </div>
 
-              <div>
+              {/* TITLE */}
+              <div className="min-w-0 flex-1">
 
-                <span className="inline-block rounded-full bg-green-500/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-green-400">
-                  {step.step}
+                <span className="text-[9px] font-bold tracking-[0.18em] text-emerald-400/80">
+                  STEP {step.number}
                 </span>
 
-                <h3 className="mt-2 text-lg font-semibold text-gray-100">
+                <h3 className="mt-0.5 text-base font-bold tracking-tight text-gray-100 sm:text-lg">
                   {step.title}
                 </h3>
 
               </div>
 
+              {/* NUMBER */}
+              <span className="text-2xl font-black tracking-tighter text-white/[0.06]">
+                {step.number}
+              </span>
+
             </div>
 
-            <p className="mt-5 text-sm leading-7 text-gray-300 md:text-[15px]">
+            {/* DESCRIPTION */}
+            <p className="relative mt-4 text-[13px] leading-6 text-gray-400 sm:text-sm">
               {step.description}
             </p>
+
+            {/* BOTTOM ACCENT */}
+            <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-emerald-400 to-transparent transition-all duration-500 group-hover:w-full" />
 
           </div>
         ))}
 
+      </div>
+
+      {/* FOOTER ACCENT */}
+      <div className="mt-7 flex items-center justify-center gap-2">
+        <span className="h-px w-8 bg-white/10" />
+        <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+          Football insights. Smarter understanding.
+        </span>
+        <span className="h-px w-8 bg-white/10" />
       </div>
 
     </section>
