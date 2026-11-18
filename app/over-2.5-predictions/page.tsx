@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import PredictionLinks from "@/components/PredictionLinks";
@@ -6,287 +7,224 @@ import ArticleSchema from "@/components/ArticleSchema";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Over 2.5 Predictions Today | GoalSense",
+  title: "Over 2.5 Goals Explained | GoalSense",
   description:
-    "Generate today's Over 2.5 football predictions, goals tips and accumulator selections using GoalSense.",
+    "Understand Over 2.5 Goals in football, how the goal total is calculated, and how to interpret match scoring statistics.",
   keywords: [
-    "over 2.5 predictions",
-    "over 2.5 football predictions",
-    "today over 2.5 tips",
-    "over 2.5 accumulator",
-    "goal predictions",
-    "football goals tips",
+    "over 2.5 goals explained",
+    "football goal statistics",
+    "over 2.5 meaning",
+    "football scoring statistics",
+    "football match analysis",
   ],
   alternates: {
     canonical: "https://goalsense.live/over-2.5-predictions",
   },
 };
 
+const faqs = [
+  {
+    question: "What does Over 2.5 Goals mean?",
+    answer:
+      "It describes a match with at least three goals scored by both teams combined during normal time.",
+  },
+  {
+    question: "Does a 2–1 score reach Over 2.5?",
+    answer:
+      "Yes. A 2–1 score has three goals in total.",
+  },
+  {
+    question: "Does a 2–0 score reach Over 2.5?",
+    answer:
+      "No. A 2–0 score has two goals in total.",
+  },
+  {
+    question: "What statistics help explain goal trends?",
+    answer:
+      "Goals scored, goals conceded, recent scorelines and competition-wide scoring averages can help describe scoring patterns.",
+  },
+];
+
 export default function Over25Predictions() {
   return (
     <>
-    <BreadcrumbSchema
-  items={[
-    {
-      name: "Home",
-      url: "https://goalsense.live",
-    },
-    {
-      name: "Over 2.5 Predictions",
-      url: "https://goalsense.live/over-2.5-predictions",
-    },
-  ]}
-/>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "https://goalsense.live" },
+          {
+            name: "Over 2.5 Goals",
+            url: "https://goalsense.live/over-2.5-predictions",
+          },
+        ]}
+      />
 
-<ArticleSchema
-  headline="Over 2.5 Goals Predictions"
-  description="Generate Over 2.5 Goals football predictions, accumulator tips and high-scoring match selections using GoalSense."
-  url="https://goalsense.live/over-2.5-predictions"
-  datePublished="2026-07-30"
-  dateModified="2026-07-30"
-/>
-    <main className="max-w-5xl mx-auto px-6 py-16">
+      <ArticleSchema
+        headline="Over 2.5 Goals Explained"
+        description="A football education guide explaining the Over 2.5 goals total and how to understand match scoring statistics."
+        url="https://goalsense.live/over-2.5-predictions"
+        datePublished="2026-07-30"
+        dateModified="2026-11-18"
+      />
 
-    <Breadcrumb
-  items={[
-    {
-      name: "Home",
-      href: "/",
-    },
-    {
-      name: "Over 2.5 Predictions",
-    },
-  ]}
-/>
+      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+        <Breadcrumb
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Over 2.5 Goals" },
+          ]}
+        />
 
-      <h1 className="text-4xl md:text-5xl font-bold mb-8">
-        Today's Over 2.5 Predictions
-      </h1>
+        {/* HERO */}
+        <section className="mb-8 mt-6">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
+              Football Explained
+            </span>
+          </div>
 
-      <p className="text-lg text-gray-300 leading-8 mb-8">
-        Looking for today's Over 2.5 predictions? GoalSense helps football fans
-        generate intelligent goal-based betting selections using today's
-        fixtures. Whether you're creating a small accumulator or searching for
-        high-scoring matches across Europe's top leagues, GoalSense makes the
-        process quick and simple.
-      </p>
+          <h1 className="max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Over 2.5 Goals in Football
+          </h1>
 
-      <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6 mb-12">
-        <h2 className="text-2xl font-semibold mb-3">
-          What Does Over 2.5 Goals Mean?
-        </h2>
-
-        <p className="text-gray-300 leading-7">
-          An Over 2.5 Goals bet wins when at least three goals are scored during
-          normal time. For example, results such as 2-1, 3-0, 4-2 or 5-1 all
-          qualify as winning outcomes, while scores like 1-1 or 2-0 do not.
-        </p>
-      </div>
-
-      <h2 className="text-3xl font-bold mt-14 mb-5">
-        Why Over 2.5 Is So Popular
-      </h2>
-
-      <p className="text-gray-300 leading-8 mb-6">
-        Over 2.5 Goals is one of the most popular football betting markets
-        because it focuses on the total number of goals rather than predicting
-        the winning team. This allows bettors to benefit from exciting,
-        attacking matches regardless of which side wins.
-      </p>
-
-      <h2 className="text-3xl font-bold mt-16 mb-5">
-        How GoalSense Finds Over 2.5 Matches
-      </h2>
-
-      <p className="text-gray-300 leading-8 mb-6">
-        GoalSense allows users to filter today's fixtures and instantly generate
-        Over 2.5 selections. Rather than manually checking dozens of matches,
-        the platform helps organize fixtures into easy-to-build accumulator
-        slips using smart filters.
-      </p>
-
-      <h2 className="text-3xl font-bold mt-16 mb-5">
-  How to Use GoalSense
-</h2>
-
-<ol className="space-y-4 list-decimal pl-6 text-gray-300 leading-8 mb-10">
-  <li>Select today's football fixtures.</li>
-  <li>Choose <strong>Over 2.5 Goals</strong> as your preferred market.</li>
-  <li>Pick the number of selections you want.</li>
-  <li>Generate your prediction slip instantly.</li>
-  <li>Copy, lock or share your accumulator.</li>
-</ol>
-
-      <h2 className="text-3xl font-bold mt-16 mb-5">
-        Tips for Betting Over 2.5 Goals
-      </h2>
-
-      <div className="space-y-6 text-gray-300 leading-8">
-
-        <div>
-          <h3 className="font-semibold text-white mb-2">
-            ⚽ Focus on Attacking Teams
-          </h3>
-
-          <p>
-            Teams with strong attacking records and consistent goal scoring are
-            often better candidates for Over 2.5 markets.
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-400 sm:text-base">
+            A simple guide to understanding the three-goal total, common
+            scorelines and the statistics used to study football scoring trends.
           </p>
-        </div>
+        </section>
 
-        <div>
-          <h3 className="font-semibold text-white mb-2">
-            📊 Check Recent Form
-          </h3>
+        {/* DEFINITION */}
+        <section className="mb-7 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-5 sm:p-6">
+          <h2 className="text-lg font-semibold text-white">
+            What Does Over 2.5 Goals Mean?
+          </h2>
 
-          <p>
-            Recent matches often reveal whether a team is currently involved in
-            high-scoring games.
+          <p className="mt-2 text-sm leading-7 text-gray-300">
+            Over 2.5 refers to a combined match total of at least three goals
+            scored by both teams during normal time. The half-goal figure
+            means the total cannot finish exactly at 2.5.
           </p>
-        </div>
 
-        <div>
-          <h3 className="font-semibold text-white mb-2">
-            🌍 Use Major Leagues
-          </h3>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <p className="text-xs text-gray-500">Example score</p>
+              <p className="mt-1 text-xl font-bold text-white">2–1</p>
+              <p className="text-xs text-emerald-400">3 total goals</p>
+            </div>
 
-          <p>
-            Europe's top competitions generally provide stronger statistics and
-            more consistent scoring trends than smaller leagues.
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <p className="text-xs text-gray-500">Example score</p>
+              <p className="mt-1 text-xl font-bold text-white">2–0</p>
+              <p className="text-xs text-gray-400">2 total goals</p>
+            </div>
+          </div>
+        </section>
+
+        {/* STATISTICS */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-white">
+            Understanding Football Goal Statistics
+          </h2>
+
+          <p className="mt-2 text-sm leading-7 text-gray-400">
+            Match scoring patterns can be described through several basic
+            statistics. Each provides a different view of how teams and
+            competitions produce goals.
           </p>
-        </div>
 
-      </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[
+              {
+                title: "Goals Scored",
+                description:
+                  "The number of goals a team has scored across its matches.",
+              },
+              {
+                title: "Goals Conceded",
+                description:
+                  "The number of goals opponents have scored against a team.",
+              },
+              {
+                title: "Recent Scorelines",
+                description:
+                  "A record of the results from a team's recent fixtures.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-4"
+              >
+                <h3 className="text-sm font-semibold text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-xs leading-6 text-gray-400">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      
+        {/* FAQ */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-white">
+            Frequently Asked Questions
+          </h2>
 
-      <h2 className="text-3xl font-bold mt-16 mb-5">
-  Why Football Bettors Choose GoalSense
-</h2>
+          <div className="mt-3 divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="group py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-gray-200">
+                  {faq.question}
+                  <span className="text-lg text-gray-500 transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
 
-<p className="text-gray-300 leading-8 mb-8">
-GoalSense helps users save time by organizing today's football fixtures into
-easy-to-build prediction slips. Instead of manually checking dozens of matches,
-users can generate football selections within seconds while filtering leagues,
-markets and the number of picks they prefer.
-</p>
+                <p className="mt-3 pr-6 text-sm leading-6 text-gray-400">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
 
-      <ul className="space-y-3 list-disc pl-6 text-gray-300">
-        <li>Generate Over 2.5 predictions in seconds.</li>
-        <li>Filter fixtures by league.</li>
-        <li>Create football accumulators instantly.</li>
-        <li>Lock your favourite selections.</li>
-        <li>Premium features for advanced prediction generation.</li>
-      </ul>
+        {/* RELATED PAGES */}
+        <section className="mb-8 rounded-xl border border-white/[0.08] bg-white/[0.025] p-4 sm:p-5">
+          <h2 className="text-base font-semibold text-white">
+            Explore More Football Insights
+          </h2>
 
-      <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
-
-        <h2 className="text-3xl font-bold mb-4">
-          Generate Today's Over 2.5 Predictions
-        </h2>
-
-        <p className="text-gray-400 leading-7 mb-8">
-          Build today's Over 2.5 accumulator in seconds using GoalSense's
-          intelligent football prediction generator.
-        </p>
-
-        <Link
-          href="/"
-          className="inline-flex items-center rounded-lg bg-green-600 px-6 py-3 font-semibold hover:bg-green-500 transition"
-        >
-          Generate Predictions →
-        </Link>
-
-      </div>
-
-      <div className="rounded-xl border border-gray-700 bg-gray-900 p-8 mt-16">
-
-<h2 className="text-3xl font-bold mb-6">
-Explore More Football Predictions
-</h2>
-
-<p className="text-gray-400 mb-6">
-Looking for different football markets? Explore more prediction pages below.
-</p>
-
-<div className="flex flex-col gap-3">
-
-<Link
-href="/today-football-predictions"
-className="text-green-400 hover:text-green-300"
->
-Today's Football Predictions →
-</Link>
-
-<Link
-href="/btts-predictions"
-className="text-green-400 hover:text-green-300"
->
-BTTS Predictions →
-</Link>
-
-<Link
-href="/premier-league-predictions"
-className="text-green-400 hover:text-green-300"
->
-Premier League Predictions →
-</Link>
-
-</div>
-
-</div>
-
-<p className="text-gray-300 leading-8 mb-8">
-Below are answers to some of the most common questions about Over 2.5 Goals betting
-and how GoalSense helps users generate football predictions and accumulator slips.
-</p>
-
-      <h2 className="text-3xl font-bold mt-20 mb-6">
-        Frequently Asked Questions
-      </h2>
-
-      <div className="space-y-8">
-
-        <div>
-          <h3 className="font-semibold text-xl mb-2">
-            What does Over 2.5 mean?
-          </h3>
-
-          <p className="text-gray-400 leading-7">
-            It means at least three goals must be scored during normal time for
-            the bet to win.
+          <p className="mt-1 text-xs text-gray-400">
+            Discover more football topics and competition information.
           </p>
-        </div>
 
-        <div>
-          <h3 className="font-semibold text-xl mb-2">
-            Is Over 2.5 a good accumulator market?
-          </h3>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm">
+            <Link
+              href="/today-football-predictions"
+              className="text-emerald-400 transition hover:text-emerald-300"
+            >
+              Today's Football Fixtures →
+            </Link>
 
-          <p className="text-gray-400 leading-7">
-            Many football bettors include Over 2.5 selections in accumulators
-            because they don't require predicting the winning team.
-          </p>
-        </div>
+            <Link
+              href="/btts-predictions"
+              className="text-emerald-400 transition hover:text-emerald-300"
+            >
+              BTTS Explained →
+            </Link>
 
-        <div>
-          <h3 className="font-semibold text-xl mb-2">
-            Can GoalSense generate Over 2.5 predictions?
-          </h3>
+            <Link
+              href="/premier-league-predictions"
+              className="text-emerald-400 transition hover:text-emerald-300"
+            >
+              Premier League →
+            </Link>
+          </div>
+        </section>
 
-          <p className="text-gray-400 leading-7">
-            Yes. GoalSense allows users to generate Over 2.5 football
-            predictions using today's available fixtures and supported leagues.
-          </p>
-        </div>
-
-      </div>
-
-      <div className="mt-20">
         <PredictionLinks />
-      </div>
-
-    </main>
+      </main>
     </>
   );
 }
