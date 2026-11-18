@@ -1,68 +1,84 @@
+
 export default function SeoContent() {
+  const features = [
+    { icon: "⚽", label: "Daily Fixtures" },
+    { icon: "📊", label: "Football Statistics" },
+    { icon: "🏆", label: "League Coverage" },
+    { icon: "🎓", label: "Football Insights" },
+  ];
+
   return (
-    <section className="relative z-10 py-12">
-      <div className="max-w-5xl mx-auto rounded-2xl border border-gray-800 bg-gray-900/70 backdrop-blur p-8">
+    <section className="relative z-10 mx-auto max-w-6xl px-4 py-7 sm:py-9">
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-          Football Prediction Generator for Today's Matches
-        </h2>
+      <div className="rounded-2xl border border-white/[0.07] bg-gradient-to-br from-[#111827] to-[#090e18] p-5 shadow-lg sm:p-7">
 
-        <p className="text-gray-300 leading-8">
-          <span className="text-green-400 font-semibold">GoalSense</span> helps
-          football fans generate intelligent accumulator slips using today's
-          fixtures from Europe's biggest leagues. Filter matches by
-          competition, betting market, and match date to create smarter betting
-          slips in seconds.
-        </p>
+        {/* HEADER */}
+        <div className="mb-4">
+          <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+            ABOUT GOALSENSE
+          </span>
 
-        <p className="text-gray-300 leading-8 mt-4">
-          Whether you're looking for{" "}
-          <span className="text-green-400 font-medium">Over 1.5 Goals</span>,{" "}
-          <span className="text-green-400 font-medium">Over 2.5 Goals</span>,{" "}
-          <span className="text-green-400 font-medium">BTTS (Both Teams To Score)</span>,{" "}
-          <span className="text-green-400 font-medium">Home Wins</span>,{" "}
-          <span className="text-green-400 font-medium">Away Wins</span>, or
-          mixed football markets, GoalSense helps organize your selections into
-          easy-to-share betting slips.
-        </p>
+          <h2 className="mt-2 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+            Your Football Information Hub
+          </h2>
+        </div>
 
-        <p className="text-gray-300 leading-8 mt-4">
-          Our football prediction generator supports competitions including the
-          Premier League, UEFA Champions League, La Liga, Serie A,
-          Bundesliga, Ligue 1, Eredivisie, and many more, helping you discover
-          today's football betting opportunities quickly.
-        </p>
+        {/* DESCRIPTION */}
+        <div className="max-w-4xl space-y-3 text-[12px] leading-6 text-gray-400 sm:text-sm sm:leading-7">
 
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <p>
+            <span className="font-semibold text-emerald-400">
+              GoalSense
+            </span>{" "}
+            brings football fixtures, competition information,
+            statistics and educational resources together in one
+            convenient platform.
+          </p>
 
-          <div className="rounded-lg border border-green-500/20 bg-black/20 p-4">
-            <p className="text-2xl">⚽</p>
-            <p className="text-sm text-gray-300 mt-2">
-              Daily Football Fixtures
-            </p>
-          </div>
+          <p>
+            Explore major competitions including the Premier League,
+            UEFA Champions League, La Liga, Serie A, Bundesliga
+            and Ligue 1. Discover team information, football
+            statistics and useful match insights.
+          </p>
 
-          <div className="rounded-lg border border-green-500/20 bg-black/20 p-4">
-            <p className="text-2xl">🎯</p>
-            <p className="text-sm text-gray-300 mt-2">
-              Smart Bet Generator
-            </p>
-          </div>
+          <p>
+            Whether you're following today's fixtures or learning
+            more about football statistics, GoalSense makes
+            football information easier to explore.
+          </p>
 
-          <div className="rounded-lg border border-green-500/20 bg-black/20 p-4">
-            <p className="text-2xl">📊</p>
-            <p className="text-sm text-gray-300 mt-2">
-              League Filters
-            </p>
-          </div>
+        </div>
 
-          <div className="rounded-lg border border-green-500/20 bg-black/20 p-4">
-            <p className="text-2xl">🚀</p>
-            <p className="text-sm text-gray-300 mt-2">
-              Instant Slip Builder
-            </p>
-          </div>
+        {/* FEATURE GRID */}
+        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
 
+          {features.map((feature) => (
+            <div
+              key={feature.label}
+              className="flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-3 transition-colors hover:border-emerald-500/20"
+            >
+              <span className="text-lg">
+                {feature.icon}
+              </span>
+
+              <span className="text-[10px] font-medium text-gray-300 sm:text-xs">
+                {feature.label}
+              </span>
+            </div>
+          ))}
+
+        </div>
+
+        {/* FOOTER */}
+        <div className="mt-5 flex items-center gap-2">
+          <div className="h-px flex-1 bg-white/[0.07]" />
+
+          <span className="whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+            DISCOVER GOALSENSE
+          </span>
+
+          <div className="h-px flex-1 bg-white/[0.07]" />
         </div>
 
       </div>
