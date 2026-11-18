@@ -1,30 +1,31 @@
 
 export default function WhyChooseGoalSense() {
   const features = [
-    {
-      icon: "⚽",
-      title: "Smart Predictions",
-      description:
-        "Generate football predictions instantly using GoalSense's intelligent match selection and filtering system.",
-    },
-    {
-      icon: "⚡",
-      title: "Fast & Easy",
-      description:
-        "Build your accumulator slip in seconds. No complicated setup or endless searching for matches.",
-    },
-    {
-      icon: "📊",
-      title: "Premium Features",
-      description:
-        "Unlock advanced betting markets, more picks, Lucky Slip, Mixed Markets and additional powerful tools.",
-    },
-    {
-      icon: "🎓",
-      title: "Football Education",
-      description:
-        "Learn through football guides, quizzes and easy-to-understand explanations.",
-    },
+  {
+    icon: "⚽",
+    title: "Smart Predictions",
+    label: "MATCH INSIGHTS",
+    description: "Generate football predictions instantly using GoalSense's intelligent match selection and filtering system.",
+  },
+  {
+    icon: "⚡",
+    title: "Fast & Easy",
+    label: "SIMPLE EXPERIENCE",
+    description: "Build your accumulator slip in seconds. No complicated setup or endless searching for matches.",
+  },
+  {
+    icon: "📊",
+    title: "Premium Features",
+    label: "ADVANCED TOOLS",
+    description: "Unlock advanced betting markets, more picks, Lucky Slip, Mixed Markets and additional powerful tools.",
+  },
+  {
+    icon: "🎓",
+    title: "Football Education",
+    label: "LEARNING HUB",
+    description: "Learn through football guides, quizzes and easy-to-understand explanations.",
+  },
+
   ];
 
   return (
@@ -42,8 +43,8 @@ export default function WhyChooseGoalSense() {
         </h2>
 
         <p className="mx-auto mt-2 max-w-xl text-xs leading-5 text-gray-400 sm:text-sm">
-          Discover a simpler way to explore football information,
-          statistics and insights.
+          Designed for football fans who want a faster, smarter and more
+          organized way to generate betting slips.
         </p>
 
       </div>
@@ -74,7 +75,7 @@ export default function WhyChooseGoalSense() {
                 </h3>
 
                 <span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-widest text-emerald-400/70">
-                  GOALSENSE FEATURE
+                  {feature.label}
                 </span>
               </div>
 
