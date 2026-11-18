@@ -1,31 +1,62 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  CalendarDaysIcon,
+  ChartBarIcon,
+  TrophyIcon,
+  BookOpenIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/outline";
+
 import PredictionLinks from "@/components/PredictionLinks";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import ArticleSchema from "@/components/ArticleSchema";
 import Breadcrumb from "@/components/Breadcrumb";
 
-
-
 export const metadata: Metadata = {
-  title: "Today's Football Predictions & Accumulator Tips | GoalSense",
+  title: "Today's Football Predictions & Match Insights | GoalSense",
   description:
-    "Generate today's football predictions, accumulator tips, Over 2.5 Goals, BTTS and Match Winner selections instantly with GoalSense.",
+    "Explore today's football fixtures, team statistics, competition information and football insights with GoalSense.",
   keywords: [
-    "today football predictions",
-    "football predictions today",
-    "today football tips",
-    "today accumulator tips",
-    "football betting predictions",
-    "BTTS predictions today",
-    "over 2.5 predictions today",
-    "match winner predictions",
+    "today football fixtures",
+    "football statistics today",
+    "football match insights",
+    "today football matches",
+    "football competitions",
     "GoalSense",
   ],
   alternates: {
     canonical: "https://goalsense.live/today-football-predictions",
   },
 };
+
+const features = [
+  {
+    icon: CalendarDaysIcon,
+    title: "Daily Fixtures",
+    description:
+      "Explore scheduled football matches and upcoming fixtures.",
+  },
+  {
+    icon: ChartBarIcon,
+    title: "Match Statistics",
+    description:
+      "Discover team records, historical performance and match data.",
+  },
+  {
+    icon: TrophyIcon,
+    title: "League Coverage",
+    description:
+      "Follow competitions and teams from different football leagues.",
+  },
+  {
+    icon: BookOpenIcon,
+    title: "Football Insights",
+    description:
+      "Learn more through football guides, explanations and quizzes.",
+  },
+];
 
 export default function TodayFootballPredictions() {
   return (
@@ -44,194 +75,168 @@ export default function TodayFootballPredictions() {
       />
 
       <ArticleSchema
-  headline="Today's Football Predictions"
-  description="Generate today's football predictions, accumulator tips, Over 2.5 Goals, BTTS and Match Winner selections instantly with GoalSense."
-  url="https://goalsense.live/today-football-predictions"
-  datePublished="2026-07-30"
-  dateModified="2026-07-30"
-/>
+        headline="Today's Football Predictions"
+        description="Explore football fixtures, statistics, competition information and match insights with GoalSense."
+        url="https://goalsense.live/today-football-predictions"
+        datePublished="2026-07-30"
+        dateModified="2026-07-30"
+      />
 
-      <main className="max-w-5xl mx-auto px-6 py-16">
+      <main className="min-h-screen bg-[#080d12] text-white">
 
-      <Breadcrumb
-  items={[
-    {
-      name: "Home",
-      href: "/",
-    },
-    {
-      name: "Today's Football Predictions",
-    },
-  ]}
-/>
+        <div className="mx-auto max-w-5xl px-5 py-7 sm:py-10">
 
-      <h1 className="text-4xl font-bold mb-6">
-        Today's Football Predictions
-      </h1>
+          {/* Breadcrumb */}
+          <Breadcrumb
+            items={[
+              { name: "Home", href: "/" },
+              { name: "Today's Football Predictions" },
+            ]}
+          />
 
-      <p className="text-lg text-gray-300 leading-8 mb-6">
-        GoalSense helps football fans generate today's football predictions
-        quickly using powerful betting filters and intelligent market
-        selection. Whether you're building a single prediction or a full
-        accumulator slip, GoalSense makes the process simple and fast.
-      </p>
+          {/* HERO */}
+          <section className="mb-8 mt-6 rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-[#10201b] via-[#0c1518] to-[#080d12] p-5 sm:p-7">
 
-      <p className="text-gray-400 leading-8 mb-8">
-        Instead of manually checking every fixture, our prediction generator
-        lets you select your preferred betting market, choose the number of
-        picks and instantly generate football predictions for today's matches
-        across Europe's top leagues.
-      </p>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400">
+              GOALSENSE FOOTBALL CENTRE
+            </span>
 
-      <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 mb-12">
-        <h2 className="text-2xl font-semibold text-white mb-3">
-          Why Thousands of Football Fans Use GoalSense
-        </h2>
+            <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl md:text-4xl">
+              Today's Football{" "}
+              <span className="text-emerald-400">Predictions</span>
+            </h1>
 
-        <p className="text-gray-300 leading-8">
-          GoalSense was built to simplify football betting. Rather than spending
-          hours researching fixtures, users can generate intelligent football
-          prediction slips within seconds using an easy-to-use interface and
-          advanced filtering options.
-        </p>
-      </div>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
+              Explore football fixtures, team statistics, competition
+              information and useful match insights in one place.
+            </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-5">
-        Why Today's Football Predictions Matter
-      </h2>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Link
+                href="/insights/football-statistics"
+                className="rounded-lg bg-emerald-500 px-4 py-2.5 text-xs font-bold text-black transition hover:bg-emerald-400"
+              >
+                Explore Statistics
+              </Link>
 
-      <p className="text-gray-400 leading-8 mb-5">
-        Every football betting day presents hundreds of matches across multiple
-        leagues. Analysing every fixture manually can take a significant amount
-        of time, especially if you're trying to build an accumulator.
-      </p>
+              <Link
+                href="/insights"
+                className="rounded-lg border border-white/10 px-4 py-2.5 text-xs font-semibold text-gray-300 transition hover:border-emerald-400/30 hover:text-emerald-400"
+              >
+                Football Insights
+              </Link>
+            </div>
+          </section>
 
-      <p className="text-gray-400 leading-8 mb-5">
-        GoalSense simplifies this process by helping users generate prediction
-        slips using today's available fixtures. Whether your focus is goals,
-        both teams to score or match winners, the generator allows you to
-        produce football betting selections in seconds.
-      </p>
+          {/* INTRODUCTION */}
+          <section className="mb-9">
+            <h2 className="mb-2 text-lg font-bold text-white">
+              Football Information in One Place
+            </h2>
 
-      <p className="text-gray-400 leading-8">
-        The goal is not to replace your own research but to provide a quicker,
-        smarter starting point for creating daily football betting slips.
-      </p>
+            <p className="text-xs leading-6 text-gray-400 sm:text-sm">
+              GoalSense brings together football fixtures, statistics and
+              competition information through a simple, accessible
+              platform. Whether you're following today's matches or
+              exploring historical team performance, our goal is to make
+              football information easier to discover.
+            </p>
+          </section>
 
-      <h2 className="text-3xl font-bold mt-14 mb-6">
-        Prediction Markets Available
-      </h2>
+          {/* FEATURES */}
+          <section className="mb-9">
+            <div className="mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-400">
+                Explore GoalSense
+              </span>
 
-      <div className="grid gap-5 md:grid-cols-2">
+              <h2 className="mt-1 text-xl font-extrabold">
+                What You Can Discover
+              </h2>
+            </div>
 
-        <div className="rounded-xl border border-gray-700 bg-gray-900 p-5">
-          <h3 className="font-semibold text-green-400 mb-2">
-            Over 1.5 Goals
-          </h3>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {features.map((feature) => {
+                const Icon = feature.icon;
 
-          <p className="text-gray-400">
-            Generate fixtures expected to produce at least two goals.
-          </p>
+                return (
+                  <div
+                    key={feature.title}
+                    className="flex items-start gap-3 rounded-xl border border-white/[0.07] bg-[#101820] p-4 transition hover:border-emerald-400/25"
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-400/[0.08]">
+                      <Icon className="h-5 w-5 text-emerald-400" />
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-bold text-white">
+                        {feature.title}
+                      </h3>
+
+                      <p className="mt-1 text-xs leading-5 text-gray-500">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* FOOTBALL ANALYSIS */}
+          <section className="mb-9 rounded-xl border border-white/[0.07] bg-[#101820] p-5 sm:p-6">
+
+            <div className="flex items-center gap-2">
+              <ChartBarIcon className="h-5 w-5 text-emerald-400" />
+
+              <h2 className="text-base font-bold text-white">
+                Understanding Football Statistics
+              </h2>
+            </div>
+
+            <p className="mt-3 text-xs leading-6 text-gray-400 sm:text-sm">
+              Football statistics provide useful context when studying
+              team performances and match history. Results, goals scored,
+              goals conceded and recent form can all contribute to a
+              broader understanding of the game.
+            </p>
+
+            <Link
+              href="/insights/articles/why-football-statistics-matter"
+              className="mt-3 inline-flex text-xs font-semibold text-emerald-400 transition hover:text-emerald-300"
+            >
+              Learn why football statistics matter →
+            </Link>
+          </section>
+
+          {/* RESPONSIBLE INFORMATION */}
+          <section className="mb-9 flex items-start gap-3 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4">
+            <ShieldCheckIcon className="h-5 w-5 shrink-0 text-emerald-400" />
+
+            <div>
+              <h2 className="text-xs font-bold text-white">
+                Important Information
+              </h2>
+
+              <p className="mt-1 text-xs leading-5 text-gray-400">
+                Football is unpredictable. Statistical information and
+                predictions are educational resources, not guaranteed
+                outcomes.
+              </p>
+            </div>
+          </section>
+
+          {/* MORE FOOTBALL CONTENT */}
+          <section className="border-t border-white/[0.07] pt-7">
+            <h2 className="mb-4 text-xl font-extrabold">
+              Explore More Football Guides
+            </h2>
+
+            <PredictionLinks />
+          </section>
+
         </div>
-
-        <div className="rounded-xl border border-gray-700 bg-gray-900 p-5">
-          <h3 className="font-semibold text-green-400 mb-2">
-            Over 2.5 Goals
-          </h3>
-
-          <p className="text-gray-400">
-            Quickly find matches expected to finish with three or more goals.
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-gray-700 bg-gray-900 p-5">
-          <h3 className="font-semibold text-green-400 mb-2">
-            BTTS
-          </h3>
-
-          <p className="text-gray-400">
-            Discover fixtures where both teams are expected to score.
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-gray-700 bg-gray-900 p-5">
-          <h3 className="font-semibold text-green-400 mb-2">
-            Match Winner
-          </h3>
-
-          <p className="text-gray-400">
-            Generate Home Win and Away Win betting selections instantly.
-          </p>
-        </div>
-
-      </div>
-
-      <h2 className="text-3xl font-bold mt-14 mb-5">
-        How GoalSense Generates Football Predictions
-      </h2>
-
-      <p className="text-gray-400 leading-8 mb-5">
-        GoalSense allows users to customise prediction slips using multiple
-        filters before generating results. You can choose your preferred market,
-        select the number of picks and narrow results by competition.
-      </p>
-
-      <p className="text-gray-400 leading-8 mb-5">
-        Premium users gain access to advanced generator features including Lucky
-        Slip, Mixed Markets, Target Odds and larger accumulator sizes for even
-        more flexibility.
-      </p>
-
-      <p className="text-gray-400 leading-8">
-        Once your selections are generated, you can regenerate the slip while
-        keeping your favourite locked picks, making it easy to experiment with
-        different combinations.
-      </p>
-
-      <h2 className="text-3xl font-bold mt-14 mb-5">
-        Tips Before Building Your Football Accumulator
-      </h2>
-
-      <ul className="space-y-3 list-disc pl-6 text-gray-300 leading-8">
-        <li>Focus on leagues you know well.</li>
-        <li>Don't overload your accumulator with too many selections.</li>
-        <li>Compare bookmaker odds before placing a bet.</li>
-        <li>Use Over 1.5 markets for safer accumulators.</li>
-        <li>Lock your strongest picks before regenerating your slip.</li>
-        <li>Always gamble responsibly.</li>
-      </ul>
-
-      <div className="mt-16 rounded-xl border border-green-500/30 bg-gradient-to-r from-green-500/10 to-emerald-500/10 p-8 text-center">
-
-        <h2 className="text-3xl font-bold mb-4">
-          Generate Today's Football Predictions
-        </h2>
-
-        <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-          Ready to build your next accumulator? Use GoalSense to generate
-          football predictions for today's matches in seconds.
-        </p>
-
-        <Link
-          href="/"
-          className="inline-block rounded-lg bg-green-600 px-8 py-3 font-semibold hover:bg-green-500 transition"
-        >
-          Generate Predictions
-        </Link>
-
-      </div>
-
-      <section className="mt-20">
-
-        <h2 className="text-3xl font-bold mb-6">
-          Explore More Football Prediction Guides
-        </h2>
-
-        <PredictionLinks />
-
-      </section>
-
-          </main>
+      </main>
     </>
   );
 }
