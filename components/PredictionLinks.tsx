@@ -1,6 +1,6 @@
 
 import Link from "next/link";
-import { ArrowUpRight, CalendarDays, Trophy, BarChart3, BookOpen } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Trophy, BarChart3, BookOpen, Goal, Users } from "lucide-react";
 
 export default function PredictionLinks() {
   const links = [
@@ -12,12 +12,12 @@ export default function PredictionLinks() {
     {
       href: "/over-2.5-predictions",
       label: "Over 2.5 Predictions",
-      icon: BarChart3,
+      icon: Goal,
     },
     {
       href: "/btts-predictions",
       label: "Both Teams To Score Predictions",
-      icon: BookOpen,
+      icon: Users,
     },
     {
       href: "/premier-league-predictions",
