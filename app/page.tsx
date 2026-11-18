@@ -131,77 +131,80 @@ export default function Home() {
           </section>
 
 
+
 {/* GOALSENSE BRAND AMBASSADORS */}
 <section className="relative z-10">
-  <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-gray-900 via-[#071410] to-black p-6 sm:p-10">
+  <div className="relative overflow-hidden rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-[#101a19] via-[#091310] to-[#050807] p-4 sm:p-6">
 
-    {/* Background glow */}
-    <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+    {/* Subtle background glow */}
+    <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-emerald-500/[0.08] blur-[80px]" />
 
-    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="relative grid grid-cols-1 items-center gap-5 sm:gap-7 md:grid-cols-[0.85fr_1.15fr]">
 
       {/* Ambassador Image */}
-      <div className="relative overflow-hidden rounded-2xl aspect-[4/3]">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/[0.08]">
         <Image
           src="/mula-betting.jpg"
           alt="MULA BETTING, Founding Brand Ambassador of GoalSense"
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, 40vw"
           className="object-cover object-center"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
 
-        <div className="absolute bottom-4 left-4">
-          <span className="rounded-full border border-emerald-400/40 bg-black/70 px-3 py-2 text-[10px] sm:text-xs font-bold tracking-wider text-emerald-300 backdrop-blur">
-            FOUNDING BRAND AMBASSADOR
+        <div className="absolute bottom-3 left-3">
+          <span className="rounded-md border border-emerald-400/30 bg-black/70 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-sm">
+            Founding Ambassador
           </span>
         </div>
       </div>
 
       {/* Ambassador Details */}
-      <div className="space-y-5">
+      <div className="relative">
 
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-px w-5 bg-emerald-400" />
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400">
             Meet Our Ambassadors
           </p>
-
-          <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold text-white">
-            The Faces Behind{" "}
-            <span className="text-emerald-400">GoalSense.</span>
-          </h2>
         </div>
 
-        <div>
-          <h3 className="text-xl font-bold text-white">
+        <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">
+          The Faces Behind{" "}
+          <span className="text-emerald-400">GoalSense.</span>
+        </h2>
+
+        <div className="mt-4">
+          <h3 className="text-base font-bold text-white">
             MULA BETTING
           </h3>
 
-          <p className="mt-1 text-sm font-semibold text-emerald-400">
+          <p className="mt-1 text-xs font-medium text-emerald-400">
             Founding Brand Ambassador
           </p>
         </div>
 
-        <p className="text-sm leading-7 text-gray-400">
-          Meet the personalities representing the GoalSense
-          vision. Starting with MULA BETTING, our founding
-          brand ambassador, we're building a growing community
-          around football analysis and technology.
+        <p className="mt-3 max-w-md text-xs leading-6 text-gray-400 sm:text-sm">
+          Meet the personalities representing the GoalSense vision.
+          Discover the people behind our growing football community.
         </p>
 
         <Link
           href="/ambassadors"
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 text-sm font-bold text-black transition hover:bg-emerald-400 hover:scale-[1.02]"
+          className="group mt-5 inline-flex items-center gap-2 rounded-lg border border-emerald-400/25 bg-emerald-400/[0.08] px-4 py-2.5 text-xs font-bold text-emerald-300 transition-all hover:border-emerald-400/50 hover:bg-emerald-400/15"
         >
           Meet Our Ambassadors
-          <span>→</span>
+          <span className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </Link>
 
       </div>
     </div>
   </div>
 </section>
+
 
           {/* HOW TO USE GOALSENSE VIDEO */}
           <section className="relative z-10">
