@@ -1,7 +1,8 @@
+
 export default function WhyChooseGoalSense() {
   const features = [
     {
-      icon: "🎯",
+      icon: "⚽",
       title: "Smart Predictions",
       description:
         "Generate football predictions instantly using GoalSense's intelligent match selection and filtering system.",
@@ -13,59 +14,94 @@ export default function WhyChooseGoalSense() {
         "Build your accumulator slip in seconds. No complicated setup or endless searching for matches.",
     },
     {
-      icon: "💎",
+      icon: "📊",
       title: "Premium Features",
       description:
         "Unlock advanced betting markets, more picks, Lucky Slip, Mixed Markets and additional powerful tools.",
     },
+    {
+      icon: "🎓",
+      title: "Football Education",
+      description:
+        "Learn through football guides, quizzes and easy-to-understand explanations.",
+    },
   ];
 
   return (
-    <section className="relative z-10 mt-16 mx-auto max-w-6xl rounded-3xl border border-gray-800 bg-gradient-to-b from-black to-gray-900 p-6 md:p-10">
+    <section className="relative z-10 mx-auto mt-8 max-w-6xl overflow-hidden rounded-3xl border border-white/[0.07] bg-gradient-to-b from-[#090d15] to-[#111827] px-4 py-7 sm:px-8 sm:py-9 md:mt-12 md:px-10">
 
-      {/* Heading */}
-      <div className="mx-auto mb-12 max-w-3xl text-center">
+      {/* HEADER */}
+      <div className="mx-auto mb-7 max-w-2xl text-center">
 
-        <span className="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
-          ⭐ Why GoalSense?
+        <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/[0.07] px-4 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-400">
+          ⭐ WHY GOALSENSE?
         </span>
 
-        <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">
+        <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
           Why Choose GoalSense
         </h2>
 
-        <p className="mt-4 text-sm sm:text-base leading-7 text-gray-400">
-          Designed for football fans who want a faster, smarter and more
-          organized way to generate betting slips.
+        <p className="mx-auto mt-2 max-w-xl text-xs leading-5 text-gray-400 sm:text-sm">
+          Discover a simpler way to explore football information,
+          statistics and insights.
         </p>
 
       </div>
 
-      {/* Cards */}
+      {/* FEATURE CARDS */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 
-      <div className="grid gap-6 md:grid-cols-3">
-
-        {features.map((feature) => (
+        {features.map((feature, index) => (
           <div
             key={feature.title}
-            className="group rounded-2xl border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-green-500 hover:shadow-xl hover:shadow-green-500/10"
+            className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-[#1c293a] to-[#141e2c] p-4 transition-all duration-300 hover:border-emerald-500/30 sm:p-5"
           >
 
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500/10 text-3xl transition-transform duration-300 group-hover:scale-110">
-              {feature.icon}
+            {/* SUBTLE GLOW */}
+            <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-400/[0.05] blur-2xl transition-all duration-300 group-hover:bg-emerald-400/[0.10]" />
+
+            <div className="relative flex items-center gap-3">
+
+              {/* ICON */}
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/10 bg-emerald-400/[0.07] text-lg">
+                {feature.icon}
+              </div>
+
+              {/* TITLE */}
+              <div className="min-w-0">
+                <h3 className="text-sm font-bold tracking-tight text-white sm:text-base">
+                  {feature.title}
+                </h3>
+
+                <span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-widest text-emerald-400/70">
+                  GOALSENSE FEATURE
+                </span>
+              </div>
+
             </div>
 
-            <h3 className="text-lg font-semibold text-white">
-              {feature.title}
-            </h3>
-
-            <p className="mt-4 text-sm leading-7 text-gray-300">
+            {/* DESCRIPTION */}
+            <p className="relative mt-3 text-[11px] leading-[1.6] text-gray-400 sm:text-sm">
               {feature.description}
             </p>
+
+            {/* BOTTOM ACCENT */}
+            <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-emerald-400/60 transition-all duration-500 group-hover:w-full" />
 
           </div>
         ))}
 
+      </div>
+
+      {/* FOOTER */}
+      <div className="mt-6 flex items-center justify-center gap-2">
+        <span className="h-px w-6 bg-white/10" />
+
+        <span className="whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+          FOOTBALL. STATISTICS. INSIGHTS.
+        </span>
+
+        <span className="h-px w-6 bg-white/10" />
       </div>
 
     </section>
