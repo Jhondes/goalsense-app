@@ -104,12 +104,14 @@ export default function HowItWorks() {
 
       {/* FOOTER ACCENT */}
       <div className="mt-7 flex items-center justify-center gap-2">
-        <span className="h-px w-8 bg-white/10" />
-        <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gray-500">
-          Football insights. Smarter understanding.
-        </span>
-        <span className="h-px w-8 bg-white/10" />
-      </div>
+  <span className="h-px w-5 shrink-0 bg-white/10 sm:w-8" />
+
+  <span className="whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.12em] text-gray-500 sm:text-[9px] sm:tracking-[0.2em]">
+    Football insights. Smarter understanding.
+  </span>
+
+  <span className="h-px w-5 shrink-0 bg-white/10 sm:w-8" />
+</div>
 
     </section>
   );
