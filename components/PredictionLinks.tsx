@@ -11,12 +11,12 @@ export default function PredictionLinks() {
     },
     {
       href: "/over-2.5-predictions",
-      label: "Football Statistics",
+      label: "Over 2.5 Predictions",
       icon: BarChart3,
     },
     {
       href: "/btts-predictions",
-      label: "Match Insights",
+      label: "Both Teams To Score Predictions",
       icon: BookOpen,
     },
     {
