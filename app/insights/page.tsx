@@ -46,7 +46,7 @@ const categories = [
     icon: TrendingUp,
     tag: "PERFORMANCE",
     number: "04",
-    href: "#performance-insights",
+    href: "/insights/performance",
   },
   {
     title: "Football Knowledge Quiz",
@@ -460,42 +460,53 @@ export default function InsightsPage() {
         </div>
       </section>
 
+      
       {/* PERFORMANCE INSIGHTS */}
-      <section
-        id="performance-insights"
-        className="mx-auto max-w-7xl scroll-mt-24 px-5 pb-12 sm:px-8 sm:pb-16"
-      >
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0b110e] p-5 sm:p-7">
-          <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/[0.07] blur-3xl" />
+      <section className="mx-auto max-w-7xl px-5 pb-12 sm:px-8 sm:pb-16">
+        <Link
+          href="/insights/performance"
+          className="group relative block overflow-hidden rounded-2xl border border-emerald-400/15 bg-gradient-to-br from-[#10231a] via-[#0b110e] to-[#070b09] p-5 transition duration-300 hover:border-emerald-400/35 sm:p-7"
+        >
+          <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/[0.08] blur-3xl" />
 
-          <div className="relative flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-400/15 bg-emerald-400/[0.08] text-emerald-400">
-              <TrendingUp size={19} />
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.09] text-emerald-400">
+                <TrendingUp size={21} />
+              </div>
+
+              <div className="max-w-2xl">
+                <p className="text-[9px] font-bold tracking-[0.2em] text-emerald-400">
+                  TRANSPARENCY & PERFORMANCE
+                </p>
+
+                <h2 className="mt-2 text-xl font-extrabold sm:text-2xl">
+                  GoalSense Performance Insights
+                </h2>
+
+                <p className="mt-2 text-xs leading-6 text-gray-400 sm:text-sm">
+                  Explore historical football records, completed-match
+                  statistics and performance trends calculated from
+                  verified GoalSense data.
+                </p>
+
+                <span className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-emerald-400">
+                  Explore Performance Dashboard
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </span>
+              </div>
             </div>
 
-            <div className="max-w-3xl">
-              <p className="text-[9px] font-bold tracking-[0.2em] text-emerald-400">
-                TRANSPARENCY & PERFORMANCE
-              </p>
-
-              <h2 className="mt-2 text-xl font-extrabold sm:text-2xl">
-                Understanding Performance Through Data.
-              </h2>
-
-              <p className="mt-2 text-xs leading-6 text-gray-400 sm:text-sm">
-                Football performance is best understood through accurate
-                historical records, clear measurements and honest analysis.
-                This section will grow as verified GoalSense performance
-                information becomes available.
-              </p>
-
-              <p className="mt-2 text-[10px] leading-5 text-gray-500">
-                Reliable information matters more than unverified statistics.
-              </p>
+            <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-emerald-400/10 bg-emerald-400/[0.05] text-emerald-400 sm:flex">
+              <BarChart3 size={30} strokeWidth={1.5} />
             </div>
           </div>
-        </div>
+        </Link>
       </section>
+
 
       {/* ACADEMY */}
       <section className="mx-auto max-w-7xl px-5 pb-12 sm:px-8 sm:pb-16">
