@@ -5,88 +5,88 @@ export default function HowItWorks() {
       number: "1",
       title: "Choose Fixtures",
       description:
-        "Select the date you want predictions for. GoalSense automatically loads today's available football matches.",
+        "Select your preferred date. GoalSense automatically loads available football matches.",
       color: "#00D9B5",
     },
     {
       number: "2",
       title: "Select Market",
       description:
-        "Choose your preferred betting market including Over 1.5, Over 2.5, BTTS or Match Winner.",
+        "Choose your preferred market: Over 1.5, Over 2.5, BTTS or Match Winner.",
       color: "#20DCC4",
     },
     {
       number: "3",
       title: "Customize Slip",
       description:
-        "Choose your number of picks and use filters like Lucky Slip, Mixed Markets and Target Odds.",
+        "Set your picks and explore Lucky Slip, Mixed Markets and Target Odds.",
       color: "#45C9D9",
     },
     {
       number: "4",
-      title: "Generate predictions",
+      title: "Generate Predictions",
       description:
-        "Generate your smart football predictions instantly.",
+        "Generate your football predictions instantly.",
       color: "#65B8F5",
     },
   ];
 
   return (
-    <section className="relative z-10 mx-auto mt-8 max-w-6xl overflow-hidden rounded-3xl border border-white/[0.07] bg-[#111827] px-4 py-7 sm:px-8 sm:py-9 md:mt-12 md:px-12">
+    <section className="relative z-10 mx-auto mt-6 max-w-6xl overflow-hidden rounded-[26px] border border-white/[0.07] bg-[#111827] px-3.5 py-5 sm:mt-10 sm:rounded-3xl sm:px-7 sm:py-7 md:px-10">
 
       {/* HEADER */}
-      <div className="mx-auto mb-7 max-w-2xl text-center">
+      <div className="mx-auto mb-5 max-w-2xl text-center">
 
-        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-[8px] font-bold uppercase tracking-[0.2em] text-emerald-400">
           ⚡ QUICK START
         </span>
 
-        <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl">
+        <h2 className="mt-2.5 text-xl font-extrabold tracking-tight text-white sm:text-2xl md:text-3xl">
           How GoalSense Works
         </h2>
 
-        <p className="mt-2 text-xs leading-5 text-gray-400 sm:text-sm">
+        <p className="mt-1.5 text-[11px] leading-5 text-gray-400 sm:text-xs">
           Generate smart football slips in four simple steps.
         </p>
 
       </div>
 
       {/* COMPACT STEPS */}
-      <div className="mx-auto flex max-w-4xl flex-col gap-4 sm:gap-5">
+      <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:gap-4">
 
         {steps.map((step) => (
           <div
             key={step.number}
-            className="group relative flex min-h-[88px] items-center sm:min-h-[100px]"
+            className="group relative flex min-h-[72px] items-center sm:min-h-[82px]"
           >
 
-            {/* LARGE NUMBER */}
+            {/* NUMBER */}
             <div
-              className="relative z-10 flex w-[58px] shrink-0 items-center justify-center text-[65px] font-black leading-none tracking-tighter sm:w-[85px] sm:text-[90px]"
+              className="relative z-10 flex w-[49px] shrink-0 items-center justify-center text-[54px] font-black leading-none tracking-tighter sm:w-[72px] sm:text-[72px]"
               style={{ color: step.color }}
             >
               {step.number}
             </div>
 
-            {/* COMPACT CARD */}
-            <div className="relative -ml-2 flex min-h-[88px] flex-1 items-center overflow-hidden rounded-[24px] border border-white/[0.06] bg-gradient-to-br from-[#1c293a] to-[#182333] px-4 py-3 shadow-[5px_8px_18px_rgba(0,0,0,0.18)] transition-all duration-300 group-hover:border-white/[0.12] sm:-ml-4 sm:min-h-[100px] sm:px-6">
+            {/* CARD */}
+            <div className="relative -ml-1.5 flex min-h-[72px] flex-1 items-center overflow-hidden rounded-[19px] border border-white/[0.06] bg-gradient-to-br from-[#1c293a] to-[#182333] px-3.5 py-2.5 shadow-[3px_5px_14px_rgba(0,0,0,0.16)] transition-all duration-300 group-hover:border-white/[0.12] sm:-ml-3 sm:min-h-[82px] sm:rounded-[21px] sm:px-5">
 
               {/* TOP ACCENT */}
               <div
-                className="absolute left-6 right-6 top-0 h-px opacity-40"
+                className="absolute left-5 right-5 top-0 h-px opacity-40"
                 style={{ background: step.color }}
               />
 
               <div className="relative z-10 min-w-0">
 
                 <h3
-                  className="text-[15px] font-bold tracking-tight sm:text-lg"
+                  className="text-[13px] font-bold tracking-tight sm:text-base"
                   style={{ color: step.color }}
                 >
                   {step.title}
                 </h3>
 
-                <p className="mt-1 text-[11px] leading-[1.5] text-gray-300 sm:text-sm sm:leading-5">
+                <p className="mt-0.5 text-[10px] leading-[1.5] text-gray-300 sm:text-xs sm:leading-[1.6]">
                   {step.description}
                 </p>
 
@@ -94,7 +94,7 @@ export default function HowItWorks() {
 
               {/* SUBTLE GLOW */}
               <div
-                className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-[0.06] blur-2xl"
+                className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full opacity-[0.05] blur-2xl"
                 style={{ background: step.color }}
               />
 
@@ -106,14 +106,16 @@ export default function HowItWorks() {
       </div>
 
       {/* FOOTER */}
-      <div className="mt-6 flex items-center justify-center gap-2">
-        <span className="h-px w-6 bg-white/10" />
+      <div className="mt-5 flex items-center justify-center gap-2">
 
-        <span className="whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+        <span className="h-px w-5 bg-white/10" />
+
+        <span className="whitespace-nowrap text-[7px] font-semibold uppercase tracking-[0.13em] text-gray-500 sm:text-[8px]">
           FOOTBALL INSIGHTS. SMARTER UNDERSTANDING.
         </span>
 
-        <span className="h-px w-6 bg-white/10" />
+        <span className="h-px w-5 bg-white/10" />
+
       </div>
 
     </section>
