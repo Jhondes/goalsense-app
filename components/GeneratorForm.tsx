@@ -441,35 +441,7 @@ Generate a slip targeting a specific total odds
 {/* TIP */}
 
 
-{results.length === 0 && !loading && (
-  <div className="relative mt-8 overflow-hidden rounded-2xl border border-green-500/20 bg-green-500/5 px-5 py-4">
-    
-    {/* Animated background glow */}
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-green-500/20 blur-3xl animate-pulse" />
-      <div
-        className="absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-emerald-400/20 blur-3xl animate-pulse"
-        style={{ animationDelay: "1.2s" }}
-      />
-      <div
-        className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-3xl animate-pulse"
-        style={{ animationDelay: "2.2s" }}
-      />
-    </div>
 
-    {/* Content */}
-    <div className="relative z-10">
-      <h3 className="font-bold text-white">
-        Ready to get started?
-      </h3>
-
-      <p className="mt-1 text-sm text-gray-400">
-        Generate your picks and see what GoalSense finds.
-      </p>
-    </div>
-
-  </div>
-)}
 
 {/* Results */}
 
