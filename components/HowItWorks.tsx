@@ -6,28 +6,28 @@ export default function HowItWorks() {
       title: "Choose Fixtures",
       description:
         "Select the date you want predictions for. GoalSense automatically loads today's available football matches.",
-      color: "#A3E635",
+      color: "#00D9B5",
     },
     {
       number: "2",
       title: "Select Market",
       description:
         "Choose your preferred betting market including Over 1.5, Over 2.5, BTTS or Match Winner.",
-      color: "#34D399",
+      color: "#20DCC4",
     },
     {
       number: "3",
       title: "Customize Slip",
       description:
         "Choose your number of picks and use filters like Lucky Slip, Mixed Markets and Target Odds.",
-      color: "#60A5FA",
+      color: "#45C9D9",
     },
     {
       number: "4",
       title: "Generate predictions",
       description:
         "Generate your smart football predictions instantly.",
-      color: "#A78BFA",
+      color: "#65B8F5",
     },
   ];
 
