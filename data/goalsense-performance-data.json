@@ -1,7 +1,7 @@
 {
   "sourceWorkbook": "GoalSense_Automatic_Match_Workbook_Main.xlsx",
   "sourceSheet": "Match Analysis",
-  "generatedAt": "2026-11-19T11:32:15.960257+00:00",
+  "generatedAt": "2026-11-19T12:30:18.773139+00:00",
   "totalCompletedMatches": 932,
   "recordsWithUsableDate": 13,
   "recordsWithoutUsableDate": 919,
@@ -1023,7 +1023,7 @@
       "bestMarket": "NO BET",
       "overallScore": 58,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-69",
@@ -1821,7 +1821,7 @@
       "bestMarket": "NO BET",
       "overallScore": 58,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-129",
@@ -3179,7 +3179,7 @@
       "bestMarket": "NO BET",
       "overallScore": 59,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-231",
@@ -3795,7 +3795,7 @@
       "bestMarket": "NO BET",
       "overallScore": 55,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-277",
@@ -5993,7 +5993,7 @@
       "bestMarket": "NO BET",
       "overallScore": 59,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-444",
@@ -7365,7 +7365,7 @@
       "bestMarket": "NO BET",
       "overallScore": 58,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-553",
@@ -9661,7 +9661,7 @@
       "bestMarket": "NO BET",
       "overallScore": 57,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-739",
@@ -9801,7 +9801,7 @@
       "bestMarket": "NO BET",
       "overallScore": 59,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-749",
@@ -12419,7 +12419,7 @@
       "bestMarket": "NO BET",
       "overallScore": 56,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-1002",
@@ -12825,7 +12825,7 @@
       "bestMarket": "NO BET",
       "overallScore": 59,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-1033",
@@ -12853,7 +12853,7 @@
       "bestMarket": "NO BET",
       "overallScore": 58,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-1035",
@@ -12923,7 +12923,7 @@
       "bestMarket": "NO BET",
       "overallScore": 56,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-1040",
@@ -12937,7 +12937,7 @@
       "bestMarket": "NO BET",
       "overallScore": 59,
       "finalDecision": "NO BET",
-      "marketWon": null
+      "marketWon": false
     },
     {
       "id": "match-1041",
@@ -13179,7 +13179,7 @@
     }
   ],
   "methodology": {
-    "completedRecord": "Rows where Result Status equals COMPLETE and validated home/away goals are numeric.",
+    "completedRecord": "Rows with a parseable Final Score in Match Analysis; this is equivalent to the workbook's COMPLETE status formula.",
     "over15": "A match is counted as a win when total goals are at least 2.",
     "over25": "A match is counted as a win when total goals are at least 3.",
     "btts": "A match is counted as a win when both teams scored at least once.",
