@@ -74,96 +74,97 @@ export default function FootballStatisticsPage() {
   return (
     <main className="min-h-screen bg-[#050807] text-white">
 
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.16),transparent_65%)]">
-        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-white/[0.06] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.13),transparent_65%)]">
+        <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
 
           <Link
             href="/insights"
-            className="mb-10 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-emerald-400"
+            className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-gray-400 transition hover:text-emerald-400"
           >
-            <ArrowLeft size={17} />
+            <ArrowLeft size={15} />
             Back to Insights
           </Link>
 
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-bold tracking-widest text-emerald-300">
-            <BarChart3 size={15} />
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.08] px-3 py-1.5 text-[9px] font-bold tracking-[0.17em] text-emerald-300">
+            <BarChart3 size={13} />
             DATA & ANALYSIS
           </div>
 
-          <h1 className="max-w-4xl text-4xl font-black leading-tight sm:text-6xl">
+          <h1 className="max-w-3xl text-3xl font-black leading-[1.12] tracking-tight sm:text-5xl">
             Football Data
             <span className="block text-emerald-400">
               & Statistics
             </span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-base leading-8 text-gray-400 sm:text-lg">
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base sm:leading-7">
             Discover the numbers behind football. Learn how historical
             results, team form and match statistics help explain what happens
             on the pitch.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-5 text-sm text-gray-400">
-            <span className="flex items-center gap-2">
-              <ShieldCheck size={17} className="text-emerald-400" />
+          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-[10px] font-medium text-gray-400 sm:text-xs">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck size={14} className="text-emerald-400" />
               Educational resources
             </span>
 
-            <span className="flex items-center gap-2">
-              <CalendarDays size={17} className="text-emerald-400" />
+            <span className="flex items-center gap-1.5">
+              <CalendarDays size={14} className="text-emerald-400" />
               Historical context
             </span>
 
-            <span className="flex items-center gap-2">
-              <Activity size={17} className="text-emerald-400" />
+            <span className="flex items-center gap-1.5">
+              <Activity size={14} className="text-emerald-400" />
               Performance analysis
             </span>
           </div>
+
         </div>
       </section>
 
-      {/* Topics */}
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      {/* FOOTBALL STATISTICS TOPICS */}
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-14">
 
-        <div className="mb-10">
-          <p className="text-xs font-bold tracking-[0.25em] text-emerald-400">
+        <div className="mb-6">
+          <p className="text-[10px] font-bold tracking-[0.22em] text-emerald-400">
             EXPLORE THE NUMBERS
           </p>
 
-          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+          <h2 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
             Understanding Football Data
           </h2>
 
-          <p className="mt-4 max-w-2xl leading-7 text-gray-400">
+          <p className="mt-2 max-w-2xl text-xs leading-6 text-gray-400 sm:text-sm">
             Football statistics provide useful descriptions of team and match
             performance. Explore these four important areas.
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           {topics.map((topic) => {
             const Icon = topic.icon;
 
             return (
               <article
                 key={topic.title}
-                className="group rounded-2xl border border-white/10 bg-[#0b110e] p-7 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/40"
+                className="group rounded-xl border border-white/[0.07] bg-[#0b110e] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-emerald-400/30 sm:p-5"
               >
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-400">
-                  <Icon size={23} />
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.08] text-emerald-400 transition group-hover:bg-emerald-400 group-hover:text-black">
+                  <Icon size={18} />
                 </div>
 
-                <h3 className="text-xl font-bold">
+                <h3 className="text-base font-bold tracking-tight">
                   {topic.title}
                 </h3>
 
-                <p className="mt-3 leading-7 text-gray-400">
+                <p className="mt-2 text-xs leading-6 text-gray-400">
                   {topic.description}
                 </p>
 
-                <div className="mt-5 border-t border-white/10 pt-5">
-                  <p className="text-sm leading-7 text-gray-500">
+                <div className="mt-3 border-t border-white/[0.07] pt-3">
+                  <p className="text-[11px] leading-5 text-gray-500">
                     {topic.detail}
                   </p>
                 </div>
@@ -173,95 +174,95 @@ export default function FootballStatisticsPage() {
         </div>
       </section>
 
-      {/* Reading Football Statistics */}
-      <section className="border-y border-white/10 bg-[#080d0a]">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      {/* READING FOOTBALL STATISTICS */}
+      <section className="border-y border-white/[0.06] bg-[#080d0a]">
+        <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-14">
 
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-[0.25em] text-emerald-400">
+          <div className="mb-6">
+            <p className="text-[10px] font-bold tracking-[0.22em] text-emerald-400">
               BUILD YOUR UNDERSTANDING
             </p>
 
-            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
               How to Read Football Statistics
             </h2>
 
-            <p className="mt-4 max-w-2xl leading-7 text-gray-400">
+            <p className="mt-2 max-w-2xl text-xs leading-6 text-gray-400 sm:text-sm">
               Numbers become more meaningful when they are viewed in context.
               Here are some useful principles to keep in mind.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-3">
 
-            <div className="rounded-2xl border border-white/10 bg-[#0b110e] p-6">
-              <div className="mb-4 text-emerald-400">
-                <History size={25} />
+            <article className="rounded-xl border border-white/[0.07] bg-[#0b110e] p-4 sm:p-5">
+              <div className="mb-3 text-emerald-400">
+                <History size={20} />
               </div>
 
-              <h3 className="font-bold">
+              <h3 className="text-sm font-bold">
                 Consider the Time Period
               </h3>
 
-              <p className="mt-3 text-sm leading-7 text-gray-400">
+              <p className="mt-2 text-xs leading-6 text-gray-400">
                 Recent performances and longer historical records can tell
                 different stories. Always understand the period being studied.
               </p>
-            </div>
+            </article>
 
-            <div className="rounded-2xl border border-white/10 bg-[#0b110e] p-6">
-              <div className="mb-4 text-emerald-400">
-                <BarChart3 size={25} />
+            <article className="rounded-xl border border-white/[0.07] bg-[#0b110e] p-4 sm:p-5">
+              <div className="mb-3 text-emerald-400">
+                <BarChart3 size={20} />
               </div>
 
-              <h3 className="font-bold">
+              <h3 className="text-sm font-bold">
                 Compare Relevant Data
               </h3>
 
-              <p className="mt-3 text-sm leading-7 text-gray-400">
+              <p className="mt-2 text-xs leading-6 text-gray-400">
                 Compare similar competitions, opponents and home or away
                 performances wherever possible.
               </p>
-            </div>
+            </article>
 
-            <div className="rounded-2xl border border-white/10 bg-[#0b110e] p-6">
-              <div className="mb-4 text-emerald-400">
-                <ShieldCheck size={25} />
+            <article className="rounded-xl border border-white/[0.07] bg-[#0b110e] p-4 sm:p-5">
+              <div className="mb-3 text-emerald-400">
+                <ShieldCheck size={20} />
               </div>
 
-              <h3 className="font-bold">
+              <h3 className="text-sm font-bold">
                 Understand the Limitations
               </h3>
 
-              <p className="mt-3 text-sm leading-7 text-gray-400">
+              <p className="mt-2 text-xs leading-6 text-gray-400">
                 Statistics describe recorded performances. They cannot account
                 for every factor that may influence a future match.
               </p>
-            </div>
+            </article>
 
           </div>
         </div>
       </section>
 
-      {/* Important Note */}
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-        <div className="grid gap-8 rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-[#10251a] to-[#080d0a] p-8 sm:p-12 md:grid-cols-2">
+      {/* IMPORTANT NOTE */}
+      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-14">
+        <div className="grid gap-5 rounded-2xl border border-emerald-400/15 bg-gradient-to-br from-[#10251a] to-[#080d0a] p-5 sm:p-7 md:grid-cols-2">
 
           <div>
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
-              <ShieldCheck size={24} />
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400/[0.08] text-emerald-400">
+              <ShieldCheck size={20} />
             </div>
 
-            <p className="text-xs font-bold tracking-[0.2em] text-emerald-400">
+            <p className="text-[9px] font-bold tracking-[0.2em] text-emerald-400">
               A RESPONSIBLE APPROACH
             </p>
 
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight">
+            <h2 className="mt-2 text-2xl font-extrabold leading-tight sm:text-3xl">
               Statistics tell part of the story.
             </h2>
           </div>
 
-          <div className="space-y-5 leading-8 text-gray-400">
+          <div className="space-y-3 text-xs leading-6 text-gray-400 sm:text-sm">
             <p>
               Football statistics can help describe patterns across matches,
               competitions and seasons.
@@ -282,25 +283,25 @@ export default function FootballStatisticsPage() {
         </div>
       </section>
 
-      {/* Related Articles */}
-      <section className="border-y border-white/10 bg-[#080d0a]">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      {/* RELATED ARTICLES */}
+      <section className="border-y border-white/[0.06] bg-[#080d0a]">
+        <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-14">
 
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-[0.25em] text-emerald-400">
+          <div className="mb-6">
+            <p className="text-[10px] font-bold tracking-[0.22em] text-emerald-400">
               CONTINUE LEARNING
             </p>
 
-            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+            <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">
               Related Reads
             </h2>
 
-            <p className="mt-3 text-gray-400">
+            <p className="mt-2 text-xs text-gray-400 sm:text-sm">
               Explore more educational articles from GoalSense Insights.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid gap-3 md:grid-cols-2">
             {articles.map((article) => {
               const Icon = article.icon;
 
@@ -308,31 +309,31 @@ export default function FootballStatisticsPage() {
                 <Link
                   key={article.title}
                   href={article.href}
-                  className="group rounded-2xl border border-white/10 bg-[#0b110e] p-6 transition hover:-translate-y-1 hover:border-emerald-400/40"
+                  className="group rounded-xl border border-white/[0.07] bg-[#0b110e] p-4 transition hover:-translate-y-0.5 hover:border-emerald-400/30 sm:p-5"
                 >
-                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
-                    <Icon size={21} />
+                  <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-400/[0.08] text-emerald-400">
+                    <Icon size={17} />
                   </div>
 
-                  <p className="text-[10px] font-bold tracking-widest text-emerald-400">
+                  <p className="text-[9px] font-bold tracking-widest text-emerald-400">
                     {article.category}
                   </p>
 
-                  <h3 className="mt-3 text-lg font-bold leading-7">
+                  <h3 className="mt-2 text-sm font-bold leading-6 transition group-hover:text-emerald-400">
                     {article.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-7 text-gray-400">
+                  <p className="mt-2 text-xs leading-5 text-gray-400">
                     {article.description}
                   </p>
 
-                  <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4 text-xs text-gray-500">
+                  <div className="mt-4 flex items-center justify-between border-t border-white/[0.07] pt-3 text-[10px] text-gray-500">
                     <span>{article.read}</span>
 
-                    <span className="inline-flex items-center gap-1 font-semibold text-emerald-400">
+                    <span className="inline-flex items-center gap-1 font-bold text-emerald-400">
                       Read article
                       <ArrowRight
-                        size={14}
+                        size={12}
                         className="transition group-hover:translate-x-1"
                       />
                     </span>
@@ -345,24 +346,24 @@ export default function FootballStatisticsPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <section className="px-5 py-16 text-center">
-        <Clock size={27} className="mx-auto text-emerald-400" />
+      {/* FOOTER */}
+      <section className="px-5 py-10 text-center sm:py-12">
+        <Clock size={22} className="mx-auto text-emerald-400" />
 
-        <h2 className="mt-5 text-2xl font-extrabold sm:text-3xl">
+        <h2 className="mt-3 text-xl font-extrabold sm:text-2xl">
           Keep Exploring. Keep Learning.
         </h2>
 
-        <p className="mx-auto mt-4 max-w-xl leading-7 text-gray-400">
+        <p className="mx-auto mt-2 max-w-xl text-xs leading-6 text-gray-400">
           Continue exploring football knowledge, statistics and educational
           resources through the GoalSense Knowledge Hub.
         </p>
 
         <Link
           href="/insights"
-          className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 font-bold text-black transition hover:bg-emerald-400"
+          className="mt-5 inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-xs font-bold text-black transition hover:bg-emerald-400"
         >
-          <ArrowLeft size={17} />
+          <ArrowLeft size={15} />
           Back to Insights
         </Link>
       </section>
