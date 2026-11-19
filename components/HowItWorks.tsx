@@ -1,4 +1,8 @@
 
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function HowItWorks() {
   const steps = [
     {
@@ -51,29 +55,45 @@ export default function HowItWorks() {
 
       </div>
 
-      {/* COMPACT STEPS */}
+      {/* ANIMATED STEPS */}
       <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:gap-4">
 
         {steps.map((step) => (
-          <div
+          <motion.div
             key={step.number}
-            className="group relative flex min-h-[72px] items-center sm:min-h-[82px]"
+            className="group relative flex min-h-[72px] items-center touch-manipulation"
+            whileTap={{
+              scale: 1.035,
+              filter: "brightness(1.15)",
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 420,
+              damping: 24,
+              mass: 0.7,
+            }}
+            style={{
+              transformOrigin: "center center",
+              WebkitTapHighlightColor: "transparent",
+            }}
           >
 
             {/* NUMBER */}
             <div
-              className="relative z-10 flex w-[49px] shrink-0 items-center justify-center text-[54px] font-black leading-none tracking-tighter sm:w-[72px] sm:text-[72px]"
+              className="relative z-10 flex w-[49px] shrink-0 items-center justify-center text-[54px] font-black leading-none tracking-tighter transition-all duration-200 group-active:drop-shadow-[0_0_12px_currentColor] sm:w-[72px] sm:text-[72px]"
               style={{ color: step.color }}
             >
               {step.number}
             </div>
 
             {/* CARD */}
-            <div className="relative -ml-1.5 flex min-h-[72px] flex-1 items-center overflow-hidden rounded-[19px] border border-white/[0.06] bg-gradient-to-br from-[#1c293a] to-[#182333] px-3.5 py-2.5 shadow-[3px_5px_14px_rgba(0,0,0,0.16)] transition-all duration-300 group-hover:border-white/[0.12] sm:-ml-3 sm:min-h-[82px] sm:rounded-[21px] sm:px-5">
+            <div
+              className="relative -ml-1.5 flex min-h-[72px] flex-1 items-center overflow-hidden rounded-[19px] border border-white/[0.06] bg-gradient-to-br from-[#1c293a] to-[#182333] px-3.5 py-2.5 shadow-[3px_5px_14px_rgba(0,0,0,0.16)] transition-all duration-200 group-active:border-white/25 group-active:shadow-[0_0_25px_rgba(0,217,181,0.18)] sm:-ml-3 sm:min-h-[82px] sm:rounded-[21px] sm:px-5"
+            >
 
               {/* TOP ACCENT */}
               <div
-                className="absolute left-5 right-5 top-0 h-px opacity-40"
+                className="absolute left-5 right-5 top-0 h-px opacity-40 transition-opacity duration-200 group-active:opacity-100"
                 style={{ background: step.color }}
               />
 
@@ -92,15 +112,15 @@ export default function HowItWorks() {
 
               </div>
 
-              {/* SUBTLE GLOW */}
+              {/* INTERACTIVE GLOW */}
               <div
-                className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full opacity-[0.05] blur-2xl"
+                className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full opacity-[0.05] blur-2xl transition-all duration-200 group-active:scale-150 group-active:opacity-25"
                 style={{ background: step.color }}
               />
 
             </div>
 
-          </div>
+          </motion.div>
         ))}
 
       </div>

@@ -1,26 +1,48 @@
-GOALSENSE PERFORMANCE INSIGHTS - INSTALLATION
+GOALSENSE PERFORMANCE DATA - ONE-CLICK EXPORT
 
-This package contains:
-1. app/insights/performance/page.tsx
-2. data/goalsense-performance-data.json
+WHAT THIS DOES
+This tool reads your GoalSense Excel workbook and refreshes:
+  data\goalsense-performance-data.json
 
-Copy both folders into the root of your existing Next.js project, merging with the existing folders.
+It does NOT edit the Excel workbook and does NOT connect to Supabase.
 
-Then update the Performance Insights category on your existing /insights page:
+ONE-TIME SETUP
+1. Copy the scripts folder, update-performance-data.bat and requirements.txt
+   into the ROOT of your existing my-app project folder.
+2. Make sure your project already has:
+   data\goalsense-performance-data.json
+3. Double-click update-performance-data.bat.
+4. Select your latest GoalSense_Automatic_Match_Workbook_Main.xlsx file.
+5. Wait for the success message. The JSON data file will be refreshed.
 
-Before:
-href: "#performance-insights",
+EACH TIME YOU UPDATE THE WORKBOOK
+1. Open the workbook in Excel.
+2. Let Excel finish calculating, then save and close the workbook.
+3. Double-click update-performance-data.bat in your my-app folder.
+4. Select the saved workbook.
+5. After the export succeeds, run these commands in Command Prompt from my-app:
 
-After:
-href: "/insights/performance",
+   git add data/goalsense-performance-data.json
+   git commit -m "Update GoalSense performance data"
+   git push origin main
 
-The page imports the JSON using the existing @/ alias. If your project uses a different alias, update the import path accordingly.
+Vercel will deploy the updated data with your normal GitHub deployment.
 
-No Supabase connection, migration, API route, authentication change, or existing workbook edit is required.
+IMPORTANT
+- The exporter reads the Match Analysis sheet.
+- It recognises completed records from a valid Final Score, matching the
+  workbook's COMPLETE status formula.
+- It reads the formula results for Best Market, Overall Score and Final Decision.
+  For accurate results, open the workbook in Excel, allow calculations to finish,
+  and save it before exporting.
+- If calculated values are missing, the script stops and leaves the existing
+  website JSON file unchanged.
+- The original Excel workbook is never saved or modified by this script.
+- No Supabase settings, tables, policies, authentication or API routes are touched.
 
-DATA NOTES
-- Exported from Match Analysis rows where Result Status is COMPLETE and validated home/away goals are numeric.
-- 932 completed records were found.
-- The workbook's saved Performance sheet figures are preserved by applying its documented thresholds.
-- Only 13 records have a usable non-zero date, so the page intentionally does not show a date-based timeline.
-- The score range below 62 follows the workbook formula (Overall Score < 61), so records scoring exactly 61 are not included in that workbook band.
+COMMAND-LINE OPTION
+You can also run:
+  py -3 scripts\export_performance.py "C:\path\to\GoalSense_Automatic_Match_Workbook_Main.xlsx"
+
+The first run may install openpyxl. Python 3 and an internet connection are
+needed for that one-time dependency installation.
