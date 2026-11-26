@@ -1311,18 +1311,18 @@ export default function MatchAnalyserPage() {
 </div>
 
 
-            <div>
-              <label className="mb-2 block text-[11px] font-semibold tracking-wide text-gray-400">
-                MATCH DATE
-              </label>
+           <div>
+  <label className="mb-2 block text-[11px] font-semibold tracking-wide text-gray-400">
+    MATCH DATE
+  </label>
 
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="block h-12 w-full min-w-0 max-w-full box-border appearance-none rounded-xl border border-white/10 bg-[#07100d] px-3.5 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
-              />
-            </div>
+  <input
+    type="date"
+    value={date}
+    onChange={(e) => setDate(e.target.value)}
+    className="flex h-12 w-full min-w-0 max-w-full box-border appearance-none items-center justify-center rounded-xl border border-white/10 bg-[#07100d] px-3.5 text-center text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+  />
+</div>
 
             {error && (
               <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">
