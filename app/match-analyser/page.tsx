@@ -1041,6 +1041,173 @@ function PerformanceTracker({
   );
 }
 
+
+
+type TeamSuggestion = {
+  id: number;
+  name: string;
+  country: string;
+  logo: string;
+};
+
+function TeamAutocomplete({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [suggestions, setSuggestions] = useState<TeamSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchError, setSearchError] = useState("");
+
+  useEffect(() => {
+    const query = value.trim();
+
+    if (query.length < 3) {
+      setSuggestions([]);
+      setSearchError("");
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      setSearchError("");
+
+      try {
+        const response = await fetch(
+          `/api/football/teams?search=${encodeURIComponent(query)}`,
+          { cache: "no-store" }
+        );
+
+        const data = await response.json();
+
+        if (cancelled) return;
+
+        if (!response.ok || !data.success) {
+          setSuggestions([]);
+          setSearchError(
+            data.message || "Team search is temporarily unavailable."
+          );
+          setOpen(true);
+          return;
+        }
+
+        setSuggestions(data.teams || []);
+        setOpen(true);
+      } catch {
+        if (!cancelled) {
+          setSuggestions([]);
+          setSearchError(
+            "Unable to connect to team search. Please try again."
+          );
+          setOpen(true);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }, 500);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [value]);
+
+  return (
+    <div className="relative">
+      <label className="mb-2 block text-xs font-semibold text-gray-400">
+        {label}
+      </label>
+
+      <input
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => {
+          if (value.trim().length >= 3) setOpen(true);
+        }}
+        onBlur={() => {
+          setTimeout(() => setOpen(false), 150);
+        }}
+        placeholder={placeholder}
+        autoComplete="off"
+        className="w-full rounded-xl border border-white/10 bg-[#07100d] px-4 py-4 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-500"
+      />
+
+      {open && value.trim().length >= 3 && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-y-auto rounded-xl border border-white/10 bg-[#101a16] shadow-2xl">
+          {loading ? (
+            <p className="p-4 text-sm text-gray-400">
+              Searching teams...
+            </p>
+          ) : searchError ? (
+            <p className="p-4 text-sm text-amber-300">
+              {searchError}
+            </p>
+          ) : suggestions.length > 0 ? (
+            suggestions.map((team) => (
+              <button
+                key={team.id}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onChange(team.name);
+                  setOpen(false);
+                  setSuggestions([]);
+                  setSearchError("");
+                }}
+                className="flex w-full items-center gap-3 border-b border-white/5 px-4 py-3 text-left transition last:border-0 hover:bg-emerald-500/10"
+              >
+                {team.logo ? (
+                  <img
+                    src={team.logo}
+                    alt=""
+                    className="h-7 w-7 object-contain"
+                  />
+                ) : (
+                  <div className="h-7 w-7 rounded-full bg-white/5" />
+                )}
+
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-white">
+                    {team.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {team.country || "International"}
+                  </p>
+                </div>
+              </button>
+            ))
+          ) : (
+            <p className="p-4 text-sm text-gray-400">
+              No matching teams found. Check the spelling or try another name.
+            </p>
+          )}
+        </div>
+      )}
+
+      <p className="mt-2 text-[11px] text-gray-600">
+        Type at least 3 letters to find a team.
+      </p>
+    </div>
+  );
+}
+
+
+
 export default function MatchAnalyserPage() {
   const [home, setHome] = useState("");
   const [away, setAway] = useState("");
@@ -1126,33 +1293,23 @@ export default function MatchAnalyserPage() {
           </div>
 
           <form onSubmit={analyseMatch} className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="mb-2 block text-xs font-semibold text-gray-400">
-                  HOME TEAM
-                </label>
+            
+<div className="grid gap-4 sm:grid-cols-2">
+  <TeamAutocomplete
+    label="HOME TEAM"
+    value={home}
+    onChange={setHome}
+    placeholder="Search home team..."
+  />
 
-                <input
-                  value={home}
-                  onChange={(e) => setHome(e.target.value)}
-                  placeholder="e.g. Arsenal"
-                  className="w-full rounded-xl border border-white/10 bg-[#07100d] px-4 py-4 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-500"
-                />
-              </div>
+  <TeamAutocomplete
+    label="AWAY TEAM"
+    value={away}
+    onChange={setAway}
+    placeholder="Search away team..."
+  />
+</div>
 
-              <div>
-                <label className="mb-2 block text-xs font-semibold text-gray-400">
-                  AWAY TEAM
-                </label>
-
-                <input
-                  value={away}
-                  onChange={(e) => setAway(e.target.value)}
-                  placeholder="e.g. Chelsea"
-                  className="w-full rounded-xl border border-white/10 bg-[#07100d] px-4 py-4 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-500"
-                />
-              </div>
-            </div>
 
             <div>
               <label className="mb-2 block text-xs font-semibold text-gray-400">
