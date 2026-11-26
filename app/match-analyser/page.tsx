@@ -106,14 +106,14 @@ function StatCard({
   matches: number;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#111b18] p-4">
+    <div className="rounded-lg border border-white/10 bg-[#111b18] p-3">
       <p className="text-xs text-gray-400">{label}</p>
 
-      <p className="mt-2 text-3xl font-bold text-emerald-400">
+      <p className="mt-1 text-2xl font-bold text-emerald-400">
         {value === null ? "—" : `${value}%`}
       </p>
 
-      <p className="mt-1 text-xs text-gray-500">
+      <p className="mt-1 text-[10px] text-gray-500">
         {value === null
           ? "No data"
           : `${Math.round((value / 100) * matches)}/${matches} matches`}
@@ -199,7 +199,7 @@ function PredictionPanel({
 
   return (
     <section className="overflow-hidden rounded-2xl border border-emerald-500/20 bg-[#0c1512]">
-      <div className="border-b border-white/10 bg-gradient-to-r from-emerald-500/10 to-transparent p-5 sm:p-6">
+      <div className="border-b border-white/10 bg-gradient-to-r from-emerald-500/10 to-transparent p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
@@ -251,7 +251,7 @@ function PredictionPanel({
         )}
       </div>
 
-      <div className="space-y-6 p-5 sm:p-6">
+      <div className="space-y-6 p-4 sm:p-5">
         <div>
           <h3 className="mb-4 font-bold text-white">
             Goal market estimates
@@ -261,7 +261,7 @@ function PredictionPanel({
             {markets.map((market) => (
               <div
                 key={market.name}
-                className="rounded-xl border border-white/10 bg-[#111b18] p-4"
+                className="rounded-lg border border-white/10 bg-[#111b18] p-3"
               >
                 <p className="text-xs text-gray-400">{market.name}</p>
 
@@ -278,7 +278,7 @@ function PredictionPanel({
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <div className="rounded-xl border border-white/10 bg-[#111b18] p-4">
+          <div className="rounded-lg border border-white/10 bg-[#111b18] p-3">
             <h3 className="font-bold text-white">Expected goals</h3>
 
             {expected ? (
@@ -322,7 +322,7 @@ function PredictionPanel({
             )}
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-[#111b18] p-4">
+          <div className="rounded-lg border border-white/10 bg-[#111b18] p-3">
             <h3 className="font-bold text-white">Most likely score</h3>
 
             <div className="mt-4 flex min-h-[100px] items-center justify-center rounded-xl bg-[#07100d]">
@@ -342,7 +342,7 @@ function PredictionPanel({
             Match outcome estimates
           </h3>
 
-          <div className="space-y-4 rounded-xl border border-white/10 bg-[#111b18] p-4">
+          <div className="space-y-4 rounded-lg border border-white/10 bg-[#111b18] p-3">
             {outcomes.map((outcome) => (
               <ProbabilityBar
                 key={outcome.name}
@@ -365,7 +365,7 @@ function PredictionPanel({
         </div>
 
         {venueData && (
-          <div className="rounded-xl border border-white/10 bg-[#111b18] p-4">
+          <div className="rounded-lg border border-white/10 bg-[#111b18] p-3">
             <h3 className="font-bold text-white">
               Data used for this prediction
             </h3>
@@ -427,8 +427,8 @@ function VenuePerformance({
   data: VenueStats;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#07100d] p-3">
-      <p className="text-xs font-semibold text-gray-400">{label}</p>
+    <div className="rounded-lg border border-white/10 bg-[#07100d] p-3">
+      <p className="text-[11px] font-semibold tracking-wide text-gray-400">{label}</p>
 
       {data.matches > 0 ? (
         <div className="mt-3 grid grid-cols-2 gap-3">
@@ -477,8 +477,8 @@ function TeamResults({
     venue === "home" ? "Home performance" : "Away performance";
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0c1512]">
-      <div className="border-b border-white/10 p-5">
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-[#0c1512]">
+      <div className="border-b border-white/10 p-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-bold text-white">{team}</h3>
 
@@ -491,7 +491,7 @@ function TeamResults({
           Overall historical performance
         </p>
 
-        <div className="mt-5 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-1.5">
           <StatCard
             label="Over 1.5"
             value={data.over15}
@@ -528,7 +528,7 @@ function TeamResults({
           )}
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-2 rounded-xl bg-[#07100d] p-3 text-center">
+        <div className="mt-4 grid grid-cols-3 gap-1.5 rounded-xl bg-[#07100d] p-3 text-center">
           <div>
             <p className="text-lg font-bold text-emerald-400">
               {data.wins}
@@ -578,7 +578,7 @@ function TeamResults({
                   {match.away}
                 </p>
 
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-[10px] text-gray-500">
                   {new Date(match.date).toLocaleDateString()}
                 </p>
               </div>
@@ -815,7 +815,7 @@ function PerformanceTracker({
   ).length;
 
   return (
-    <section className="rounded-2xl border border-emerald-500/20 bg-[#0c1512] p-5 sm:p-6">
+    <section className="rounded-2xl border border-emerald-500/20 bg-[#0c1512] p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
@@ -841,7 +841,7 @@ function PerformanceTracker({
           {fixture.home} vs {fixture.away}
         </p>
 
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-[10px] text-gray-500">
           {new Date(fixture.date).toLocaleString()}
         </p>
 
@@ -881,7 +881,7 @@ function PerformanceTracker({
           {stats.map((item) => (
             <div
               key={item.name}
-              className="rounded-xl border border-white/10 bg-[#111b18] p-4"
+              className="rounded-lg border border-white/10 bg-[#111b18] p-3"
             >
               <p className="text-sm text-gray-400">{item.name}</p>
 
@@ -891,7 +891,7 @@ function PerformanceTracker({
                   : `${item.accuracy}%`}
               </p>
 
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-[10px] text-gray-500">
                 {item.won} won · {item.lost} lost
               </p>
 
@@ -930,7 +930,7 @@ function PerformanceTracker({
                         {record.home} vs {record.away}
                       </p>
 
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-[10px] text-gray-500">
                         {new Date(record.date).toLocaleDateString()}
                       </p>
                     </div>
@@ -946,7 +946,7 @@ function PerformanceTracker({
                     </span>
                   </div>
 
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                  <div className="mt-3 grid grid-cols-3 gap-1.5 text-center">
                     <div>
                       <p className="text-xs text-gray-500">Over 1.5</p>
                       <p className="mt-1 font-bold text-white">
@@ -979,7 +979,7 @@ function PerformanceTracker({
                     </p>
                   ) : (
                     <div className="mt-4">
-                      <p className="mb-2 text-xs font-semibold text-gray-400">
+                      <p className="mb-2 text-[11px] font-semibold tracking-wide text-gray-400">
                         ENTER FINAL SCORE
                       </p>
 
@@ -1126,7 +1126,7 @@ function TeamAutocomplete({
 
   return (
     <div className="relative">
-      <label className="mb-2 block text-xs font-semibold text-gray-400">
+      <label className="mb-2 block text-[11px] font-semibold tracking-wide text-gray-400">
         {label}
       </label>
 
@@ -1144,7 +1144,7 @@ function TeamAutocomplete({
         }}
         placeholder={placeholder}
         autoComplete="off"
-        className="w-full rounded-xl border border-white/10 bg-[#07100d] px-4 py-4 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-500"
+        className="block h-12 w-full min-w-0 max-w-full box-border rounded-xl border border-white/10 bg-[#07100d] px-3.5 text-sm text-white outline-none transition placeholder:text-gray-600 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
       />
 
       {open && value.trim().length >= 3 && (
@@ -1199,7 +1199,7 @@ function TeamAutocomplete({
         </div>
       )}
 
-      <p className="mt-2 text-[11px] text-gray-600">
+      <p className="mt-1.5 text-[10px] text-gray-600">
         Type at least 3 letters to find a team.
       </p>
     </div>
@@ -1266,35 +1266,35 @@ export default function MatchAnalyserPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#050907] px-4 py-10 text-white sm:px-6">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-10 text-center">
-          <div className="mb-4 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-emerald-400">
+    <main className="min-h-screen overflow-x-hidden bg-[#050907] px-3 py-5 text-white sm:px-6 sm:py-8">
+      <div className="mx-auto w-full max-w-5xl min-w-0">
+        <div className="mb-6 text-center sm:mb-8">
+          <div className="mb-3 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-emerald-400">
             GOALSENSE INTELLIGENCE
           </div>
 
-          <h1 className="text-3xl font-black tracking-tight sm:text-5xl">
+          <h1 className="text-2xl font-black tracking-tight sm:text-4xl">
             MATCH <span className="text-emerald-400">ANALYSER</span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-gray-400 sm:text-base">
+          <p className="mx-auto mt-2 max-w-xl text-xs leading-5 text-gray-400 sm:text-sm sm:leading-6">
             Analyse football fixtures using historical match records.
             Explore statistical trends and possible match outcomes.
           </p>
         </div>
 
-        <section className="rounded-2xl border border-white/10 bg-[#0c1512] p-5 shadow-2xl sm:p-7">
-          <div className="mb-6">
-            <h2 className="text-lg font-bold">Select your fixture</h2>
+        <section className="min-w-0 rounded-2xl border border-white/10 bg-gradient-to-b from-[#0d1914] to-[#09110e] p-4 shadow-xl shadow-black/20 sm:p-6">
+          <div className="mb-4">
+            <h2 className="text-base font-bold sm:text-lg">Select your fixture</h2>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-[10px] text-gray-500 sm:text-sm">
               Enter the team names as they appear in your fixture.
             </p>
           </div>
 
-          <form onSubmit={analyseMatch} className="space-y-5">
+          <form onSubmit={analyseMatch} className="min-w-0 space-y-4">
             
-<div className="grid gap-4 sm:grid-cols-2">
+<div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
   <TeamAutocomplete
     label="HOME TEAM"
     value={home}
@@ -1312,7 +1312,7 @@ export default function MatchAnalyserPage() {
 
 
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-400">
+              <label className="mb-2 block text-[11px] font-semibold tracking-wide text-gray-400">
                 MATCH DATE
               </label>
 
@@ -1320,7 +1320,7 @@ export default function MatchAnalyserPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#07100d] px-4 py-4 text-sm text-white outline-none focus:border-emerald-500"
+                className="block h-12 w-full min-w-0 max-w-full box-border appearance-none rounded-xl border border-white/10 bg-[#07100d] px-3.5 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
               />
             </div>
 
@@ -1333,7 +1333,7 @@ export default function MatchAnalyserPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-4 font-bold text-black transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 text-sm font-extrabold tracking-wide text-black shadow-lg shadow-emerald-500/10 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "ANALYSING MATCH..." : "ANALYSE MATCH"}
             </button>
@@ -1341,8 +1341,8 @@ export default function MatchAnalyserPage() {
         </section>
 
         {result?.fixture && result.analysis && (
-          <section className="mt-8 space-y-6">
-            <div className="rounded-2xl border border-emerald-500/20 bg-[#0c1512] p-5 text-center">
+          <section className="mt-5 space-y-4 sm:mt-7 sm:space-y-5">
+            <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-[#10251a] to-[#0c1512] p-4 text-center sm:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
                 Fixture found
               </p>
@@ -1381,7 +1381,7 @@ export default function MatchAnalyserPage() {
                 </span>
               </div>
 
-              <div className="grid gap-5 lg:grid-cols-2">
+              <div className="grid gap-3 lg:grid-cols-2">
                 <TeamResults
                   team={result.fixture.home}
                   data={result.analysis.home}
