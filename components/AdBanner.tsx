@@ -44,7 +44,7 @@ const slides: AdSlide[] = [
     label: "EVOLVEX",
     title: "GET UP TO 100% BONUS.",
     subtitle: "ON YOUR FIRST DEPOSIT.",
-    description: "USE PROMO CODE: BOOKIES",
+    description: "USE PROMO CODE: MULA",
     button: "JOIN NOW",
     href: "https://bet-evolvex.com/signup?code=MULA",
     image: "/evolvex-banner.jpg",
