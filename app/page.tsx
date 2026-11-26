@@ -19,7 +19,7 @@ import PremiumFeatures from "@/components/PremiumFeatures";
 import ResponsibleGaming from "@/components/ResponsibleGaming";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Brain } from "lucide-react";
+import { ArrowRight, BookOpen, Brain, Activity } from "lucide-react";
 
 
 
@@ -113,6 +113,46 @@ export default function Home() {
           <section id="generator" className="relative z-20 scroll-mt-32">
             <GeneratorForm />
           </section>
+
+          
+{/* MATCH ANALYSER PROMO */}
+<section className="relative z-10">
+  <Link
+    href="/match-analyser"
+    className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-[#10251a] via-[#0b1711] to-[#080d0b] p-4 transition-all duration-300 hover:border-emerald-400/50 hover:shadow-lg hover:shadow-emerald-500/5 sm:px-5"
+  >
+    {/* Subtle glow */}
+    <div className="pointer-events-none absolute -right-8 -top-12 h-32 w-32 rounded-full bg-emerald-500/[0.08] blur-3xl" />
+
+    {/* Icon */}
+    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-emerald-400/15 bg-emerald-400/10 text-emerald-400">
+      <Activity size={23} />
+    </div>
+
+    {/* Text */}
+    <div className="relative min-w-0 flex-1">
+      <div className="mb-1 flex items-center gap-2">
+        <h3 className="text-sm font-extrabold tracking-wide text-white">
+          Match Analyser
+        </h3>
+        <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-400">
+          New
+        </span>
+      </div>
+
+      <p className="text-xs leading-5 text-gray-400">
+        Explore goal probabilities, expected goals and historical match statistics.
+      </p>
+    </div>
+
+    {/* Action */}
+    <div className="relative flex shrink-0 items-center gap-1 text-xs font-bold text-emerald-400 transition-transform group-hover:translate-x-1">
+      Explore
+      <ArrowRight size={15} />
+    </div>
+  </Link>
+</section>
+
 
           {/* PREMIUM SLIP OF THE DAY */}
 <section className="relative z-10">
