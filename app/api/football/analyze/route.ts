@@ -6,7 +6,11 @@ const COMPLETED_STATUSES = ["FT", "AET", "PEN"];
 const HISTORICAL_SEASON = 2024;
 const MATCH_LIMIT = 10;
 
-async function footballRequest(endpoint: string) {
+
+async function footballRequest(
+  endpoint: string,
+  revalidateSeconds = 3600
+) {
   const apiKey = process.env.API_FOOTBALL_KEY;
 
   if (!apiKey) {
@@ -17,7 +21,9 @@ async function footballRequest(endpoint: string) {
     headers: {
       "x-apisports-key": apiKey,
     },
-    cache: "no-store",
+    next: {
+      revalidate: revalidateSeconds,
+    },
   });
 
   const data = await response.json();
@@ -36,26 +42,34 @@ async function footballRequest(endpoint: string) {
   return data.response || [];
 }
 
+
+
 function normalizeTeam(name: string) {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .replace(/(footballclub|fc|afc|cf|sc|kv)$/g, "");
 }
 
 function sameTeam(apiName: string, enteredName: string) {
   const api = normalizeTeam(apiName);
   const entered = normalizeTeam(enteredName);
 
+  if (!api || !entered) return false;
+
   const aliases: Record<string, string[]> = {
     olympiacos: ["olympiakospiraeus", "olympiacos"],
-    acmilan: ["milan", "acmilan"],
+    acmilan: ["milan"],
   };
 
-  const acceptedNames = [
-    entered,
-    ...(aliases[entered] || []),
-  ];
+  if (api === entered) return true;
 
-  return acceptedNames.includes(api);
+  return (
+    (aliases[entered] || []).includes(api) ||
+    (aliases[api] || []).includes(entered)
+  );
 }
+
 
 function isCompleted(match: any) {
   return (
@@ -64,6 +78,7 @@ function isCompleted(match: any) {
     typeof match.goals?.away === "number"
   );
 }
+
 
 function sortRecent(fixtures: any[]) {
   return fixtures
@@ -425,13 +440,15 @@ export async function GET(request: NextRequest) {
 
     // Requests 2 and 3: Retrieve each team's historical fixtures.
     const [homeMatches, awayMatches] = await Promise.all([
-      footballRequest(
-        `fixtures?team=${homeId}&season=${HISTORICAL_SEASON}`
-      ),
-      footballRequest(
-        `fixtures?team=${awayId}&season=${HISTORICAL_SEASON}`
-      ),
-    ]);
+  footballRequest(
+    `fixtures?team=${homeId}&season=${HISTORICAL_SEASON}`,
+    2592000
+  ),
+  footballRequest(
+    `fixtures?team=${awayId}&season=${HISTORICAL_SEASON}`,
+    2592000
+  ),
+]);
 
     const homeStats = calculateTeamStats(homeMatches, homeId);
     const awayStats = calculateTeamStats(awayMatches, awayId);
