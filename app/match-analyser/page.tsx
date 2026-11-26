@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Home } from "lucide-react";
 
 type RecentResult = {
   date: string;
@@ -1268,6 +1270,16 @@ export default function MatchAnalyserPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#050907] px-3 py-5 text-white sm:px-6 sm:py-8">
       <div className="mx-auto w-full max-w-5xl min-w-0">
+        <div className="mb-5 flex justify-start">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-gray-300 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-400"
+          >
+            <Home size={16} />
+            Home
+          </Link>
+        </div>
+
         <div className="mb-6 text-center sm:mb-8">
           <div className="mb-3 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-emerald-400">
             GOALSENSE INTELLIGENCE
