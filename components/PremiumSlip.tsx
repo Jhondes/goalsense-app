@@ -375,11 +375,12 @@ const visiblePerformance = showAllPerformance
     {statusIcon}
   </span>
 
-  {item.total_odds != null && (
-    <span>
-      {Number(item.total_odds).toFixed(2)}
-    </span>
-  )}
+  <span>
+  {item.total_odds != null &&
+  Number.isFinite(Number(item.total_odds))
+    ? Number(item.total_odds).toFixed(2)
+    : "ODDS N/A"}
+</span>
 
   <span>
     {statusText}

@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
@@ -21,20 +22,22 @@ const supabaseAdmin = createClient(
 
 // ======================================================
 // GET PREMIUM SLIP PERFORMANCE
-// Only return performance for active premium slips
+// Permanent saved odds are the source of truth.
 // ======================================================
-
 
 export async function GET() {
   try {
-    // Fetch all performance records
     const { data: performanceData, error: performanceError } =
       await supabaseAdmin
         .from("premium_slip_performance")
-        .select("*");
+        .select("slip_date, status, total_odds, updated_at")
+        .order("slip_date", { ascending: true });
 
     if (performanceError) {
-      console.error("Premium performance fetch error:", performanceError);
+      console.error(
+        "Premium performance fetch error:",
+        performanceError
+      );
 
       return NextResponse.json(
         { error: performanceError.message },
@@ -42,15 +45,20 @@ export async function GET() {
       );
     }
 
-    // Fetch available premium slip odds
+    // Fallback for older records whose odds have not
+    // yet been recovered into the performance table.
     const { data: slipsData, error: slipsError } =
       await supabaseAdmin
         .from("premium_slips")
         .select("slip_date, total_odds, created_at")
+        .not("total_odds", "is", null)
         .order("created_at", { ascending: false });
 
     if (slipsError) {
-      console.error("Premium slips odds fetch error:", slipsError);
+      console.error(
+        "Premium slips odds fetch error:",
+        slipsError
+      );
 
       return NextResponse.json(
         { error: slipsError.message },
@@ -58,7 +66,6 @@ export async function GET() {
       );
     }
 
-    // Use the latest slip record for each date
     const oddsByDate = new Map<string, number>();
 
     (slipsData || []).forEach((slip) => {
@@ -74,25 +81,38 @@ export async function GET() {
       }
     });
 
-    // Attach odds to each performance record
-    const allPerformance = (performanceData || [])
-      .map((item) => ({
-        ...item,
-        total_odds: oddsByDate.get(item.slip_date) ?? null,
-      }))
-      .sort(
-        (a, b) =>
-          new Date(a.slip_date).getTime() -
-          new Date(b.slip_date).getTime()
-      );
+    const allPerformance = (performanceData || []).map(
+      (item) => {
+        // Never overwrite permanently saved odds.
+        const savedOdds =
+          item.total_odds != null
+            ? Number(item.total_odds)
+            : oddsByDate.get(item.slip_date) ?? null;
 
-    return NextResponse.json({
-      success: true,
-      data: allPerformance,
-    });
+        return {
+          ...item,
+          total_odds: savedOdds,
+        };
+      }
+    );
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: allPerformance,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
+    );
 
   } catch (error) {
-    console.error("Get premium performance error:", error);
+    console.error(
+      "Get premium performance error:",
+      error
+    );
 
     return NextResponse.json(
       { error: "Something went wrong" },
@@ -101,9 +121,9 @@ export async function GET() {
   }
 }
 
-
 // ======================================================
 // CREATE / UPDATE PREMIUM SLIP PERFORMANCE
+// Save exact odds permanently with the result.
 // ======================================================
 
 export async function POST(request: Request) {
@@ -126,17 +146,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // --------------------------------------------------
-    // Make sure a premium slip actually exists
-    // before creating/updating its performance.
-    // --------------------------------------------------
-
+    // Find the latest active premium slip for this date.
     const { data: slip, error: slipError } =
       await supabaseAdmin
         .from("premium_slips")
-        .select("id")
+        .select("id, total_odds, created_at")
         .eq("slip_date", slip_date)
         .eq("is_active", true)
+        .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
@@ -156,22 +173,37 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "Cannot create performance because no active Premium Slip exists for this date.",
+            "Cannot save performance because no active Premium Slip exists for this date.",
         },
         { status: 400 }
       );
     }
 
-    // --------------------------------------------------
-    // Create or update performance
-    // --------------------------------------------------
+    // Use the exact total odds saved on the original slip.
+    const exactOdds = Number(slip.total_odds);
 
+    if (
+      slip.total_odds == null ||
+      !Number.isFinite(exactOdds) ||
+      exactOdds <= 0
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "The original Premium Slip has no valid recorded total odds.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Save status and odds together.
     const { data, error } = await supabaseAdmin
       .from("premium_slip_performance")
       .upsert(
         {
           slip_date,
           status,
+          total_odds: exactOdds,
           updated_at: new Date().toISOString(),
         },
         {
@@ -197,6 +229,7 @@ export async function POST(request: Request) {
       success: true,
       data,
     });
+
   } catch (error) {
     console.error(
       "Save premium performance error:",
