@@ -14,6 +14,8 @@ type Match = {
   odds: string;
   date: string;
   modelPercentage?: number | null;
+  homeScore: number | null;
+  awayScore: number | null;
 };
 
 type PremiumSlip = {
@@ -289,19 +291,22 @@ const visiblePremiumPerformance = showAllPremiumPerformance
   : last28DaysPremiumPerformance.slice(-5);
 
   // ✅ FIXED: Properly closed function
-  async function fetchMatches() {
+  
+async function fetchMatches() {
   const { data, error } = await supabase
     .from("matches")
     .select(`
-  id,
-  home_team,
-  away_team,
-  league,
-  market,
-  odds,
-  match_date,
-  model_percentage
-`)
+      id,
+      home_team,
+      away_team,
+      league,
+      market,
+      odds,
+      match_date,
+      model_percentage,
+      home_score,
+      away_score
+    `)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -318,20 +323,23 @@ const visiblePremiumPerformance = showAllPremiumPerformance
   console.log("MATCHES FROM DATABASE:", data);
 
   setMatches(
-  (data || []).map((m: any) => ({
-    id: m.id,
-    home: m.home_team,
-    away: m.away_team,
-    league: m.league,
-    market: m.market,
-    odds: m.odds,
-    date: m.match_date
-      ? String(m.match_date).split("T")[0]
-      : "",
-    modelPercentage: m.model_percentage,
-  }))
-);
+    (data || []).map((m: any) => ({
+      id: m.id,
+      home: m.home_team,
+      away: m.away_team,
+      league: m.league,
+      market: m.market,
+      odds: m.odds,
+      date: m.match_date
+        ? String(m.match_date).split("T")[0]
+        : "",
+      modelPercentage: m.model_percentage,
+      homeScore: m.home_score,
+      awayScore: m.away_score,
+    }))
+  );
 }
+
 
   // ✅ MOVED OUTSIDE (FIX)
   async function testDB() {
@@ -396,27 +404,61 @@ const visiblePremiumPerformance = showAllPremiumPerformance
 }
 
 
+
 async function handleUpdate(id: string) {
+  // Validate scores before saving
+  const homeScore =
+    editForm.homeScore === "" ||
+    editForm.homeScore === null ||
+    editForm.homeScore === undefined
+      ? null
+      : Number(editForm.homeScore);
+
+  const awayScore =
+    editForm.awayScore === "" ||
+    editForm.awayScore === null ||
+    editForm.awayScore === undefined
+      ? null
+      : Number(editForm.awayScore);
+
+  // Both scores must be entered together
+  if ((homeScore === null) !== (awayScore === null)) {
+    alert("Please enter both home and away scores.");
+    return;
+  }
+
+  // Scores must be non-negative whole numbers
+  if (
+    (homeScore !== null &&
+      (!Number.isInteger(homeScore) || homeScore < 0)) ||
+    (awayScore !== null &&
+      (!Number.isInteger(awayScore) || awayScore < 0))
+  ) {
+    alert("Scores must be valid whole numbers (0 or higher).");
+    return;
+  }
+
   const { data, error } = await supabase
     .from("matches")
     .update({
-  home_team: editForm.home,
-  away_team: editForm.away,
-  league: editForm.league,
-  market: editForm.market,
-  odds: Number(editForm.odds),
-  match_date: editForm.date,
-  model_percentage:
-    editForm.modelPercentage === "" ||
-    editForm.modelPercentage === null ||
-    editForm.modelPercentage === undefined
-      ? null
-      : Number(editForm.modelPercentage),
-})
+      home_team: editForm.home,
+      away_team: editForm.away,
+      league: editForm.league,
+      market: editForm.market,
+      odds: Number(editForm.odds),
+      match_date: editForm.date,
+      model_percentage:
+        editForm.modelPercentage === "" ||
+        editForm.modelPercentage === null ||
+        editForm.modelPercentage === undefined
+          ? null
+          : Number(editForm.modelPercentage),
+      home_score: homeScore,
+      away_score: awayScore,
+    })
     .eq("id", id)
     .select();
 
-  // 👇 ADD IT RIGHT HERE
   console.log("Updated rows:", data);
 
   if (error || !data || data.length === 0) {
@@ -432,6 +474,7 @@ async function handleUpdate(id: string) {
   setEditForm({});
   alert("Updated ✅");
 }
+
 
 useEffect(() => {
   const stored = localStorage.getItem("admin-auth");
@@ -2133,6 +2176,8 @@ if (!authorized) {
   "Odds",
   "Model %",
   "Date",
+  "Home Score",
+  "Away Score",
   "Actions",
 ].map((h) => (
                 <th key={h} style={{ padding: "10px", textAlign: "left" }}>
@@ -2260,6 +2305,48 @@ if (!authorized) {
         )}
       </td>
 
+      {/* HOME SCORE */}
+      <td style={{ padding: "8px", minWidth: "90px" }}>
+        {editingId === m.id ? (
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value={editForm.homeScore ?? ""}
+            onChange={(e) =>
+              setEditForm({
+                ...editForm,
+                homeScore: e.target.value,
+              })
+            }
+            style={inputStyle}
+          />
+        ) : (
+          m.homeScore ?? "—"
+        )}
+      </td>
+
+      {/* AWAY SCORE */}
+      <td style={{ padding: "8px", minWidth: "90px" }}>
+        {editingId === m.id ? (
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value={editForm.awayScore ?? ""}
+            onChange={(e) =>
+              setEditForm({
+                ...editForm,
+                awayScore: e.target.value,
+              })
+            }
+            style={inputStyle}
+          />
+        ) : (
+          m.awayScore ?? "—"
+        )}
+      </td>
+      
       {/* ACTIONS */}
       <td style={{ padding: "8px" }}>
         {editingId === m.id ? (
