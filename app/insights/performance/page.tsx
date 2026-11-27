@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -52,6 +51,7 @@ export default function PerformanceInsightsPage() {
   const [matchPeriod, setMatchPeriod] = useState<Period>("28");
   const [matchLoading, setMatchLoading] = useState(true);
   const [matchError, setMatchError] = useState("");
+  const [showAllMatches, setShowAllMatches] = useState(false);
 
   // LOAD PREMIUM SLIP PERFORMANCE
   useEffect(() => {
@@ -211,6 +211,11 @@ export default function PerformanceInsightsPage() {
         item.match_date <= endDate
     );
   }, [matchRecords, matchPeriod]);
+
+  // SHOW LATEST 10 MATCHES BY DEFAULT
+  const visibleMatchRecords = showAllMatches
+    ? filteredMatchRecords
+    : filteredMatchRecords.slice(0, 10);
 
   // MATCH PERFORMANCE STATISTICS
   const matchStats = useMemo(() => {
@@ -547,7 +552,10 @@ export default function PerformanceInsightsPage() {
               {matchPeriods.map((item) => (
                 <button
                   key={item.value}
-                  onClick={() => setMatchPeriod(item.value)}
+                  onClick={() => {
+                    setMatchPeriod(item.value);
+                    setShowAllMatches(false);
+                  }}
                   className={`rounded-lg px-3 py-2 text-xs font-bold transition ${
                     matchPeriod === item.value
                       ? "bg-emerald-500 text-black"
@@ -706,7 +714,7 @@ export default function PerformanceInsightsPage() {
                         </thead>
 
                         <tbody>
-                          {filteredMatchRecords.map((item) => (
+                          {visibleMatchRecords.map((item) => (
                             <tr
                               key={item.id}
                               className="border-b border-white/[0.05] last:border-0"
@@ -745,6 +753,17 @@ export default function PerformanceInsightsPage() {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                )}
+
+                {filteredMatchRecords.length > 10 && (
+                  <div className="mt-5 flex justify-center">
+                    <button
+                      onClick={() => setShowAllMatches((current) => !current)}
+                      className="rounded-xl bg-emerald-500 px-6 py-3 text-sm font-bold text-black transition hover:bg-emerald-400"
+                    >
+                      {showAllMatches ? "Show Less" : "View All Matches"}
+                    </button>
                   </div>
                 )}
               </section>
