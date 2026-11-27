@@ -367,25 +367,27 @@ const visiblePerformance = showAllPerformance
                 {formattedDate}
               </p>
 
-              {/* STATUS + ODDS */}
+              
+{/* STATUS + ODDS */}
 <p
-  className={`mt-1 flex flex-wrap items-center justify-center gap-0.5 text-[9px] font-bold sm:text-[11px] ${statusColor}`}
+  className={`mt-1 flex flex-wrap items-center justify-center gap-1 text-[9px] font-bold sm:text-[11px] ${statusColor}`}
 >
   <span className="text-[9px] sm:text-[10px]">
     {statusIcon}
   </span>
 
-  <span>
   {item.total_odds != null &&
-  Number.isFinite(Number(item.total_odds))
-    ? Number(item.total_odds).toFixed(2)
-    : "ODDS N/A"}
-</span>
+    Number.isFinite(Number(item.total_odds)) && (
+      <span>
+        {Number(item.total_odds).toFixed(2)}
+      </span>
+    )}
 
   <span>
     {statusText}
   </span>
 </p>
+
 
             </div>
           );
