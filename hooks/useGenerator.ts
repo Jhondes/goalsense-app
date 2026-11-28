@@ -139,62 +139,76 @@ export function useGenerator() {
   /* =========================
      ⚡ GENERATE
   ========================== */
-  const generate = async (lockedPicks: any[] = []) => {
-    if (!matches.length) return;
+  
+const generate = async (lockedPicks: any[] = []) => {
+  if (!matches.length) {
+    setResults([]);
+    setTotalOdds("0.00");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      let filteredMatches = [...matches];
+  try {
+    let filteredMatches = [...matches];
 
-      // filter by date
-      if (filters.dates.length) {
-        filteredMatches = filteredMatches.filter((m) =>
-          filters.dates.includes(m.date)
-        );
-      }
+    // Get today's date using the user's local date.
+    const now = new Date();
+    const todayKey = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("-");
 
-      // filter by league
-      if (filters.leagues.length) {
-        filteredMatches = filteredMatches.filter((m) =>
-          filters.leagues.includes(m.league)
-        );
-      }
+    // Use selected dates, or today's date if none was selected.
+    const datesToUse = filters.dates.length
+      ? filters.dates
+      : [todayKey];
 
-      const data = generatePredictions(filters, filteredMatches);
+    filteredMatches = filteredMatches.filter((m) =>
+      datesToUse.includes(m.date)
+    );
 
-
-
-await new Promise((res) => setTimeout(res, 1200));
-
-      const filtered = data.picks.filter(
-        (r: any) =>
-          !lockedPicks.some(
-            (p) => p.home === r.home && p.away === r.away
-          )
+    // Apply league filter.
+    if (filters.leagues.length) {
+      filteredMatches = filteredMatches.filter((m) =>
+        filters.leagues.includes(m.league)
       );
-
-      const combined = [...lockedPicks, ...filtered].slice(
-        0,
-        filters.count
-      );
-
-      setResults(combined);
-
-      const odds = combined.reduce(
-        (acc, pick) => acc * Number(pick.odds),
-        1
-      );
-
-      setTotalOdds(odds.toFixed(2));
-
-      
-    } catch (err) {
-      console.error("Generator error:", err);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const data = generatePredictions(filters, filteredMatches);
+
+    await new Promise((res) => setTimeout(res, 1200));
+
+    const filtered = data.picks.filter(
+      (r: any) =>
+        !lockedPicks.some(
+          (p) => p.home === r.home && p.away === r.away
+        )
+    );
+
+    const combined = [...lockedPicks, ...filtered].slice(
+      0,
+      filters.count
+    );
+
+    setResults(combined);
+
+    const odds = combined.reduce(
+      (acc, pick) => acc * Number(pick.odds),
+      1
+    );
+
+    setTotalOdds(combined.length ? odds.toFixed(2) : "0.00");
+  } catch (err) {
+    console.error("Generator error:", err);
+    setResults([]);
+    setTotalOdds("0.00");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return {
     filters,
